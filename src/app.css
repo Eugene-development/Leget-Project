@@ -1,0 +1,252 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/* Base styles - Font face for Mona Sans */
+@font-face {
+  font-family: 'Mona Sans';
+  font-weight: 200 900;
+  font-display: block;
+  font-style: normal;
+  font-stretch: 75% 125%;
+  src: url('/fonts/Mona-Sans.var.woff2') format('woff2');
+}
+
+/* Tailwind CSS 4 Theme Configuration */
+@theme {
+  /* Reset default text sizes and define custom typography scale */
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.75rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 1.75rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2rem;
+  --text-4xl--line-height: 2.5rem;
+  --text-5xl: 2.5rem;
+  --text-5xl--line-height: 3rem;
+  --text-6xl: 3rem;
+  --text-6xl--line-height: 3.5rem;
+  --text-7xl: 4rem;
+  --text-7xl--line-height: 4.5rem;
+
+  /* Custom radius */
+  --radius-4xl: 2.5rem;
+
+  /* Font families */
+  --font-sans: Mona Sans, ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --font-display: Mona Sans, ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* Font variation settings for display font */
+  --font-display--font-variation-settings: 'wdth' 125;
+
+  --font-display-length: 2;
+}
+
+/* Typography component styles */
+@layer components {
+  .typography {
+    color: var(--color-neutral-950);
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+
+    /* Shiki code highlighting variables */
+    --shiki-color-text: var(--color-white);
+    --shiki-color-background: var(--color-neutral-950);
+    --shiki-token-constant: var(--color-neutral-300);
+    --shiki-token-string: var(--color-neutral-400);
+    --shiki-token-comment: var(--color-neutral-500);
+    --shiki-token-keyword: var(--color-neutral-400);
+    --shiki-token-parameter: var(--color-neutral-400);
+    --shiki-token-function: var(--color-neutral-300);
+    --shiki-token-string-expression: var(--color-neutral-300);
+    --shiki-token-punctuation: var(--color-neutral-400);
+  }
+
+  .typography > * {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Headings */
+  .typography h2 {
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-display);
+    font-variation-settings: var(--font-display--font-variation-settings);
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+    margin-top: 4rem;
+  }
+
+  .typography h3 {
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-display);
+    font-variation-settings: var(--font-display--font-variation-settings);
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+    margin-top: 2.5rem;
+  }
+
+  .typography h2 + h3 {
+    margin-top: 0;
+  }
+
+  /* Lists */
+  .typography ul,
+  .typography ol {
+    padding-left: 1.5rem;
+  }
+
+  .typography ul {
+    list-style-type: disc;
+  }
+
+  .typography ol {
+    list-style-type: decimal;
+  }
+
+  .typography li {
+    padding-left: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .typography li::marker {
+    color: var(--color-neutral-500);
+  }
+
+  .typography li > *,
+  .typography li li {
+    margin-top: 1rem;
+  }
+
+  .typography ol > li::marker {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* Tables */
+  .typography table {
+    width: 100%;
+    text-align: left;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  .typography th {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .typography thead th {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-neutral-950);
+  }
+
+  .typography td {
+    vertical-align: top;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgb(10 10 10 / 0.1);
+  }
+
+  .typography th:not(:last-child),
+  .typography td:not(:last-child) {
+    padding-right: 1.5rem;
+  }
+
+  /* Code blocks */
+  .typography pre {
+    display: flex;
+    background-color: var(--color-neutral-950);
+    border-radius: var(--radius-4xl);
+    overflow-x: auto;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .typography pre {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .typography pre code {
+    flex: none;
+    padding: 2rem 1.5rem;
+    font-size: var(--text-base);
+    line-height: 2rem;
+    color: var(--color-white);
+  }
+
+  @media (min-width: 640px) {
+    .typography pre code {
+      padding: 2.5rem;
+    }
+  }
+
+  /* Horizontal rule */
+  .typography hr {
+    border-color: rgb(10 10 10 / 0.1);
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+  }
+
+  /* Inline text */
+  .typography a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+    text-decoration-skip-ink: none;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .typography strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .typography code:not(pre code) {
+    font-size: calc(18 / 20 * 1em);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .typography code:not(pre code)::before,
+  .typography code:not(pre code)::after {
+    content: '`';
+  }
+
+  .typography h2 code,
+  .typography h3 code {
+    font-weight: var(--font-weight-bold);
+  }
+
+  /* Figures */
+  .typography figure {
+    margin-top: 8rem;
+    margin-bottom: 8rem;
+  }
+
+  /* Spacing overrides */
+  .typography:first-child > :first-child,
+  .typography li > :first-child {
+    margin-top: 0 !important;
+  }
+
+  .typography:last-child > :last-child,
+  .typography li > :last-child {
+    margin-bottom: 0 !important;
+  }
+}
