@@ -34,20 +34,21 @@
 	// Refs for focus management
 	let openRef = $state(null);
 	let closeRef = $state(null);
-	let navRef = $state(null);
+	let navPanelRef = $state(null);
 
 	// Generate unique panel ID on mount
 	onMount(() => {
 		panelId = `nav-panel-${crypto.randomUUID()}`;
 		prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-		// Close navigation when clicking on a link to the current page
+		// Close navigation when clicking on any link inside the navigation panel
 		function onClick(event) {
-			if (
-				event.target instanceof HTMLElement &&
-				event.target.closest('a')?.href === window.location.href
-			) {
-				expanded = false;
+			if (event.target instanceof HTMLElement) {
+				const link = event.target.closest('a');
+				// Close menu when clicking any navigation link inside the nav panel
+				if (link && navPanelRef?.contains(link)) {
+					expanded = false;
+				}
 			}
 		}
 
@@ -109,6 +110,7 @@
 
 	<!-- Navigation panel (expandable) -->
 	<div
+		bind:this={navPanelRef}
 		id={panelId}
 		class="relative z-50 overflow-hidden bg-neutral-950 pt-2"
 		style="height: {expanded ? 'auto' : '0.5rem'}; transition: {transitionStyle};"
@@ -117,7 +119,7 @@
 	>
 		<div class="bg-neutral-800">
 			<!-- Header inside navigation panel -->
-			<div bind:this={navRef} class="bg-neutral-950 pb-16 pt-14">
+			<div class="bg-neutral-950 pb-16 pt-14">
 				<Header
 					invert
 					{panelId}
