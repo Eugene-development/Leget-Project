@@ -22,6 +22,7 @@
 	import GridPattern from './GridPattern.svelte';
 	import MenuIcon from './icons/MenuIcon.svelte';
 	import XIcon from './icons/XIcon.svelte';
+	import { slide } from 'svelte/transition';
 
 	let { children } = $props();
 
@@ -77,10 +78,8 @@
 		logoHovered = hovered;
 	}
 
-	// Compute transition style based on reduced motion preference
-	const transitionStyle = $derived(
-		prefersReducedMotion ? 'none' : 'height 0.5s ease-in-out'
-	);
+	// Compute transition duration based on reduced motion preference
+	const transitionDuration = $derived(prefersReducedMotion ? 0 : 500);
 </script>
 
 {#snippet MenuIconSnippet(props)}
@@ -91,7 +90,8 @@
 	<XIcon {...props} />
 {/snippet}
 
-<header>
+<div class="bg-neutral-950 min-h-screen w-full flex flex-col">
+	<header>
 	<!-- Header bar (visible when navigation is collapsed) -->
 	<div
 		class="absolute left-0 right-0 top-2 z-40 pt-14"
@@ -112,28 +112,32 @@
 	<div
 		bind:this={navPanelRef}
 		id={panelId}
-		class="relative z-50 overflow-hidden bg-neutral-950 pt-2"
-		style="height: {expanded ? 'auto' : '0.5rem'}; transition: {transitionStyle};"
+		class="relative z-50 bg-neutral-950"
 		aria-hidden={expanded ? undefined : 'true'}
 		inert={expanded ? undefined : true}
 	>
-		<div class="bg-neutral-800">
-			<!-- Header inside navigation panel -->
-			<div class="bg-neutral-950 pb-16 pt-14">
-				<Header
-					invert
-					{panelId}
-					icon={XIconSnippet}
-					{expanded}
-					onToggle={toggleNavigation}
-					{logoHovered}
-					onLogoHover={handleLogoHover}
-				/>
-			</div>
+		<div class="h-2 bg-neutral-950"></div>
+		{#if expanded}
+			<div transition:slide={{ duration: transitionDuration }} class="overflow-hidden bg-neutral-950">
+				<div class="bg-neutral-800">
+					<!-- Header inside navigation panel -->
+					<div class="bg-neutral-950 pb-16 pt-14">
+						<Header
+							invert
+							{panelId}
+							icon={XIconSnippet}
+							{expanded}
+							onToggle={toggleNavigation}
+							{logoHovered}
+							onLogoHover={handleLogoHover}
+						/>
+					</div>
 
-			<!-- Navigation links -->
-			<Navigation />
-		</div>
+					<!-- Navigation links -->
+					<Navigation />
+				</div>
+			</div>
+		{/if}
 	</div>
 </header>
 
@@ -159,4 +163,5 @@
 		<!-- Footer -->
 		<Footer />
 	</div>
+</div>
 </div>

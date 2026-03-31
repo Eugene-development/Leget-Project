@@ -21,9 +21,6 @@
 		{ name: 'North Adventures', logo: '/images/clients/north-adventures/logo-light.svg' }
 	];
 
-
-
-	
 	// Case studies data
 	const caseStudies = [
 		{
@@ -67,11 +64,14 @@
 <!-- Hero Section -->
 <Container class="mt-24 sm:mt-32 md:mt-56">
 	<FadeIn class="max-w-3xl">
-		<h1 class="font-display text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl">
-			Информационные решения для алгоритмов бизнеса
+		<h1
+			class="font-display text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
+		>
+			Сайты для вашего бизнеса по подписке
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
-			Автоматизация операционных процессов, интеграция CRM и SRM систем, аналитика и отчетность. Создание и внедрение паттернов управления и контроля.
+			Автоматизация операционных процессов, интеграция CRM и SRM систем, аналитика и отчетность.
+			Создание и внедрение паттернов управления и контроля.
 		</p>
 	</FadeIn>
 </Container>
@@ -81,7 +81,7 @@
 	<Container>
 		<FadeIn class="flex items-center gap-x-8">
 			<h2
-				class="text-center font-display text-sm font-semibold tracking-wider text-white sm:text-left"
+				class="font-display text-center text-sm font-semibold tracking-wider text-white sm:text-left"
 			>
 				We've worked with hundreds of amazing people
 			</h2>
@@ -119,12 +119,7 @@
 					<h3>
 						<a href={caseStudy.href}>
 							<span class="absolute inset-0 rounded-3xl"></span>
-							<img
-								src={caseStudy.logo}
-								alt={caseStudy.client}
-								class="h-16 w-16"
-								loading="lazy"
-							/>
+							<img src={caseStudy.logo} alt={caseStudy.client} class="h-16 w-16" loading="lazy" />
 						</a>
 					</h3>
 					<p class="mt-6 flex gap-x-2 text-sm text-neutral-950">
@@ -134,7 +129,7 @@
 						<span class="text-neutral-300" aria-hidden="true">/</span>
 						<span>Case study</span>
 					</p>
-					<p class="mt-6 font-display text-2xl font-semibold text-neutral-950">
+					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">
 						{caseStudy.title}
 					</p>
 					<p class="mt-4 text-base text-neutral-600">
