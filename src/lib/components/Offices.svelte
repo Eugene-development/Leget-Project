@@ -14,13 +14,29 @@
 
 	const offices = [
 		{
-			name: 'Copenhagen',
-			address: ['1 Carlsberg Gate', '1260, København, Denmark']
-		},
-		{
-			name: 'Billund',
-			address: ['24 Lego Allé', '7190, Billund, Denmark']
+			name: 'Россия',
+			address: ['+7 (915) 400-00-20']
 		}
+		// {
+		// 	name: 'Казахстан',
+		// 	address: ['1 Carlsberg Gate', '1260, København, Denmark']
+		// },
+		// {
+		// 	name: 'Узбекистан',
+		// 	address: ['1 Carlsberg Gate', '1260, København, Denmark']
+		// },
+		// {
+		// 	name: 'Грузия',
+		// 	address: ['1 Carlsberg Gate', '1260, København, Denmark']
+		// },
+		// {
+		// 	name: 'Беларусь',
+		// 	address: ['24 Lego Allé', '7190, Billund, Denmark']
+		// }
+		// {
+		// 	name: 'Армения',
+		// 	address: ['24 Lego Allé', '7190, Billund, Denmark']
+		// }
 	];
 </script>
 

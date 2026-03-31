@@ -24,7 +24,7 @@
 </svelte:head>
 
 <!-- Page Introduction -->
-<PageIntro eyebrow="Our process" title="How we work">
+<PageIntro eyebrow="Процесс" title="Как мы работаем">
 	<p>
 		We believe in efficiency and maximizing our resources to provide the best value to our clients.
 		The primary way we do that is by re-using the same five projects we've been developing for the
@@ -33,9 +33,7 @@
 </PageIntro>
 
 <!-- Process Sections -->
-<div
-	class="mt-24 space-y-24 [counter-reset:section] sm:mt-32 sm:space-y-32 lg:mt-40 lg:space-y-40"
->
+<div class="mt-24 space-y-24 [counter-reset:section] sm:mt-32 sm:space-y-32 lg:mt-40 lg:space-y-40">
 	<!-- Discover Section -->
 	<Container class="group/section [counter-increment:section]">
 		<div
@@ -58,7 +56,7 @@
 						aria-hidden="true"
 					></div>
 					<h2
-						class="mt-2 font-display text-3xl font-medium tracking-tight text-neutral-950 sm:text-4xl"
+						class="font-display mt-2 text-3xl font-medium tracking-tight text-neutral-950 sm:text-4xl"
 					>
 						Discover
 					</h2>
@@ -83,7 +81,7 @@
 							</p>
 						</div>
 
-						<h3 class="mt-12 font-display text-base font-semibold text-neutral-950">
+						<h3 class="font-display mt-12 text-base font-semibold text-neutral-950">
 							Included in this phase
 						</h3>
 						<TagList class="mt-4">
@@ -122,7 +120,7 @@
 						aria-hidden="true"
 					></div>
 					<h2
-						class="mt-2 font-display text-3xl font-medium tracking-tight text-neutral-950 sm:text-4xl"
+						class="font-display mt-2 text-3xl font-medium tracking-tight text-neutral-950 sm:text-4xl"
 					>
 						Build
 					</h2>
@@ -146,10 +144,7 @@
 							</p>
 						</div>
 
-						<Blockquote
-							author={{ name: 'Debra Fiscal', role: 'CEO of Unseal' }}
-							class="mt-12"
-						>
+						<Blockquote author={{ name: 'Debra Fiscal', role: 'CEO of Unseal' }} class="mt-12">
 							<p>
 								Studio were so regular with their progress updates we almost began to think they
 								were automated!
@@ -183,7 +178,7 @@
 						aria-hidden="true"
 					></div>
 					<h2
-						class="mt-2 font-display text-3xl font-medium tracking-tight text-neutral-950 sm:text-4xl"
+						class="font-display mt-2 text-3xl font-medium tracking-tight text-neutral-950 sm:text-4xl"
 					>
 						Deliver
 					</h2>
@@ -198,9 +193,8 @@
 							<p>
 								Despite largely using pre-built components, most of the
 								<strong class="font-semibold text-neutral-950">progress</strong>
-								on each project takes place in the final 24 hours. The development time allocated to
-								each client is actually spent making augmented reality demos that go viral on social
-								media.
+								on each project takes place in the final 24 hours. The development time allocated to each
+								client is actually spent making augmented reality demos that go viral on social media.
 							</p>
 							<p>
 								We ensure that the main pages of the site are
@@ -212,7 +206,7 @@
 							</p>
 						</div>
 
-						<h3 class="mt-12 font-display text-base font-semibold text-neutral-950">
+						<h3 class="font-display mt-12 text-base font-semibold text-neutral-950">
 							Included in this phase
 						</h3>
 						<List class="mt-8">
@@ -242,7 +236,7 @@
 		class="absolute inset-x-0 top-0 -z-10 h-[884px] overflow-hidden rounded-t-4xl bg-linear-to-b from-neutral-50"
 	>
 		<GridPattern
-			class="absolute inset-0 h-full w-full fill-neutral-100 stroke-neutral-950/5 mask-[linear-gradient(to_bottom_left,white_40%,transparent_50%)]"
+			class="absolute inset-0 h-full w-full mask-[linear-gradient(to_bottom_left,white_40%,transparent_50%)] fill-neutral-100 stroke-neutral-950/5"
 			yOffset={-270}
 		/>
 	</div>

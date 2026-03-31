@@ -38,10 +38,10 @@
 		{
 			title: 'Company',
 			links: [
-				{ title: 'About', href: '/about' },
-				{ title: 'Process', href: '/process' },
-				{ title: 'Blog', href: '/blog' },
-				{ title: 'Contact us', href: '/contact' }
+				{ title: 'О нас', href: '/about' },
+				{ title: 'Процесс', href: '/process' },
+				{ title: 'Блог', href: '/blog' },
+				{ title: 'Свяжитесь с нами', href: '/contact' }
 			]
 		},
 		{
@@ -74,18 +74,13 @@
 				<ul role="list" class="grid grid-cols-2 gap-8 sm:grid-cols-3">
 					{#each navigation as section, sectionIndex}
 						<li>
-							<div
-								class="font-display text-sm font-semibold tracking-wider text-neutral-950"
-							>
+							<div class="font-display text-sm font-semibold tracking-wider text-neutral-950">
 								{section.title}
 							</div>
 							<ul role="list" class="mt-4 text-sm text-neutral-700">
 								{#each section.links as link, linkIndex}
 									<li class="mt-4">
-										<a
-											href={link.href}
-											class="transition hover:text-neutral-950"
-										>
+										<a href={link.href} class="transition hover:text-neutral-950">
 											{link.title}
 											{#if link.hasArrow}
 												<span aria-hidden="true">→</span>
@@ -102,22 +97,19 @@
 			<!-- Newsletter Form -->
 			<div class="flex lg:justify-end">
 				<form class="max-w-sm">
-					<h2
-						class="font-display text-sm font-semibold tracking-wider text-neutral-950"
-					>
-						Sign up for our newsletter
+					<h2 class="font-display text-sm font-semibold tracking-wider text-neutral-950">
+						Будь в курсе событий
 					</h2>
 					<p class="mt-4 text-sm text-neutral-700">
-						Subscribe to get the latest design news, articles, resources and
-						inspiration.
+						Подпишитесь, чтобы получать последние новости о новинках, статьи, ресурсы и вдохновение.
 					</p>
 					<div class="relative mt-6">
 						<input
 							type="email"
-							placeholder="Email address"
+							placeholder="Ваша почта"
 							autocomplete="email"
 							aria-label="Email address"
-							class="block w-full rounded-2xl border border-neutral-300 bg-transparent py-4 pl-6 pr-20 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:outline-none focus:ring-neutral-950/5"
+							class="block w-full rounded-2xl border border-neutral-300 bg-transparent py-4 pr-20 pl-6 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-none"
 						/>
 						<div class="absolute inset-y-1 right-1 flex justify-end">
 							<button
@@ -142,7 +134,7 @@
 
 		<!-- Bottom section with logo and copyright -->
 		<div
-			class="mb-20 mt-24 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-t border-neutral-950/10 pt-12"
+			class="mt-24 mb-20 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-t border-neutral-950/10 pt-12"
 		>
 			<a href="/" aria-label="Home">
 				<Logo class="h-8" fillOnHover />

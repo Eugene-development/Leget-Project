@@ -11,7 +11,7 @@
 
 	/**
 	 * Work page - Portfolio page showing case studies and client list
-	 * 
+	 *
 	 * Requirements: 9.1, 9.2, 9.3, 13.5
 	 * - PageIntro with "Proven solutions for real-world problems"
 	 * - List of projects (FamilyFund, Unseal, Phobia) with logos and descriptions
@@ -22,8 +22,8 @@
 	// Case studies data (migrated from MDX files)
 	const caseStudies = [
 		{
-			client: 'FamilyFund',
-			title: 'Skip the bank, borrow from those you trust',
+			client: 'Для мебельных компаний',
+			title: 'Мебельный сайт',
 			description:
 				'FamilyFund is a crowdfunding platform for friends and family. Allowing users to take personal loans from their network without a traditional financial institution.',
 			summary: [
@@ -32,8 +32,8 @@
 			],
 			logo: '/images/clients/family-fund/logo-dark.svg',
 			href: '/work/family-fund',
-			date: '2023-01',
-			service: 'Web development, CMS',
+			date: '2025-01',
+			service: 'Сайт, админпанель, промостраница',
 			testimonial: {
 				author: { name: 'Debra Fiscal', role: 'CEO of FamilyFund' },
 				content:
@@ -102,7 +102,7 @@
 </svelte:head>
 
 <!-- Page Introduction -->
-<PageIntro eyebrow="Our work" title="Proven solutions for real-world problems.">
+<PageIntro eyebrow="Наши продукты" title="Готовые решения для бизнеса">
 	<p>
 		We believe in efficiency and maximizing our resources to provide the best value to our clients.
 		The primary way we do that is by re-using the same five projects we've been developing for the
@@ -113,7 +113,7 @@
 <!-- Case Studies Section -->
 <Container class="mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Case studies</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Шаблоны проектов</h2>
 	</FadeIn>
 	<div class="mt-10 space-y-20 sm:space-y-24 lg:space-y-32">
 		{#each caseStudies as caseStudy (caseStudy.client)}
@@ -123,17 +123,12 @@
 						<div
 							class="col-span-full sm:flex sm:items-center sm:justify-between sm:gap-x-8 lg:col-span-1 lg:block"
 						>
-							<div class="sm:flex sm:items-center sm:gap-x-6 lg:block">
-								<img
-									src={caseStudy.logo}
-									alt=""
-									class="h-16 w-16 flex-none"
-									loading="lazy"
-								/>
+							<!-- <div class="sm:flex sm:items-center sm:gap-x-6 lg:block">
+								<img src={caseStudy.logo} alt="" class="h-16 w-16 flex-none" loading="lazy" />
 								<h3 class="mt-6 text-sm font-semibold text-neutral-950 sm:mt-0 lg:mt-8">
 									{caseStudy.client}
 								</h3>
-							</div>
+							</div> -->
 							<div class="mt-1 flex gap-x-4 sm:mt-0 lg:block">
 								<p
 									class="text-sm tracking-tight text-neutral-950 after:ml-4 after:font-semibold after:text-neutral-300 after:content-['/'] lg:mt-2 lg:after:hidden"
@@ -158,7 +153,7 @@
 							</div>
 							<div class="mt-8 flex">
 								<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
-									Read case study
+									Ознакомиться
 								</Button>
 							</div>
 						</div>
@@ -185,17 +180,14 @@
 	</FadeIn>
 	<FadeInStagger class="mt-10" faster>
 		<Border />
-		<ul
-			role="list"
-			class="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-4"
-		>
+		<ul role="list" class="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-4">
 			{#each clients as client, index (client.name)}
 				<li class="group">
 					<FadeIn class="overflow-hidden">
 						<Border
-							class="pt-12 {index < 2
-								? '-mt-px'
-								: ''} {index === 2 ? 'sm:-mt-px' : ''} {index === 3 ? 'lg:-mt-px' : ''}"
+							class="pt-12 {index < 2 ? '-mt-px' : ''} {index === 2 ? 'sm:-mt-px' : ''} {index === 3
+								? 'lg:-mt-px'
+								: ''}"
 						>
 							<img src={client.logo} alt={client.name} loading="lazy" />
 						</Border>

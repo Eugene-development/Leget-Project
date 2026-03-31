@@ -14,7 +14,7 @@
 
 	/**
 	 * About page - displays company information, culture, team, and statistics
-	 * 
+	 *
 	 * Requirements: 6.1, 6.2, 6.3, 6.4, 13.2
 	 */
 
@@ -112,15 +112,15 @@
 </script>
 
 <svelte:head>
-	<title>About Us - Studio</title>
+	<title>О нас - Легет</title>
 	<meta
 		name="description"
-		content="We believe that our strength lies in our collaborative approach, which puts our clients at the center of everything we do."
+		content="Мы верим, что наша сила заключается в совместном подходе, который ставит наших клиентов в центр всего, что мы делаем."
 	/>
 </svelte:head>
 
 <!-- PageIntro with company description -->
-<PageIntro eyebrow="About us" title="Our strength is collaboration">
+<PageIntro eyebrow="О нас" title="Наша сила в сотрудничестве">
 	<p>
 		We believe that our strength lies in our collaborative approach, which puts our clients at the
 		center of everything we do.
@@ -186,10 +186,7 @@
 							</h2>
 						</FadeIn>
 						<div class="lg:col-span-3">
-							<ul
-								role="list"
-								class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8"
-							>
+							<ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
 								{#each group.people as person (person.name)}
 									<li>
 										<FadeIn>
@@ -203,7 +200,9 @@
 												<div
 													class="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black to-transparent to-40% p-6"
 												>
-													<p class="font-display text-base/6 font-semibold tracking-wide text-white">
+													<p
+														class="font-display text-base/6 font-semibold tracking-wide text-white"
+													>
 														{person.name}
 													</p>
 													<p class="mt-2 text-sm text-white">

@@ -11,14 +11,14 @@
 
 	// Client logos data
 	const clients = [
-		{ name: 'Phobia', logo: '/images/clients/phobia/logo-light.svg' },
-		{ name: 'Family Fund', logo: '/images/clients/family-fund/logo-light.svg' },
-		{ name: 'Unseal', logo: '/images/clients/unseal/logo-light.svg' },
-		{ name: 'Mail Smirk', logo: '/images/clients/mail-smirk/logo-light.svg' },
-		{ name: 'Home Work', logo: '/images/clients/home-work/logo-light.svg' },
-		{ name: 'Green Life', logo: '/images/clients/green-life/logo-light.svg' },
-		{ name: 'Bright Path', logo: '/images/clients/bright-path/logo-light.svg' },
-		{ name: 'North Adventures', logo: '/images/clients/north-adventures/logo-light.svg' }
+		{ name: 'Svelte' },
+		{ name: 'Yandex Cloud' },
+		{ name: 'Laravel' },
+		{ name: 'MySQL' },
+		{ name: 'Kubernetes' },
+		{ name: 'GraphQL' },
+		{ name: 'Nginx' },
+		{ name: 'Tailwind' }
 	];
 
 	// Case studies data
@@ -83,16 +83,16 @@
 			<h2
 				class="font-display text-center text-sm font-semibold tracking-wider text-white sm:text-left"
 			>
-				We've worked with hundreds of amazing people
+				Технологии, с которыми мы работаем
 			</h2>
 			<div class="h-px flex-auto bg-neutral-800"></div>
 		</FadeIn>
 		<FadeInStagger faster>
-			<ul role="list" class="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4">
+			<ul role="list" class="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 text-white lg:grid-cols-4">
 				{#each clients as client}
 					<li>
 						<FadeIn>
-							<img src={client.logo} alt={client.name} loading="lazy" />
+							<span class="text-xl">{client.name}</span>
 						</FadeIn>
 					</li>
 				{/each}

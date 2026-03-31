@@ -31,9 +31,7 @@
 	} = $props();
 
 	// Compute toggle button classes based on invert prop
-	const toggleButtonClasses = $derived(
-		invert ? 'hover:bg-white/10' : 'hover:bg-neutral-950/10'
-	);
+	const toggleButtonClasses = $derived(invert ? 'hover:bg-white/10' : 'hover:bg-neutral-950/10');
 
 	const iconClasses = $derived(
 		invert
@@ -59,7 +57,7 @@
 
 		<!-- Right side: Contact button and menu toggle -->
 		<div class="flex items-center gap-x-8">
-			<Button href="/contact" {invert}>Contact us</Button>
+			<Button href="/contact" {invert}>Контакты</Button>
 
 			<!-- Menu toggle button -->
 			<button

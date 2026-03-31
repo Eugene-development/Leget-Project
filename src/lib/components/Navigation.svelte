@@ -18,15 +18,15 @@
 
 	// Navigation links data
 	const navigationLinks = [
-		{ href: '/work', label: 'Our Work' },
-		{ href: '/about', label: 'About Us' },
-		{ href: '/process', label: 'Our Process' },
-		{ href: '/blog', label: 'Blog' }
+		{ href: '/work', label: 'Шаблоны' },
+		{ href: '/about', label: 'О нас' },
+		{ href: '/process', label: 'Внедрение' },
+		{ href: '/blog', label: 'Блог' }
 	];
 </script>
 
 <!-- Navigation links section -->
-<nav class="mt-px font-display text-5xl font-medium tracking-tight text-white">
+<nav class="font-display mt-px text-5xl font-medium tracking-tight text-white">
 	<!-- First row: Our Work, About Us -->
 	<div class="even:mt-px sm:bg-neutral-950">
 		<Container>
@@ -85,16 +85,16 @@
 	class="relative bg-neutral-950 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800"
 >
 	<Container>
-		<div class="grid grid-cols-1 gap-y-10 pb-16 pt-10 sm:grid-cols-2 sm:pt-16">
+		<div class="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
 			<!-- Our offices -->
 			<div>
-				<h2 class="font-display text-base font-semibold text-white">Our offices</h2>
+				<h2 class="font-display text-base font-semibold text-white">Мы в странах</h2>
 				<Offices invert class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
 			</div>
 
 			<!-- Follow us -->
 			<div class="sm:border-l sm:border-transparent sm:pl-16">
-				<h2 class="font-display text-base font-semibold text-white">Follow us</h2>
+				<!-- <h2 class="font-display text-base font-semibold text-white">Мы в месенджерах</h2> -->
 				<SocialMedia class="mt-6" invert />
 			</div>
 		</div>

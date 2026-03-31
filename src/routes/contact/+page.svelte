@@ -95,26 +95,28 @@
 				email: '',
 				company: '',
 				phone: '',
-				message: '',
-				budget: ''
+				message: ''
 			};
 		}, 1000);
 	}
 
 	// Email contacts data
 	const emailContacts = [
-		{ label: 'Careers', email: 'careers@studioagency.com' },
-		{ label: 'Press', email: 'press@studioagency.com' }
+		{ label: 'Руководство', email: 'info@leget.ru' },
+		{ label: 'Работа в компании', email: 'hr@leget.ru' }
 	];
 </script>
 
 <svelte:head>
-	<title>Contact Us - Studio</title>
-	<meta name="description" content="Let's work together. We can't wait to hear from you." />
+	<title>Свяжитесь с нами - Легет</title>
+	<meta
+		name="description"
+		content="Давайте работать вместе. Мы с нетерпением ждем вашего ответа!"
+	/>
 </svelte:head>
 
-<PageIntro eyebrow="Contact us" title="Let's work together">
-	<p>We can't wait to hear from you.</p>
+<PageIntro eyebrow="Свяжитесь с нами" title="Давайте работать вместе">
+	<p>Мы с нетерпением ждем вашего решения</p>
 </PageIntro>
 
 <Container class="mt-24 sm:mt-32 lg:mt-40">
@@ -122,7 +124,9 @@
 		<!-- Contact Form -->
 		<FadeIn class="lg:order-last">
 			<form onsubmit={handleSubmit}>
-				<h2 class="font-display text-base font-semibold text-neutral-950">Work inquiries</h2>
+				<h2 class="font-display text-base font-semibold text-neutral-950">
+					Заявка на сотрудничество
+				</h2>
 
 				{#if submitSuccess}
 					<div class="mt-6 rounded-2xl bg-green-50 p-6 text-green-800">
@@ -140,14 +144,14 @@
 								autocomplete="name"
 								placeholder=" "
 								bind:value={formData.name}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 text-base/6 text-neutral-950 ring-4 ring-transparent transition first:rounded-t-2xl last:rounded-b-2xl focus:border-neutral-950 focus:outline-hidden focus:ring-neutral-950/5"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
 								class:border-red-500={errors.name}
 							/>
 							<label
 								for={nameId}
-								class="pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
+								class="pointer-events-none absolute top-1/2 left-6 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
 							>
-								Name
+								Ваше имя
 							</label>
 							{#if errors.name}
 								<p class="absolute -bottom-5 left-6 text-sm text-red-500">{errors.name}</p>
@@ -163,14 +167,14 @@
 								autocomplete="email"
 								placeholder=" "
 								bind:value={formData.email}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 text-base/6 text-neutral-950 ring-4 ring-transparent transition first:rounded-t-2xl last:rounded-b-2xl focus:border-neutral-950 focus:outline-hidden focus:ring-neutral-950/5"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
 								class:border-red-500={errors.email}
 							/>
 							<label
 								for={emailId}
-								class="pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
+								class="pointer-events-none absolute top-1/2 left-6 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
 							>
-								Email
+								Почта
 							</label>
 							{#if errors.email}
 								<p class="absolute -bottom-5 left-6 text-sm text-red-500">{errors.email}</p>
@@ -186,13 +190,13 @@
 								autocomplete="organization"
 								placeholder=" "
 								bind:value={formData.company}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 text-base/6 text-neutral-950 ring-4 ring-transparent transition first:rounded-t-2xl last:rounded-b-2xl focus:border-neutral-950 focus:outline-hidden focus:ring-neutral-950/5"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
 							/>
 							<label
 								for={companyId}
-								class="pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
+								class="pointer-events-none absolute top-1/2 left-6 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
 							>
-								Company
+								Компания
 							</label>
 						</div>
 
@@ -205,13 +209,13 @@
 								autocomplete="tel"
 								placeholder=" "
 								bind:value={formData.phone}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 text-base/6 text-neutral-950 ring-4 ring-transparent transition first:rounded-t-2xl last:rounded-b-2xl focus:border-neutral-950 focus:outline-hidden focus:ring-neutral-950/5"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
 							/>
 							<label
 								for={phoneId}
-								class="pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
+								class="pointer-events-none absolute top-1/2 left-6 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
 							>
-								Phone
+								Телефон
 							</label>
 						</div>
 
@@ -223,14 +227,14 @@
 								name="message"
 								placeholder=" "
 								bind:value={formData.message}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 text-base/6 text-neutral-950 ring-4 ring-transparent transition first:rounded-t-2xl last:rounded-b-2xl focus:border-neutral-950 focus:outline-hidden focus:ring-neutral-950/5"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
 								class:border-red-500={errors.message}
 							/>
 							<label
 								for={messageId}
-								class="pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
+								class="pointer-events-none absolute top-1/2 left-6 -mt-3 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
 							>
-								Message
+								Сообщение
 							</label>
 							{#if errors.message}
 								<p class="absolute -bottom-5 left-6 text-sm text-red-500">{errors.message}</p>
@@ -238,9 +242,7 @@
 						</div>
 
 						<!-- Budget Radio Buttons -->
-						<div
-							class="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl"
-						>
+						<!-- <div class="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
 							<fieldset>
 								<legend class="text-base/6 text-neutral-500">Budget</legend>
 								<div class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -286,14 +288,14 @@
 									</label>
 								</div>
 							</fieldset>
-						</div>
+						</div> -->
 					</div>
 
 					<Button type="submit" class="mt-10" disabled={isSubmitting}>
 						{#if isSubmitting}
 							Sending...
 						{:else}
-							Let's work together
+							Работаем!
 						{/if}
 					</Button>
 				{/if}
@@ -302,25 +304,21 @@
 
 		<!-- Contact Details -->
 		<FadeIn>
-			<h2 class="font-display text-base font-semibold text-neutral-950">Our offices</h2>
-			<p class="mt-6 text-base text-neutral-600">
-				Prefer doing things in person? We don't but we have to list our addresses here for legal
-				reasons.
+			<h2 class="font-display text-base font-semibold text-neutral-950">Наше присутствие</h2>
+			<p class="mt-2.5 text-base text-neutral-600">
+				Предпочитаете делать дела лично? Свяжитесь с нами.
 			</p>
 
-			<Offices class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2" />
+			<Offices class="mt-13 grid grid-cols-1 gap-8 sm:grid-cols-2" />
 
 			<Border class="mt-16 pt-16">
-				<h2 class="font-display text-base font-semibold text-neutral-950">Email us</h2>
+				<h2 class="font-display text-base font-semibold text-neutral-950">Рабочая почта</h2>
 				<dl class="mt-6 grid grid-cols-1 gap-8 text-sm sm:grid-cols-2">
 					{#each emailContacts as contact}
 						<div>
 							<dt class="font-semibold text-neutral-950">{contact.label}</dt>
 							<dd>
-								<a
-									href="mailto:{contact.email}"
-									class="text-neutral-600 hover:text-neutral-950"
-								>
+								<a href="mailto:{contact.email}" class="text-neutral-600 hover:text-neutral-950">
 									{contact.email}
 								</a>
 							</dd>
@@ -329,10 +327,10 @@
 				</dl>
 			</Border>
 
-			<Border class="mt-16 pt-16">
+			<!-- <Border class="mt-16 pt-16">
 				<h2 class="font-display text-base font-semibold text-neutral-950">Follow us</h2>
 				<SocialMedia class="mt-6" />
-			</Border>
+			</Border> -->
 		</FadeIn>
 	</div>
 </Container>
