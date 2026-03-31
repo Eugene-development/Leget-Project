@@ -90,78 +90,81 @@
 	<XIcon {...props} />
 {/snippet}
 
-<div class="bg-neutral-950 min-h-screen w-full flex flex-col">
+<div class="flex min-h-screen w-full flex-col bg-neutral-950">
 	<header>
-	<!-- Header bar (visible when navigation is collapsed) -->
-	<div
-		class="absolute left-0 right-0 top-2 z-40 pt-14"
-		aria-hidden={expanded ? 'true' : undefined}
-		inert={expanded ? true : undefined}
-	>
-		<Header
-			{panelId}
-			icon={MenuIconSnippet}
-			{expanded}
-			onToggle={toggleNavigation}
-			{logoHovered}
-			onLogoHover={handleLogoHover}
-		/>
-	</div>
+		<!-- Header bar (visible when navigation is collapsed) -->
+		<div
+			class="absolute top-2 right-0 left-0 z-40 pt-14"
+			aria-hidden={expanded ? 'true' : undefined}
+			inert={expanded ? true : undefined}
+		>
+			<Header
+				{panelId}
+				icon={MenuIconSnippet}
+				{expanded}
+				onToggle={toggleNavigation}
+				{logoHovered}
+				onLogoHover={handleLogoHover}
+			/>
+		</div>
 
-	<!-- Navigation panel (expandable) -->
-	<div
-		bind:this={navPanelRef}
-		id={panelId}
-		class="relative z-50 bg-neutral-950"
-		aria-hidden={expanded ? undefined : 'true'}
-		inert={expanded ? undefined : true}
-	>
-		<div class="h-2 bg-neutral-950"></div>
-		{#if expanded}
-			<div transition:slide={{ duration: transitionDuration }} class="overflow-hidden bg-neutral-950">
-				<div class="bg-neutral-800">
-					<!-- Header inside navigation panel -->
-					<div class="bg-neutral-950 pb-16 pt-14">
-						<Header
-							invert
-							{panelId}
-							icon={XIconSnippet}
-							{expanded}
-							onToggle={toggleNavigation}
-							{logoHovered}
-							onLogoHover={handleLogoHover}
-						/>
+		<!-- Navigation panel (expandable) -->
+		<div
+			bind:this={navPanelRef}
+			id={panelId}
+			class="relative z-50 bg-neutral-950"
+			aria-hidden={expanded ? undefined : 'true'}
+			inert={expanded ? undefined : true}
+		>
+			<div class="h-2 bg-neutral-950"></div>
+			{#if expanded}
+				<div
+					transition:slide={{ duration: transitionDuration }}
+					class="overflow-hidden bg-neutral-950"
+				>
+					<div class="bg-neutral-800">
+						<!-- Header inside navigation panel -->
+						<div class="bg-neutral-950 pt-14 pb-16">
+							<Header
+								invert
+								{panelId}
+								icon={XIconSnippet}
+								{expanded}
+								onToggle={toggleNavigation}
+								{logoHovered}
+								onLogoHover={handleLogoHover}
+							/>
+						</div>
+
+						<!-- Navigation links -->
+						<Navigation />
 					</div>
-
-					<!-- Navigation links -->
-					<Navigation />
 				</div>
-			</div>
-		{/if}
+			{/if}
+		</div>
+	</header>
+
+	<!-- Main content area with white background and rounded corners -->
+	<div
+		class="relative flex flex-auto overflow-hidden bg-white pt-14"
+		style="border-top-left-radius: 20px; border-top-right-radius: 20px;"
+	>
+		<div class="relative isolate flex w-full flex-col pt-9">
+			<!-- Decorative grid pattern background -->
+			<GridPattern
+				class="absolute inset-x-0 -top-14 -z-10 h-[1000px] w-full fill-neutral-50 stroke-neutral-950/5"
+				style="mask-image: linear-gradient(to bottom left, white 40%, transparent 50%);"
+				yOffset={-96}
+				interactive
+			/>
+
+			<!-- Main content slot -->
+			<main class="w-full flex-auto">
+				{@render children?.()}
+			</main>
+
+			<!-- Footer -->
+			<Footer />
+		</div>
 	</div>
-</header>
-
-<!-- Main content area with white background and rounded corners -->
-<div
-	class="relative flex flex-auto overflow-hidden bg-white pt-14"
-	style="border-top-left-radius: 40px; border-top-right-radius: 40px;"
->
-	<div class="relative isolate flex w-full flex-col pt-9">
-		<!-- Decorative grid pattern background -->
-		<GridPattern
-			class="absolute inset-x-0 -top-14 -z-10 h-[1000px] w-full fill-neutral-50 stroke-neutral-950/5"
-			style="mask-image: linear-gradient(to bottom left, white 40%, transparent 50%);"
-			yOffset={-96}
-			interactive
-		/>
-
-		<!-- Main content slot -->
-		<main class="w-full flex-auto">
-			{@render children?.()}
-		</main>
-
-		<!-- Footer -->
-		<Footer />
-	</div>
-</div>
 </div>
