@@ -93,16 +93,16 @@
 	];
 
 	// Blog articles for PageLinks section (static data since we're not using MDX)
-	const blogArticles = [
+	const newsArticles = [
 		{
-			href: '/blog/future-of-web-development',
+			href: '/news/future-of-web-development',
 			title: 'The Future of Web Development',
 			date: '2023-04-06',
 			description:
 				"Let's explore the latest trends in web development and how they shape the future of digital experiences."
 		},
 		{
-			href: '/blog/3-lessons-we-learned',
+			href: '/news/3-lessons-we-learned',
 			title: '3 Lessons We Learned Going Back to the Office',
 			date: '2023-02-18',
 			description:
@@ -225,9 +225,9 @@
 <!-- PageLinks for blog articles -->
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
-	title="From the blog"
+	title="Новости компании"
 	intro="Our team of experienced designers and developers has just one thing on their mind; working on your ideas to draw a smile on the face of your users worldwide. From conducting Brand Sprints to UX Design."
-	pages={blogArticles}
+	pages={newsArticles}
 />
 
 <!-- ContactSection -->

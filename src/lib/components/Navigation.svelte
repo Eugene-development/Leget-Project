@@ -18,10 +18,10 @@
 
 	// Navigation links data
 	const navigationLinks = [
-		{ href: '/work', label: 'Шаблоны' },
+		{ href: '/template', label: 'Шаблоны' },
 		{ href: '/about', label: 'О нас' },
 		{ href: '/process', label: 'Внедрение' },
-		{ href: '/blog', label: 'Блог' }
+		{ href: '/news', label: 'Новости' }
 	];
 </script>
 

@@ -23,15 +23,15 @@
 	const caseStudies = [
 		{
 			client: 'Для мебельных компаний',
-			title: 'Мебельный сайт',
+			title: 'Промо-1',
 			description:
 				'FamilyFund is a crowdfunding platform for friends and family. Allowing users to take personal loans from their network without a traditional financial institution.',
 			summary: [
 				'FamilyFund is a crowdfunding platform for friends and family. Allowing users to take personal loans from their network without a traditional financial institution.',
-				'We developed a custom CMS to power their blog with and optimised their site to rank higher for the keywords "Gary Vee" and "Tony Robbins".'
+				'We developed a custom CMS to power their news with and optimised their site to rank higher for the keywords "Gary Vee" and "Tony Robbins".'
 			],
 			logo: '/images/clients/family-fund/logo-dark.svg',
-			href: '/work/family-fund',
+			href: '/template/family-fund',
 			date: '2025-01',
 			service: 'Сайт, админпанель, промостраница',
 			testimonial: {
@@ -50,7 +50,7 @@
 				"We built out the blockchain infrastructure that supports Unseal. Unfortunately, we took a massive loss on this project when Unseal's cryptocurrency, PlaceboCoin, went to zero."
 			],
 			logo: '/images/clients/unseal/logo-dark.svg',
-			href: '/work/unseal',
+			href: '/template/unseal',
 			date: '2022-10',
 			service: 'Blockchain development',
 			testimonial: {
@@ -69,7 +69,7 @@
 				'We worked with Phobia to develop a new onboarding flow. A user is shown pictures of common phobias and we use the microphone to detect which ones make them scream, feeding the results into the matching algorithm.'
 			],
 			logo: '/images/clients/phobia/logo-dark.svg',
-			href: '/work/phobia',
+			href: '/template/phobia',
 			date: '2022-06',
 			service: 'App development',
 			testimonial: {
@@ -174,9 +174,9 @@
 </Testimonial>
 
 <!-- Clients Section -->
-<Container class="mt-24 sm:mt-32 lg:mt-40">
+<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">You're in good company</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Интеграции</h2>
 	</FadeIn>
 	<FadeInStagger class="mt-10" faster>
 		<Border />
@@ -196,7 +196,7 @@
 			{/each}
 		</ul>
 	</FadeInStagger>
-</Container>
+</Container> -->
 
 <!-- Contact Section -->
 <ContactSection />

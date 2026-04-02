@@ -116,7 +116,7 @@
 </svelte:head>
 
 <PageIntro eyebrow="Свяжитесь с нами" title="Давайте работать вместе">
-	<p>Мы с нетерпением ждем вашего решения</p>
+	<p>Мы с нетерпением ждем вашего решения о сотрудничестве</p>
 </PageIntro>
 
 <Container class="mt-24 sm:mt-32 lg:mt-40">
@@ -304,7 +304,7 @@
 
 		<!-- Contact Details -->
 		<FadeIn>
-			<h2 class="font-display text-base font-semibold text-neutral-950">Наше присутствие</h2>
+			<h2 class="font-display text-base font-semibold text-neutral-950">Наши контакты</h2>
 			<p class="mt-2.5 text-base text-neutral-600">
 				Предпочитаете делать дела лично? Свяжитесь с нами.
 			</p>

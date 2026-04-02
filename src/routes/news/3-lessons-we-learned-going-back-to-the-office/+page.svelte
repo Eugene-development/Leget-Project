@@ -7,7 +7,7 @@
 	import { formatDate } from '$lib/formatDate.js';
 
 	/**
-	 * Blog Article: 3 Lessons We Learned Going Back to the Office
+	 * Новости Article: 3 Lessons We Learned Going Back to the Office
 	 * Requirements: 13.6
 	 */
 
@@ -25,14 +25,14 @@
 
 	const moreArticles = [
 		{
-			href: '/blog/future-of-web-development',
+			href: '/news/future-of-web-development',
 			date: '2023-04-06',
 			title: 'The Future of Web Development: Our Predictions for 2023',
 			description:
 				"Let's explore the latest trends in web development, and regurgitate some predictions we read on X for how they will shape the industry in the coming year."
 		},
 		{
-			href: '/blog/a-short-guide-to-component-naming',
+			href: '/news/a-short-guide-to-component-naming',
 			date: '2022-12-01',
 			title: 'A Short Guide to Component Naming',
 			description:
@@ -42,7 +42,7 @@
 </script>
 
 <svelte:head>
-	<title>{article.title} - Studio</title>
+	<title>{article.title} - LEGET</title>
 	<meta name="description" content={article.description} />
 </svelte:head>
 
@@ -78,7 +78,7 @@
 					</p>
 				</aside>
 				<figure class="my-10">
-					<img src="/images/blog/3-lessons-we-learned-going-back-to-the-office/punch-clock.jpg" alt="Punch clock" class="rounded-2xl" />
+					<img src="/images/news/3-lessons-we-learned-going-back-to-the-office/punch-clock.jpg" alt="Punch clock" class="rounded-2xl" />
 				</figure>
 
 				<h2>2. Turnover: a Fresh Perspective</h2>
@@ -92,7 +92,7 @@
 					We have been consistently surprised at the fresh energy these new grads brought to our organisation and have since vowed to never hire anyone with more than 3 months experience again.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/3-lessons-we-learned-going-back-to-the-office/graduation.jpg" alt="Graduation" class="rounded-2xl" />
+					<img src="/images/news/3-lessons-we-learned-going-back-to-the-office/graduation.jpg" alt="Graduation" class="rounded-2xl" />
 				</figure>
 
 				<h2>3. Cost Efficiency</h2>
@@ -103,7 +103,7 @@
 					What's more, is we've found that we can offer extremely low-cost perks like a snack cupboard or free beer in-lieu of higher salaries. For every foosball table we buy, we find we can offer around 5% less salary per job posting. Our full-time barista is the highest paid employee, after management.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/3-lessons-we-learned-going-back-to-the-office/jars.jpg" alt="Jars" class="rounded-2xl" />
+					<img src="/images/news/3-lessons-we-learned-going-back-to-the-office/jars.jpg" alt="Jars" class="rounded-2xl" />
 				</figure>
 			</div>
 		</div>
@@ -112,8 +112,8 @@
 
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
-	title="More articles"
-	intro="Read more about our experiences and insights."
+	title="Другие новости"
+	intro="Читать далее about our experiences and insights."
 	pages={moreArticles}
 />
 

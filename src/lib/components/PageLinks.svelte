@@ -55,7 +55,7 @@
 								class="mt-6 flex gap-x-3 text-base font-semibold text-neutral-950 transition hover:text-neutral-700"
 								aria-label="Read more: {page.title}"
 							>
-								Read more
+								Читать далее
 								<svg viewBox="0 0 24 6" aria-hidden="true" class="w-6 flex-none fill-current">
 									<path
 										fill-rule="evenodd"

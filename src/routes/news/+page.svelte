@@ -8,19 +8,19 @@
 	import { formatDate } from '$lib/formatDate.js';
 
 	/**
-	 * Blog page - displays list of blog articles
+	 * Новости page - displays list of news section articles
 	 *
 	 * Requirements: 10.1, 10.2, 10.3, 13.6
-	 * - PageIntro with blog heading
+	 * - PageIntro with news section heading
 	 * - List of articles with titles, dates, and descriptions
 	 * - Author information with images
 	 * - ContactSection at the bottom
 	 */
 
-	// Blog articles data (migrated from MDX files)
+	// Новости articles data (migrated from MDX files)
 	const articles = [
 		{
-			href: '/blog/future-of-web-development',
+			href: '/news/future-of-web-development',
 			date: '2023-04-06',
 			title: 'The Future of Web Development: Our Predictions for 2023',
 			description:
@@ -32,7 +32,7 @@
 			}
 		},
 		{
-			href: '/blog/3-lessons-we-learned-going-back-to-the-office',
+			href: '/news/3-lessons-we-learned-going-back-to-the-office',
 			date: '2023-02-18',
 			title: '3 Lessons We Learned Going Back to the Office',
 			description:
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			href: '/blog/a-short-guide-to-component-naming',
+			href: '/news/a-short-guide-to-component-naming',
 			date: '2022-12-01',
 			title: 'A Short Guide to Component Naming',
 			description:
@@ -59,18 +59,17 @@
 </script>
 
 <svelte:head>
-	<title>Blog - Studio</title>
+	<title>Новости - LEGET</title>
 	<meta
 		name="description"
-		content="Stay up-to-date with the latest industry news as our marketing teams finds new ways to re-purpose old CSS tricks articles."
+		content="Будьте в курсе последних новостей отрасли."
 	/>
 </svelte:head>
 
 <!-- Page Introduction -->
-<PageIntro eyebrow="Blog" title="The latest articles and news">
+<PageIntro eyebrow="Новости" title="Последние статьи и новости">
 	<p>
-		Stay up-to-date with the latest industry news as our marketing teams finds new ways to
-		re-purpose old CSS tricks articles.
+		Будьте в курсе последних новостей отрасли.
 	</p>
 </PageIntro>
 
@@ -116,10 +115,10 @@
 								</p>
 								<Button
 									href={article.href}
-									aria-label="Read more: {article.title}"
+									aria-label="Читать далее: {article.title}"
 									class="mt-8"
 								>
-									Read more
+									Читать далее
 								</Button>
 							</div>
 						</div>

@@ -17,13 +17,13 @@
 		<div class="mx-auto max-w-4xl">
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-medium text-balance text-white sm:text-4xl">
-					Tell us about your project
+					Расскажите нам о вашем проекте
 				</h2>
 				<div class="mt-6 flex">
-					<Button href="/contact" invert>Say Hej</Button>
+					<Button href="/contact" invert>Свяжитесь с нами</Button>
 				</div>
 				<div class="mt-10 border-t border-white/10 pt-10">
-					<h3 class="font-display text-base font-semibold text-white">Our offices</h3>
+					<h3 class="font-display text-base font-semibold text-white">Наши контакты</h3>
 					<Offices invert class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
 				</div>
 			</div>

@@ -7,48 +7,41 @@
 	import ListItem from '$lib/components/ListItem.svelte';
 	import StylizedImage from '$lib/components/StylizedImage.svelte';
 	import Testimonial from '$lib/components/Testimonial.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 
 	// Client logos data
+	// const clients = [
+	// 	{ name: 'Svelte' },
+	// 	{ name: 'Yandex Cloud' },
+	// 	{ name: 'Laravel' },
+	// 	{ name: 'MySQL' },
+	// 	{ name: 'Kubernetes' },
+	// 	{ name: 'GraphQL' },
+	// 	{ name: 'Nginx' },
+	// 	{ name: 'Tailwind' }
+	// ];
 	const clients = [
-		{ name: 'Svelte' },
-		{ name: 'Yandex Cloud' },
-		{ name: 'Laravel' },
-		{ name: 'MySQL' },
-		{ name: 'Kubernetes' },
-		{ name: 'GraphQL' },
-		{ name: 'Nginx' },
-		{ name: 'Tailwind' }
+		{ name: 'Подключение домена' },
+		{ name: 'Настройка SSL сертификата' },
+		{ name: 'Настройка почты' },
+		{ name: 'Замена логотипа' },
+		{ name: 'Установка контактных данных' },
+		{ name: 'Удаление ненужных разделов' },
+		{ name: 'Редактирование текстов' },
+		{ name: 'Замена изображений' }
 	];
 
 	// Case studies data
 	const caseStudies = [
 		{
 			client: 'FamilyFund',
-			title: 'Skip the bank, borrow from those you trust',
+			name: 'Промо-1',
+			title: 'Корпоративный сайт',
 			description:
-				'FamilyFund is a crowdfunding platform for close friends and family., a way to pool funds for important life events.',
-			logo: '/images/clients/family-fund/logo-dark.svg',
-			href: '/work/family-fund',
-			date: '2023'
-		},
-		{
-			client: 'Unseal',
-			title: 'Get a hodl of your health',
-			description:
-				'Unseal is the first NFT platform where users can mint and trade NFTs of their own personal health data.',
-			logo: '/images/clients/unseal/logo-dark.svg',
-			href: '/work/unseal',
-			date: '2022'
-		},
-		{
-			client: 'Phobia',
-			title: 'Overcome your fears, find your match',
-			description:
-				'Find love in the face of fear — Phobia is a dating app that matches users based on their mutual phobias.',
-			logo: '/images/clients/phobia/logo-dark.svg',
-			href: '/work/phobia',
-			date: '2022'
+				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
+			href: '/template/family-fund',
+			date: '03/2026'
 		}
 	];
 </script>
@@ -67,11 +60,12 @@
 		<h1
 			class="font-display text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
 		>
-			Сайты для вашего бизнеса по подписке
+			Сайты в аренду от компании Leget
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
-			Автоматизация операционных процессов, интеграция CRM и SRM систем, аналитика и отчетность.
-			Создание и внедрение паттернов управления и контроля.
+			Готовые к внедрению тематические сайты для вашего бизнеса. Выберите готовый шаблон и мы
+			адаптируем и запустим его для вас в течении 24 часов на вашем домене. Минимум усилий и
+			максимум выгоды <strong>всего за 5000 рублей в месяц</strong>.
 		</p>
 	</FadeIn>
 </Container>
@@ -83,7 +77,7 @@
 			<h2
 				class="font-display text-center text-sm font-semibold tracking-wider text-white sm:text-left"
 			>
-				Технологии, с которыми мы работаем
+				Наш специалист выполнит следующие виды работ:
 			</h2>
 			<div class="h-px flex-auto bg-neutral-800"></div>
 		</FadeIn>
@@ -92,7 +86,7 @@
 				{#each clients as client}
 					<li>
 						<FadeIn>
-							<span class="text-xl">{client.name}</span>
+							<span class="text-base">{client.name}</span>
 						</FadeIn>
 					</li>
 				{/each}
@@ -102,10 +96,10 @@
 </div>
 
 <!-- Case Studies Section -->
-<SectionIntro title="Harnessing technology for a brighter future" class="mt-24 sm:mt-32 lg:mt-40">
+<SectionIntro title="Ознакомьтесь с вариантами сайтов" class="mt-24 sm:mt-32 lg:mt-40">
 	<p>
-		We believe technology is the answer to the world's greatest challenges. It's also the cause, so
-		we find ourselves in bit of a catch 22 situation.
+		Мы верим, что технологии — это ответ на самые сложные вызовы бизнеса. Мы предлагаем новый подход
+		в решении современных бизнес задач. От вас только решение, от нас готовый сайт.
 	</p>
 </SectionIntro>
 
@@ -116,18 +110,12 @@
 				<article
 					class="relative flex w-full flex-col rounded-3xl p-6 ring-1 ring-neutral-950/5 transition hover:bg-neutral-50 sm:p-8"
 				>
-					<h3>
-						<a href={caseStudy.href}>
-							<span class="absolute inset-0 rounded-3xl"></span>
-							<img src={caseStudy.logo} alt={caseStudy.client} class="h-16 w-16" loading="lazy" />
-						</a>
-					</h3>
 					<p class="mt-6 flex gap-x-2 text-sm text-neutral-950">
 						<time dateTime={caseStudy.date} class="font-semibold">
 							{caseStudy.date}
 						</time>
 						<span class="text-neutral-300" aria-hidden="true">/</span>
-						<span>Case study</span>
+						<span>{caseStudy.name}</span>
 					</p>
 					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">
 						{caseStudy.title}
@@ -144,15 +132,23 @@
 <!-- Testimonial Section -->
 <Testimonial
 	class="mt-24 sm:mt-32 lg:mt-40"
-	client={{ name: 'Phobia', logo: '/images/clients/phobia/logo-dark.svg' }}
+	client={{ name: 'LEGET', LogoSnippet: LogoSnippet }}
 >
-	The team at Studio went above and beyond with our onboarding, even finding a way to access the
-	user's microphone without triggering one of those annoying permission dialogs.
+	{#snippet LogoSnippet()}
+		<div class="flex items-center gap-x-4">
+			<Logo class="h-12" />
+			<span class="text-sm font-semibold text-neutral-950 uppercase tracking-wider"
+				>Администрация проекта</span
+			>
+		</div>
+	{/snippet}
+	Наша команда пошла дальше стереотипов в современном интернет бизнесе. Мы создали концепт и
+	разработали уникальную архитектуру эффективных web-приложений.
 </Testimonial>
 
 <!-- Services Section -->
 <SectionIntro
-	eyebrow="Services"
+	eyebrow="Сервис"
 	title="We help you identify, explore and respond to new opportunities."
 	class="mt-24 sm:mt-32 lg:mt-40"
 >

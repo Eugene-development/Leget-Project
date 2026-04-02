@@ -27,27 +27,27 @@
 	// Navigation structure
 	const navigation = [
 		{
-			title: 'Work',
+			title: 'Шаблоны',
 			links: [
-				{ title: 'FamilyFund', href: '/work/family-fund' },
-				{ title: 'Unseal', href: '/work/unseal' },
-				{ title: 'Phobia', href: '/work/phobia' },
-				{ title: 'See all', href: '/work', hasArrow: true }
+				{ title: 'FamilyFund', href: '/template/family-fund' },
+				{ title: 'Unseal', href: '/template/unseal' },
+				{ title: 'Phobia', href: '/template/phobia' },
+				{ title: 'Смотреть все', href: '/template', hasArrow: true }
 			]
 		},
 		{
-			title: 'Company',
+			title: 'Компания',
 			links: [
 				{ title: 'О нас', href: '/about' },
 				{ title: 'Процесс', href: '/process' },
-				{ title: 'Блог', href: '/blog' },
+				{ title: 'Новости', href: '/news' },
 				{ title: 'Свяжитесь с нами', href: '/contact' }
 			]
-		},
-		{
-			title: 'Connect',
-			links: socialMediaProfiles
 		}
+		// {
+		// 	title: 'Connect',
+		// 	links: socialMediaProfiles
+		// }
 	];
 
 	// Get current year for copyright
@@ -137,10 +137,10 @@
 			class="mt-24 mb-20 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-t border-neutral-950/10 pt-12"
 		>
 			<a href="/" aria-label="Home">
-				<Logo class="h-8" fillOnHover />
+				<Logo class="h-12" fillOnHover />
 			</a>
 			<p class="text-sm text-neutral-700">
-				© Studio Agency Inc. {currentYear}
+				© Компания LEGET. {currentYear}
 			</p>
 		</div>
 	</FadeIn>

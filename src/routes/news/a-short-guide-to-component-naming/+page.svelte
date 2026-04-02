@@ -7,7 +7,7 @@
 	import { formatDate } from '$lib/formatDate.js';
 
 	/**
-	 * Blog Article: A Short Guide to Component Naming
+	 * Новости Article: A Short Guide to Component Naming
 	 * Requirements: 13.6
 	 */
 
@@ -25,14 +25,14 @@
 
 	const moreArticles = [
 		{
-			href: '/blog/future-of-web-development',
+			href: '/news/future-of-web-development',
 			date: '2023-04-06',
 			title: 'The Future of Web Development: Our Predictions for 2023',
 			description:
 				"Let's explore the latest trends in web development, and regurgitate some predictions we read on X for how they will shape the industry in the coming year."
 		},
 		{
-			href: '/blog/3-lessons-we-learned-going-back-to-the-office',
+			href: '/news/3-lessons-we-learned-going-back-to-the-office',
 			date: '2023-02-18',
 			title: '3 Lessons We Learned Going Back to the Office',
 			description:
@@ -42,7 +42,7 @@
 </script>
 
 <svelte:head>
-	<title>{article.title} - Studio</title>
+	<title>{article.title} - LEGET</title>
 	<meta name="description" content={article.description} />
 </svelte:head>
 
@@ -72,7 +72,7 @@
 					Need a button? Call it "btn". A modal? How about "md"? You'll save precious minutes per day and you'll get the added benefit of being the only person in the codebase who knows where anything is. This is called job security.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/a-short-guide-to-component-naming/typewriter.jpg" alt="Typewriter" class="rounded-2xl" />
+					<img src="/images/news/a-short-guide-to-component-naming/typewriter.jpg" alt="Typewriter" class="rounded-2xl" />
 				</figure>
 
 				<h2>2. Rank High in Search</h2>
@@ -83,7 +83,7 @@
 					One way to stand out is to include all the possible search terms in your component name. Instead of "SignInButton" you might want call it "SignInButtonAuthenticationCookieUserLogIn" which will ensure that it is returned in almost any related search result.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/a-short-guide-to-component-naming/magnifying-glass.jpg" alt="Magnifying glass" class="rounded-2xl" />
+					<img src="/images/news/a-short-guide-to-component-naming/magnifying-glass.jpg" alt="Magnifying glass" class="rounded-2xl" />
 				</figure>
 
 				<h2>3. Mix Languages</h2>
@@ -94,7 +94,7 @@
 					You can create an index file that maps all the different languages within your repo. Need a dropdown? Look for "Desplegable". A form? Search "Форма". You'll learn multiple new languages while being more inclusive to your colleagues.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/a-short-guide-to-component-naming/everyday-english.jpg" alt="Everyday English" class="rounded-2xl" />
+					<img src="/images/news/a-short-guide-to-component-naming/everyday-english.jpg" alt="Everyday English" class="rounded-2xl" />
 				</figure>
 			</div>
 		</div>
@@ -103,8 +103,8 @@
 
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
-	title="More articles"
-	intro="Read more about development best practices."
+	title="Другие новости"
+	intro="Читать далее about development best practices."
 	pages={moreArticles}
 />
 

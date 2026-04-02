@@ -8,7 +8,7 @@
 	import { formatDate } from '$lib/formatDate.js';
 
 	/**
-	 * Blog Article: The Future of Web Development
+	 * Новости Article: The Future of Web Development
 	 * Requirements: 13.6
 	 */
 
@@ -26,14 +26,14 @@
 
 	const moreArticles = [
 		{
-			href: '/blog/3-lessons-we-learned-going-back-to-the-office',
+			href: '/news/3-lessons-we-learned-going-back-to-the-office',
 			date: '2023-02-18',
 			title: '3 Lessons We Learned Going Back to the Office',
 			description:
 				'Earlier this year we made the bold decision to make everyone come back to the office full-time after two years working from a dressing table in the corner of their bedroom.'
 		},
 		{
-			href: '/blog/a-short-guide-to-component-naming',
+			href: '/news/a-short-guide-to-component-naming',
 			date: '2022-12-01',
 			title: 'A Short Guide to Component Naming',
 			description:
@@ -43,7 +43,7 @@
 </script>
 
 <svelte:head>
-	<title>{article.title} - Studio</title>
+	<title>{article.title} - LEGET</title>
 	<meta name="description" content={article.description} />
 </svelte:head>
 
@@ -71,7 +71,7 @@
 					With the launch of Github Copilot in 2022 the industry got its first glimpse at what it would look like to have Stack Overflow plumbed straight into your IDE. Copilot has given thousands of developers what they always longed for: plausible deniability over the bugs they write.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/future-of-web-development/pilot.jpg" alt="AI pilot" class="rounded-2xl" />
+					<img src="/images/news/future-of-web-development/pilot.jpg" alt="AI pilot" class="rounded-2xl" />
 				</figure>
 				<p>
 					In 2023 we can expect these assistants to become more sophisticated and for that to have ripple effects throughout the industry.
@@ -88,7 +88,7 @@
 					Because front-end development was becoming too easy, the same people who write CSS will now need to know how Streaming SSR and Progressive Hydration work.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/future-of-web-development/server.jpg" alt="Server" class="rounded-2xl" />
+					<img src="/images/news/future-of-web-development/server.jpg" alt="Server" class="rounded-2xl" />
 				</figure>
 				<p>
 					In 2023 we can expect frameworks to adopt increasingly granular rendering patterns culminating in per-line rendering (PLR) later this year. We can also expect job postings for Rendering Reliability Engineers to reach an all time high.
@@ -99,10 +99,10 @@
 					Because choosing a JS runtime was one of the only areas where a developer wasn't paralysed with choice, in early 2020, the creator of Node gave us something new to agonise over. The launch of Deno and Bun heralded the final mutation of JavaScript into a language that can truly run anywhere it wasn't intended to.
 				</p>
 				<p>
-					These new JS runtimes mean we can now serve HTML faster than ever before. For example, we've reduced the Time to First Byte (TTFB) of this blog to -0.4s. That means it actually loaded before you clicked the link.
+					These new JS runtimes mean we can now serve HTML faster than ever before. For example, we've reduced the Time to First Byte (TTFB) of this news section to -0.4s. That means it actually loaded before you clicked the link.
 				</p>
 				<figure class="my-10">
-					<img src="/images/blog/future-of-web-development/laptop.jpg" alt="Laptop" class="rounded-2xl" />
+					<img src="/images/news/future-of-web-development/laptop.jpg" alt="Laptop" class="rounded-2xl" />
 				</figure>
 				<p>
 					In 2023 we can expect even faster and more specialised JS runtimes to launch, including the promising Boil, a runtime specifically designed to reduce cold boot times on WiFi enabled kettles. All of these advancements promise to make the future of botnets a truly exciting one.
@@ -114,8 +114,8 @@
 
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
-	title="More articles"
-	intro="Read more about web development trends and insights."
+	title="Другие новости"
+	intro="Читать далее о тенденциях веб-разработки and insights."
 	pages={moreArticles}
 />
 

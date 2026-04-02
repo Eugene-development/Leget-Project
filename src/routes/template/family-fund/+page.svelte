@@ -12,7 +12,7 @@
 	import { formatDate } from '$lib/formatDate.js';
 
 	/**
-	 * Unseal Case Study Page
+	 * FamilyFund Case Study Page
 	 * 
 	 * Requirements: 9.4, 13.5
 	 * - Detailed project description
@@ -24,19 +24,19 @@
 	 */
 
 	const caseStudy = {
-		client: 'Unseal',
-		title: 'Get a hodl of your health',
+		client: 'FamilyFund',
+		title: 'Skip the bank, borrow from those you trust',
 		description:
-			'Unseal is the first NFT platform where users can mint and trade NFTs of their own personal health records, allowing them to take control of their data.',
-		logo: '/images/clients/unseal/logomark-dark.svg',
-		heroImage: '/images/work/unseal/hero.jpg',
-		date: '2022-10',
-		service: 'Blockchain development',
+			'FamilyFund is a crowdfunding platform for friends and family. Allowing users to take personal loans from their network without a traditional financial institution.',
+		logo: '/images/clients/family-fund/logomark-dark.svg',
+		heroImage: '/images/template/family-fund/hero.jpg',
+		date: '2023-01',
+		service: 'Web development, CMS',
 		testimonial: {
-			author: { name: 'Emily Selman', role: 'Head of Engineering at Unseal' },
-			image: '/images/work/unseal/emily-selman.jpg',
+			author: { name: 'Debra Fiscal', role: 'CEO of FamilyFund' },
+			image: '/images/template/family-fund/debra-fiscal.jpg',
 			content:
-				"Studio did an amazing job building out our core blockchain infrastructure and I'm sure once PlaceboCoin rallies they'll be able to finish the project."
+				'Working with Studio, we felt more like a partner than a customer. They really resonated with our mission to change the way people convince their parents to cash out their pensions.'
 		}
 	};
 </script>
@@ -80,7 +80,7 @@
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
-				alt="Unseal project hero"
+				alt="FamilyFund project hero"
 				class="w-full object-cover"
 				loading="lazy"
 			/>
@@ -94,13 +94,16 @@
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Overview</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Annoyed that his wife's gynaecologist would not disclose the results of her pap smear, Unseal's founder Kevin came up with the idea of using the block chain to store individual health records.
+				Having written one of the most shared posts on medium.com ("<em>How to cash out your Dad's 401K without him knowing</em>") FamilyFund approached us looking to build out their own news section.
 			</p>
 			<p>
-				Unseal approached us early in their development, having just raised funds through an ICO of their cryptocurrency PlaceboCoin. Having never worked on a web3 product we decided to farm the project out to an agency in Kyiv and skim profits off the top. Despite frequent complaints about missile strikes and power outages, the Ukrainians delivered the brief ahead of schedule.
+				The news section would help drive new traffic to their site and serve as a resource-hub for users already trying to exploit their network for money. Because it was so important that they own their own content, we decided that an on-prem solution would be best.
 			</p>
 			<p>
-				After reaching a high of $12k, PlaceboCoin went to zero in a matter of hours. Because we took payment in PlaceboCoin but our subcontractors insisted on being paid in USD we have taken a huge financial loss on this project.
+				We installed 24 Mac Minis bought from craigslist in the storage cupboard of their office. One machine would be used for the web server and another one for the build server. The other 22 were for redundancy, and to DDOS squarespace.com every few months to keep them on their toes.
+			</p>
+			<p>
+				To optimise their search traffic we used an innovative technique. Every post has a shadow post only visible to web crawlers that is some variation of "<em>Gary Vee is looking to invest in new founders</em>". Like bees to honey.
 			</p>
 		</div>
 	</FadeIn>
@@ -111,9 +114,10 @@
 	<FadeIn>
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">What we did</h2>
 		<TagList class="mt-6">
-			<TagListItem>Blockchain development</TagListItem>
-			<TagListItem>Backend (Solidity)</TagListItem>
-			<TagListItem>Smart contracts</TagListItem>
+			<TagListItem>Frontend (Next.js)</TagListItem>
+			<TagListItem>Custom CMS</TagListItem>
+			<TagListItem>SEO</TagListItem>
+			<TagListItem>Infrastructure</TagListItem>
 		</TagList>
 	</FadeIn>
 </Container>
@@ -131,10 +135,10 @@
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Results</h2>
 	</FadeIn>
 	<StatList class="mt-10">
-		<StatListItem value="34%" label="Fewer transactions" />
-		<StatListItem value="10%" label="Slower transactions" />
-		<StatListItem value="1000ms" label="Transaction latency" />
-		<StatListItem value="3" label="Active nodes" />
+		<StatListItem value="25%" label="Less traffic" />
+		<StatListItem value="10x" label="Page load times" />
+		<StatListItem value="15%" label="Higher infra costs" />
+		<StatListItem value="$1.2M" label="Legal fees" />
 	</StatList>
 </Container>
 

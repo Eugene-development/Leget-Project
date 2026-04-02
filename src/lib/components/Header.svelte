@@ -50,9 +50,9 @@
 			onmouseleave={() => onLogoHover(false)}
 		>
 			<!-- Logomark for mobile (small screens) -->
-			<Logomark class="h-8 sm:hidden" {invert} filled={logoHovered} />
+			<Logomark class="h-10 sm:hidden" {invert} filled={logoHovered} />
 			<!-- Full Logo for larger screens -->
-			<Logo class="hidden h-8 sm:block" {invert} filled={logoHovered} />
+			<Logo class="hidden h-12 sm:block" {invert} filled={logoHovered} />
 		</a>
 
 		<!-- Right side: Contact button and menu toggle -->

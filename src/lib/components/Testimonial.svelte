@@ -32,7 +32,11 @@
 					</p>
 				</blockquote>
 				<figcaption class="mt-10">
-					<img src={client.logo} alt={client.name} loading="lazy" />
+					{#if client.LogoSnippet}
+						{@render client.LogoSnippet()}
+					{:else}
+						<img src={client.logo} alt={client.name} loading="lazy" />
+					{/if}
 				</figcaption>
 			</figure>
 		</FadeIn>
