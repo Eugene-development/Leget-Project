@@ -9,28 +9,29 @@
 	import Testimonial from '$lib/components/Testimonial.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	// Client logos data
-	// const clients = [
-	// 	{ name: 'Svelte' },
-	// 	{ name: 'Yandex Cloud' },
-	// 	{ name: 'Laravel' },
-	// 	{ name: 'MySQL' },
-	// 	{ name: 'Kubernetes' },
-	// 	{ name: 'GraphQL' },
-	// 	{ name: 'Nginx' },
-	// 	{ name: 'Tailwind' }
-	// ];
 	const clients = [
-		{ name: 'Подключение домена' },
-		{ name: 'Настройка SSL сертификата' },
-		{ name: 'Настройка почты' },
-		{ name: 'Замена логотипа' },
-		{ name: 'Установка контактных данных' },
-		{ name: 'Удаление ненужных разделов' },
-		{ name: 'Редактирование текстов' },
-		{ name: 'Замена изображений' }
+		{ name: 'Svelte' },
+		{ name: 'Yandex Cloud' },
+		{ name: 'Laravel' },
+		{ name: 'MySQL' },
+		{ name: 'Kubernetes' },
+		{ name: 'GraphQL' },
+		{ name: 'Nginx' },
+		{ name: 'Tailwind' }
 	];
+	// const clients = [
+	// 	{ name: 'Подключение домена' },
+	// 	{ name: 'Настройка SSL сертификата' },
+	// 	{ name: 'Настройка почты' },
+	// 	{ name: 'Замена логотипа' },
+	// 	{ name: 'Установка контактных данных' },
+	// 	{ name: 'Удаление ненужных разделов' },
+	// 	{ name: 'Редактирование текстов' },
+	// 	{ name: 'Замена изображений' }
+	// ];
 
 	// Case studies data
 	const caseStudies = [
@@ -40,7 +41,7 @@
 			title: 'Корпоративный сайт',
 			description:
 				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
-			href: '/template/family-fund',
+			href: '/templates/family-fund',
 			date: '03/2026'
 		}
 	];
@@ -64,9 +65,11 @@
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
 			Готовые к внедрению тематические сайты для вашего бизнеса. Выберите готовый шаблон и мы
-			адаптируем и запустим его для вас в течении 24 часов на вашем домене. Минимум усилий и
-			максимум выгоды <strong>всего за 5000 рублей в месяц</strong>.
+			адаптируем и запустим его для вас за 72 часа на вашем домене. Минимум усилий и максимум выгоды <strong
+				>всего за 5000 рублей в месяц</strong
+			>.
 		</p>
+		<Button href="/templates" class="mt-10">Ознакомиться с вариантами</Button>
 	</FadeIn>
 </Container>
 
@@ -77,7 +80,7 @@
 			<h2
 				class="font-display text-center text-sm font-semibold tracking-wider text-white sm:text-left"
 			>
-				Наш специалист выполнит следующие виды работ:
+				Технологии, которые мы применяем:
 			</h2>
 			<div class="h-px flex-auto bg-neutral-800"></div>
 		</FadeIn>
@@ -86,7 +89,7 @@
 				{#each clients as client}
 					<li>
 						<FadeIn>
-							<span class="text-base">{client.name}</span>
+							<span class="text-lg">{client.name}</span>
 						</FadeIn>
 					</li>
 				{/each}
@@ -98,8 +101,8 @@
 <!-- Case Studies Section -->
 <SectionIntro title="Ознакомьтесь с вариантами сайтов" class="mt-24 sm:mt-32 lg:mt-40">
 	<p>
-		Мы верим, что технологии — это ответ на самые сложные вызовы бизнеса. Мы предлагаем новый подход
-		в решении современных бизнес задач. От вас только решение, от нас готовый сайт.
+		Мы верим, что технологии — это ответ на самые сложные вызовы рынка. Наша платформа предлагает
+		новый подход в решении современных бизнес задач. От вас только решение, от нас готовый сайт.
 	</p>
 </SectionIntro>
 
@@ -130,26 +133,23 @@
 </Container>
 
 <!-- Testimonial Section -->
-<Testimonial
-	class="mt-24 sm:mt-32 lg:mt-40"
-	client={{ name: 'LEGET', LogoSnippet: LogoSnippet }}
->
+<Testimonial class="mt-24 sm:mt-32 lg:mt-40" client={{ name: 'LEGET', LogoSnippet: LogoSnippet }}>
 	{#snippet LogoSnippet()}
 		<div class="flex items-center gap-x-4">
 			<Logo class="h-12" />
-			<span class="text-sm font-semibold text-neutral-950 uppercase tracking-wider"
+			<span class="text-sm font-semibold tracking-wider text-neutral-950 uppercase"
 				>Администрация проекта</span
 			>
 		</div>
 	{/snippet}
-	Наша команда пошла дальше стереотипов в современном интернет бизнесе. Мы создали концепт и
-	разработали уникальную архитектуру эффективных web-приложений.
+	Наша команда пошла дальше стереотипов в современном интернет бизнесе. Мы создали концепт и разработали
+	уникальную архитектуру эффективных web-приложений.
 </Testimonial>
 
 <!-- Services Section -->
 <SectionIntro
 	eyebrow="Сервис"
-	title="We help you identify, explore and respond to new opportunities."
+	title="В рамках подписки мы выполняем"
 	class="mt-24 sm:mt-32 lg:mt-40"
 >
 	<p>
@@ -170,15 +170,15 @@
 			</FadeIn>
 		</div>
 		<List class="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-132 lg:pl-4">
-			<ListItem title="Web development">
-				We specialise in crafting beautiful, high quality marketing pages. The rest of the website
-				will be a shell that uses lorem ipsum everywhere.
-			</ListItem>
-			<ListItem title="Application development">
+			<ListItem title="Разработка"
+				>Мы постоянно улучшаем и дополняем компоненты в шаблон, получая обратную связь от вас. Наши
+				решения это всегда высокая скорость и премиальный дизайн.</ListItem
+			>
+			<ListItem title="Техническая поддержка">
 				We have a team of skilled developers who are experts in the latest app frameworks, like
 				Angular 1 and Google Web Toolkit.
 			</ListItem>
-			<ListItem title="E-commerce">
+			<ListItem title="Безопасность">
 				We are at the forefront of modern e-commerce development. Which mainly means adding your
 				logo to the Shopify store template we've used for the past six years.
 			</ListItem>

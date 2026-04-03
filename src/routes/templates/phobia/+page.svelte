@@ -29,12 +29,12 @@
 		description:
 			'Find love in the face of fear — Phobia is a dating app that matches users based on their mutual phobias so they can be scared together.',
 		logo: '/images/clients/phobia/logomark-dark.svg',
-		heroImage: '/images/template/phobia/hero.jpg',
+		heroImage: '/images/templates/phobia/hero.jpg',
 		date: '2022-06',
 		service: 'App development',
 		testimonial: {
 			author: { name: 'Jenny Wilson', role: 'CPO of Phobia' },
-			image: '/images/template/phobia/jenny-wilson.jpg',
+			image: '/images/templates/phobia/jenny-wilson.jpg',
 			content:
 				"The team at Studio went above and beyond with our onboarding, even finding a way to access the user's microphone without triggering one of those annoying permission dialogs."
 		}

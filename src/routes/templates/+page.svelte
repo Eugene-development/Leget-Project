@@ -9,17 +9,6 @@
 	import Testimonial from '$lib/components/Testimonial.svelte';
 	import { formatDate } from '$lib/formatDate.js';
 
-	/**
-	 * Work page - Portfolio page showing case studies and client list
-	 *
-	 * Requirements: 9.1, 9.2, 9.3, 13.5
-	 * - PageIntro with "Proven solutions for real-world problems"
-	 * - List of projects (FamilyFund, Unseal, Phobia) with logos and descriptions
-	 * - Testimonial section
-	 * - ContactSection at the bottom
-	 */
-
-	// Case studies data (migrated from MDX files)
 	const caseStudies = [
 		{
 			client: 'Для мебельных компаний',
@@ -31,51 +20,13 @@
 				'We developed a custom CMS to power their news with and optimised their site to rank higher for the keywords "Gary Vee" and "Tony Robbins".'
 			],
 			logo: '/images/clients/family-fund/logo-dark.svg',
-			href: '/template/family-fund',
+			href: '/templates/family-fund',
 			date: '2025-01',
-			service: 'Сайт, админпанель, промостраница',
+			service: 'Последнее обновление',
 			testimonial: {
 				author: { name: 'Debra Fiscal', role: 'CEO of FamilyFund' },
 				content:
-					'Working with Studio, we felt more like a partner than a customer. They really resonated with our mission to change the way people convince their parents to cash out their pensions.'
-			}
-		},
-		{
-			client: 'Unseal',
-			title: 'Get a hodl of your health',
-			description:
-				'Unseal is the first NFT platform where users can mint and trade NFTs of their own personal health records, allowing them to take control of their data.',
-			summary: [
-				'Unseal is the first NFT platform where users can mint and trade NFTs of their own personal health records, allowing them to take control of their data.',
-				"We built out the blockchain infrastructure that supports Unseal. Unfortunately, we took a massive loss on this project when Unseal's cryptocurrency, PlaceboCoin, went to zero."
-			],
-			logo: '/images/clients/unseal/logo-dark.svg',
-			href: '/template/unseal',
-			date: '2022-10',
-			service: 'Blockchain development',
-			testimonial: {
-				author: { name: 'Emily Selman', role: 'Head of Engineering at Unseal' },
-				content:
-					"Studio did an amazing job building out our core blockchain infrastructure and I'm sure once PlaceboCoin rallies they'll be able to finish the project."
-			}
-		},
-		{
-			client: 'Phobia',
-			title: 'Overcome your fears, find your match',
-			description:
-				'Find love in the face of fear — Phobia is a dating app that matches users based on their mutual phobias so they can be scared together.',
-			summary: [
-				'Find love in the face of fear — Phobia is a dating app that matches users based on their mutual phobias so they can be scared together.',
-				'We worked with Phobia to develop a new onboarding flow. A user is shown pictures of common phobias and we use the microphone to detect which ones make them scream, feeding the results into the matching algorithm.'
-			],
-			logo: '/images/clients/phobia/logo-dark.svg',
-			href: '/template/phobia',
-			date: '2022-06',
-			service: 'App development',
-			testimonial: {
-				author: { name: 'Jenny Wilson', role: 'CPO of Phobia' },
-				content:
-					"The team at Studio went above and beyond with our onboarding, even finding a way to access the user's microphone without triggering one of those annoying permission dialogs."
+					'Мы верим в эффективность и максимизацию наших ресурсов для обеспечения наилучшей ценности для наших клиентов. Основной способ сделать это — повторное использование одних и тех же проектов, которые мы разрабатываем на протяжении десятилетия.'
 			}
 		}
 	];
@@ -94,7 +45,7 @@
 </script>
 
 <svelte:head>
-	<title>Our Work - Studio</title>
+	<title>Наши проекты - Leget</title>
 	<meta
 		name="description"
 		content="We believe in efficiency and maximizing our resources to provide the best value to our clients."
@@ -102,11 +53,10 @@
 </svelte:head>
 
 <!-- Page Introduction -->
-<PageIntro eyebrow="Наши продукты" title="Готовые решения для бизнеса">
+<PageIntro eyebrow="Наши продукты" title="Готовые проекты сайтов">
 	<p>
-		We believe in efficiency and maximizing our resources to provide the best value to our clients.
-		The primary way we do that is by re-using the same five projects we've been developing for the
-		past decade.
+		Мы верим в эффективность и максимизацию наших ресурсов для обеспечения наилучшей ценности для
+		наших клиентов.
 	</p>
 </PageIntro>
 
@@ -153,7 +103,7 @@
 							</div>
 							<div class="mt-8 flex">
 								<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
-									Ознакомиться
+									Подробнее
 								</Button>
 							</div>
 						</div>

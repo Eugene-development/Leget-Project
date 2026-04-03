@@ -29,10 +29,10 @@
 		{
 			title: 'Шаблоны',
 			links: [
-				{ title: 'FamilyFund', href: '/template/family-fund' },
-				{ title: 'Unseal', href: '/template/unseal' },
-				{ title: 'Phobia', href: '/template/phobia' },
-				{ title: 'Смотреть все', href: '/template', hasArrow: true }
+				{ title: 'FamilyFund', href: '/templates/family-fund' },
+				{ title: 'Unseal', href: '/templates/unseal' },
+				{ title: 'Phobia', href: '/templates/phobia' },
+				{ title: 'Смотреть все', href: '/templates', hasArrow: true }
 			]
 		},
 		{

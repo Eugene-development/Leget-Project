@@ -142,8 +142,8 @@
 <!-- StatList with company statistics -->
 <Container class="mt-16">
 	<StatList>
-		<StatListItem value="35" label="Underpaid employees" />
-		<StatListItem value="52" label="Placated clients" />
+		<StatListItem value="35" label="Современных технологий" />
+		<StatListItem value="200+" label="Клиентов с нами" />
 		<StatListItem value="$25M" label="Invoices billed" />
 	</StatList>
 </Container>

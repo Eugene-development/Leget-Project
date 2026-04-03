@@ -37,10 +37,10 @@
 			/>
 		</div>
 		<figcaption class="text-sm text-neutral-950 sm:col-span-7 sm:row-start-3 sm:text-base">
-			<span class="font-semibold">{author.name}</span>
-			<span class="hidden font-semibold sm:inline">, </span>
-			<br class="sm:hidden" />
-			<span class="sm:font-semibold">{author.role}</span>
+			<span class="font-bold">{author.name}</span>
+			<!-- <span class="hidden font-semibold sm:inline">, </span> -->
+			<br class="" />
+			<span class="font-semibold">{author.role}</span>
 		</figcaption>
 	</figure>
 {:else}
@@ -56,7 +56,6 @@
 		</figure>
 	</Border>
 {/if}
-
 
 <style>
 	/* Blockquote quotes styling for the without-image variant */
