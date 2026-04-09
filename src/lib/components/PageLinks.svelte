@@ -46,7 +46,7 @@
 							<h3 class="mt-6 text-base font-semibold text-neutral-950">
 								{page.title}
 							</h3>
-							<time dateTime={page.date} class="order-first text-sm text-neutral-600">
+							<time datetime={page.date} class="order-first text-sm text-neutral-600">
 								{formatDate(page.date)}
 							</time>
 							<p class="mt-2.5 text-base text-neutral-600">{page.description}</p>

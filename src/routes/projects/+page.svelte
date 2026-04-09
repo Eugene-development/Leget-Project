@@ -14,28 +14,66 @@
 			client: 'Для мебельных компаний',
 			title: 'Промо-1',
 			description:
-				'FamilyFund is a crowdfunding platform for friends and family. Allowing users to take personal loans from their network without a traditional financial institution.',
+				'Promo-1 is a project for the furniture company. It allows you to create a professional web presence in a matter of hours.',
 			summary: [
-				'FamilyFund is a crowdfunding platform for friends and family. Allowing users to take personal loans from their network without a traditional financial institution.',
-				'We developed a custom CMS to power their news with and optimised their site to rank higher for the keywords "Gary Vee" and "Tony Robbins".'
+				'Promo-1 is a project for the furniture company. It allows you to create a professional web presence in a matter of hours.',
+				'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
 			],
-			logo: '/images/clients/family-fund/logo-dark.svg',
-			href: '/templates/family-fund',
+			logo: '/images/clients/promo-1/logo-dark.svg',
+			href: '/projects/promo-1',
 			date: '2025-01',
 			service: 'Последнее обновление',
 			testimonial: {
-				author: { name: 'Debra Fiscal', role: 'CEO of FamilyFund' },
+				author: { name: 'Debra Fiscal', role: 'CEO of Promo-1' },
 				content:
 					'Мы верим в эффективность и максимизацию наших ресурсов для обеспечения наилучшей ценности для наших клиентов. Основной способ сделать это — повторное использование одних и тех же проектов, которые мы разрабатываем на протяжении десятилетия.'
+			}
+		},
+		{
+			client: 'Для медицинских центров',
+			title: 'Промо-2',
+			description:
+				'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
+			summary: [
+				'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
+				'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
+			],
+			logo: '/images/clients/promo-2/logo-dark.svg',
+			href: '/projects/promo-2',
+			date: '2025-02',
+			service: 'Последнее обновление',
+			testimonial: {
+				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
+				content:
+					'Этот проект позволили нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы.'
+			}
+		},
+		{
+			client: 'Для IT стартапов',
+			title: 'Промо-3',
+			description:
+				'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
+			summary: [
+				'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
+				'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
+			],
+			logo: '/images/clients/promo-3/logo-dark.svg',
+			href: '/projects/promo-3',
+			date: '2025-03',
+			service: 'Последнее обновление',
+			testimonial: {
+				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
+				content:
+					'Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать.'
 			}
 		}
 	];
 
 	// Client logos for the "You're in good company" section
 	const clients = [
-		{ name: 'Phobia', logo: '/images/clients/phobia/logo-dark.svg' },
-		{ name: 'Family Fund', logo: '/images/clients/family-fund/logo-dark.svg' },
-		{ name: 'Unseal', logo: '/images/clients/unseal/logo-dark.svg' },
+		{ name: 'Promo-3', logo: '/images/clients/promo-3/logo-dark.svg' },
+		{ name: 'Promo-1', logo: '/images/clients/promo-1/logo-dark.svg' },
+		{ name: 'Promo-2', logo: '/images/clients/promo-2/logo-dark.svg' },
 		{ name: 'Mail Smirk', logo: '/images/clients/mail-smirk/logo-dark.svg' },
 		{ name: 'Home Work', logo: '/images/clients/home-work/logo-dark.svg' },
 		{ name: 'Green Life', logo: '/images/clients/green-life/logo-dark.svg' },
@@ -63,7 +101,7 @@
 <!-- Case Studies Section -->
 <Container class="mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Шаблоны проектов</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Варианты проектов</h2>
 	</FadeIn>
 	<div class="mt-10 space-y-20 sm:space-y-24 lg:space-y-32">
 		{#each caseStudies as caseStudy (caseStudy.client)}

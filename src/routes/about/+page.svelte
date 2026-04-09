@@ -120,7 +120,7 @@
 </svelte:head>
 
 <!-- PageIntro with company description -->
-<PageIntro eyebrow="О нас" title="Наша сила в сотрудничестве">
+<PageIntro eyebrow="О нас" title="Наша сила в технологиях">
 	<p>
 		We believe that our strength lies in our collaborative approach, which puts our clients at the
 		center of everything we do.
@@ -143,18 +143,14 @@
 <Container class="mt-16">
 	<StatList>
 		<StatListItem value="35" label="Современных технологий" />
-		<StatListItem value="200+" label="Клиентов с нами" />
-		<StatListItem value="$25M" label="Invoices billed" />
+		<StatListItem value="200+" label="Компонентов в разработке" />
+		<StatListItem value="280%" label="Рост клиентской базы в месяц" />
 	</StatList>
 </Container>
 
 <!-- Culture section with dark background -->
 <div class="mt-24 rounded-4xl bg-neutral-950 py-24 sm:mt-32 lg:mt-40 lg:py-32">
-	<SectionIntro
-		eyebrow="Our culture"
-		title="Balance your passion with your passion for life."
-		invert
-	>
+	<SectionIntro eyebrow="Культура компании" title="Баланс прогресса и безопасности" invert>
 		<p>We are a group of like-minded people who share the same core values.</p>
 	</SectionIntro>
 	<Container class="mt-16">
@@ -174,7 +170,7 @@
 </div>
 
 <!-- Team section with photos -->
-<Container class="mt-24 sm:mt-32 lg:mt-40">
+<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<div class="space-y-24">
 		{#each team as group (group.title)}
 			<FadeInStagger>
@@ -220,7 +216,7 @@
 			</FadeInStagger>
 		{/each}
 	</div>
-</Container>
+</Container> -->
 
 <!-- PageLinks for blog articles -->
 <PageLinks

@@ -27,12 +27,12 @@
 	// Navigation structure
 	const navigation = [
 		{
-			title: 'Шаблоны',
+			title: 'Проекты',
 			links: [
-				{ title: 'FamilyFund', href: '/templates/family-fund' },
-				{ title: 'Unseal', href: '/templates/unseal' },
-				{ title: 'Phobia', href: '/templates/phobia' },
-				{ title: 'Смотреть все', href: '/templates', hasArrow: true }
+				{ title: 'Promo 1', href: '/projects/promo-1' },
+				{ title: 'Promo 2', href: '/projects/promo-2' },
+				{ title: 'Promo 3', href: '/projects/promo-3' },
+				{ title: 'Смотреть все', href: '/projects', hasArrow: true }
 			]
 		},
 		{

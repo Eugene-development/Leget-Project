@@ -18,7 +18,7 @@
 
 	// Navigation links data
 	const navigationLinks = [
-		{ href: '/templates', label: 'Шаблоны' },
+		{ href: '/projects', label: 'Проекты' },
 		{ href: '/about', label: 'О нас' },
 		{ href: '/process', label: 'Внедрение' },
 		{ href: '/news', label: 'Новости' }

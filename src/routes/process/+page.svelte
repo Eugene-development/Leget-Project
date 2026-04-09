@@ -253,7 +253,7 @@
 	<Container class="mt-24">
 		<GridList>
 			<GridListItem title="Скорость">
-				The first part of any partnership is getting our designer to put your logo in our template.
+				The first part of any partnership is getting our designer to put your logo in our project.
 				The second step is getting them to do the colors.
 			</GridListItem>
 			<GridListItem title="Эффективность">

@@ -13,8 +13,8 @@
 
 	// Client logos data
 	const clients = [
-		{ name: 'Svelte' },
 		{ name: 'Yandex Cloud' },
+		{ name: 'SvelteKit' },
 		{ name: 'Laravel' },
 		{ name: 'MySQL' },
 		{ name: 'Kubernetes' },
@@ -36,13 +36,30 @@
 	// Case studies data
 	const caseStudies = [
 		{
-			client: 'FamilyFund',
+			client: 'Promo-1',
 			name: 'Промо-1',
-			title: 'Корпоративный сайт',
+			title: 'Мебельная компания',
 			description:
 				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
-			href: '/templates/family-fund',
-			date: '03/2026'
+			href: '/projects/promo-1',
+			date: '01.04.26'
+		},
+		{
+			client: 'Promo-2',
+			name: 'Промо-2',
+			title: 'Технологичный лендинг',
+			description:
+				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки для вашего продукта.',
+			href: '/projects/promo-2',
+			date: '02.04.26'
+		},
+		{
+			client: 'Promo-3',
+			name: 'Промо-3',
+			title: 'Сервис подбора',
+			description: 'Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
+			href: '/projects/promo-3',
+			date: '03.04.26'
 		}
 	];
 </script>
@@ -61,15 +78,20 @@
 		<h1
 			class="font-display text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
 		>
-			Сайты в аренду от компании Leget
+			Сайты по подписке на инфрастрктуре YandexCloud
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
-			Готовые к внедрению тематические сайты для вашего бизнеса. Выберите готовый шаблон и мы
-			адаптируем и запустим его для вас за 72 часа на вашем домене. Минимум усилий и максимум выгоды <strong
-				>всего за 5000 рублей в месяц</strong
-			>.
+			Готовые к внедрению тематические сайты для вашего бизнеса. Выберите готовый бизнес проект и мы
+			запустим его для вас за 72 часа на вашем домене.
 		</p>
-		<Button href="/templates" class="mt-10">Ознакомиться с вариантами</Button>
+		<p class="mt-6 text-xl text-neutral-600">
+			Дружелюбная к SEO и рекламному продвижению архитектура выведет ваш бизнес на шаг вперёд
+			конкурентов.
+		</p>
+		<!-- <p class="mt-6 text-xl text-neutral-600">
+			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
+		</p> -->
+		<Button href="/projects" class="mt-10">Варианты за 5000 р/мес</Button>
 	</FadeIn>
 </Container>
 
@@ -114,14 +136,17 @@
 					class="relative flex w-full flex-col rounded-3xl p-6 ring-1 ring-neutral-950/5 transition hover:bg-neutral-50 sm:p-8"
 				>
 					<p class="mt-6 flex gap-x-2 text-sm text-neutral-950">
-						<time dateTime={caseStudy.date} class="font-semibold">
+						<span class="font-semibold">{caseStudy.name}</span>
+						<span class="text-neutral-300" aria-hidden="true">/</span>
+						<time dateTime={caseStudy.date}>
 							{caseStudy.date}
 						</time>
-						<span class="text-neutral-300" aria-hidden="true">/</span>
-						<span>{caseStudy.name}</span>
 					</p>
 					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">
-						{caseStudy.title}
+						<a href={caseStudy.href}>
+							<span class="absolute inset-0 rounded-3xl"></span>
+							<!-- {caseStudy.title} -->
+						</a>
 					</p>
 					<p class="mt-4 text-base text-neutral-600">
 						{caseStudy.description}
@@ -138,23 +163,23 @@
 		<div class="flex items-center gap-x-4">
 			<Logo class="h-12" />
 			<span class="text-sm font-semibold tracking-wider text-neutral-950 uppercase"
-				>Администрация проекта</span
+				>Команда проекта Leget</span
 			>
 		</div>
 	{/snippet}
-	Наша команда пошла дальше стереотипов в современном интернет бизнесе. Мы создали концепт и разработали
-	уникальную архитектуру эффективных web-приложений.
+	Мы пошли дальше стереотипов в современном интернет бизнесе, создали концепт и разработали для вас уникальную
+	архитектуру эффективных web-приложений по подписке.
 </Testimonial>
 
 <!-- Services Section -->
 <SectionIntro
 	eyebrow="Сервис"
-	title="В рамках подписки мы выполняем"
+	title="В рамках подписки мы гарантируем стабильность"
 	class="mt-24 sm:mt-32 lg:mt-40"
 >
 	<p>
-		As long as those opportunities involve giving us money to re-purpose old projects — we can come
-		up with an endless number of those.
+		Мы уделяем особое внимание безопасности и стабильности работы сайта. Наши специалисты постоянно
+		следят за обновлениями и оперативно реагируют на любые проблемы.
 	</p>
 </SectionIntro>
 
@@ -171,20 +196,20 @@
 		</div>
 		<List class="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-132 lg:pl-4">
 			<ListItem title="Разработка"
-				>Мы постоянно улучшаем и дополняем компоненты в шаблон, получая обратную связь от вас. Наши
+				>Мы постоянно улучшаем и дополняем компоненты в проект, получая обратную связь от вас. Наши
 				решения это всегда высокая скорость и премиальный дизайн.</ListItem
 			>
 			<ListItem title="Техническая поддержка">
-				We have a team of skilled developers who are experts in the latest app frameworks, like
-				Angular 1 and Google Web Toolkit.
+				В случае непредвиденной ситуации мы и технические cпециалисты YandexCloud оперативно решим
+				проблему и восстановим работоспособность сайта.
 			</ListItem>
 			<ListItem title="Безопасность">
-				We are at the forefront of modern e-commerce development. Which mainly means adding your
-				logo to the Shopify store template we've used for the past six years.
+				Ключевой аспект нашей работы - это безопасность. Мы используем современные методы защиты
+				данных и регулярно обновляем компоненты сайта.
 			</ListItem>
-			<ListItem title="Custom content management">
-				At Studio we understand the importance of having a robust and customised CMS. That's why we
-				run all of our client projects out of a single, enormous Joomla instance.
+			<ListItem title="Управление контентом">
+				Используем современные решения для управления контентом, которые позволяют нам создавать
+				эффективные и удобные сайты для наших клиентов.
 			</ListItem>
 		</List>
 	</div>

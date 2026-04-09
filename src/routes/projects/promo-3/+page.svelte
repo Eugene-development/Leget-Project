@@ -11,30 +11,17 @@
 	import TagListItem from '$lib/components/TagListItem.svelte';
 	import { formatDate } from '$lib/formatDate.js';
 
-	/**
-	 * Phobia Case Study Page
-	 * 
-	 * Requirements: 9.4, 13.5
-	 * - Detailed project description
-	 * - Project header with logo, client name, date, service
-	 * - Hero image
-	 * - Testimonial/quote from client
-	 * - StatList with project statistics
-	 * - ContactSection at the bottom
-	 */
-
 	const caseStudy = {
-		client: 'Phobia',
-		title: 'Overcome your fears, find your match',
+		client: 'Promo-3',
+		title: 'Promo-3',
 		description:
 			'Find love in the face of fear — Phobia is a dating app that matches users based on their mutual phobias so they can be scared together.',
-		logo: '/images/clients/phobia/logomark-dark.svg',
-		heroImage: '/images/templates/phobia/hero.jpg',
+		heroImage: '/images/projects/promo-3/hero.jpg',
 		date: '2022-06',
 		service: 'App development',
 		testimonial: {
-			author: { name: 'Jenny Wilson', role: 'CPO of Phobia' },
-			image: '/images/templates/phobia/jenny-wilson.jpg',
+			author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
+			image: '/images/projects/promo-3/jenny-wilson.jpg',
 			content:
 				"The team at Studio went above and beyond with our onboarding, even finding a way to access the user's microphone without triggering one of those annoying permission dialogs."
 		}
@@ -47,7 +34,7 @@
 </svelte:head>
 
 <!-- Page Introduction with Project Header -->
-<PageIntro eyebrow="Case Study" title={caseStudy.title}>
+<PageIntro eyebrow="Проект" title={caseStudy.title}>
 	<p>{caseStudy.description}</p>
 </PageIntro>
 
@@ -55,20 +42,12 @@
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
 		<div class="flex items-center gap-x-8 border-t border-neutral-200 pt-12">
-			<img
-				src={caseStudy.logo}
-				alt={caseStudy.client}
-				class="h-12 w-12 flex-none"
-				loading="lazy"
-			/>
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+				<a href="/" class="text-neutral-600 transition hover:text-neutral-950">Главная</a>
+				<span class="text-neutral-300">/</span>
+				<a href="/projects" class="text-neutral-600 transition hover:text-neutral-950">Проекты</a>
+				<span class="text-neutral-300">/</span>
 				<span class="font-semibold text-neutral-950">{caseStudy.client}</span>
-				<span class="text-neutral-300">/</span>
-				<span class="text-neutral-600">{caseStudy.service}</span>
-				<span class="text-neutral-300">/</span>
-				<time datetime={caseStudy.date} class="text-neutral-600">
-					{formatDate(caseStudy.date)}
-				</time>
 			</div>
 		</div>
 	</FadeIn>
@@ -80,7 +59,7 @@
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
-				alt="Phobia project hero"
+				alt="Promo-3 project hero"
 				class="w-full object-cover"
 				loading="lazy"
 			/>
@@ -94,16 +73,24 @@
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Overview</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Noticing incredibly high churn, the team at Phobia came to the conclusion that, instead of having a fundamentally flawed business idea, they needed to improve their onboarding process.
+				Noticing incredibly high churn, the team at Promo-3 came to the conclusion that, instead of
+				having a fundamentally flawed business idea, they needed to improve their onboarding
+				process.
 			</p>
 			<p>
-				Previously users selected their phobias manually but this led to some users selecting things they weren't actually afraid of to increase their matches.
+				Previously users selected their phobias manually but this led to some users selecting things
+				they weren't actually afraid of to increase their matches.
 			</p>
 			<p>
-				To combat this, we developed a system that displays a slideshow of common phobias during onboarding. We then use malware to surreptitiously access their microphone and detect when they have audible reactions. We measure the pitch, volume and duration of their screams and feed that information to the matching algorithm.
+				To combat this, we developed a system for Promo-3 that displays a slideshow of common
+				phobias during onboarding. We then use malware to surreptitiously access their microphone
+				and detect when they have audible reactions. We measure the pitch, volume and duration of
+				their screams and feed that information to the matching algorithm.
 			</p>
 			<p>
-				The next phase is a VR version of the onboarding flow where users are subjected to a series of scenarios that will determine their fears. We are currently developing the first scenario, working title: "Jumping out of a plane full of spiders".
+				The next phase is a VR version of the onboarding flow where users are subjected to a series
+				of scenarios that will determine their fears. We are currently developing the first
+				scenario, working title: "Jumping out of a plane full of spiders".
 			</p>
 		</div>
 	</FadeIn>
@@ -112,25 +99,24 @@
 <!-- What We Did Section -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">What we did</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">
+			Подходит для видов деятельности
+		</h2>
 		<TagList class="mt-6">
-			<TagListItem>Android</TagListItem>
-			<TagListItem>iOS</TagListItem>
-			<TagListItem>Malware</TagListItem>
-			<TagListItem>VR</TagListItem>
+			<TagListItem>Мебельная компания</TagListItem>
 		</TagList>
 	</FadeIn>
 </Container>
 
 <!-- Testimonial Section -->
-<Container class="mt-24 sm:mt-32 lg:mt-40">
+<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<Blockquote author={caseStudy.testimonial.author} image={caseStudy.testimonial.image}>
 		<p>{caseStudy.testimonial.content}</p>
 	</Blockquote>
-</Container>
+</Container> -->
 
 <!-- Statistics Section -->
-<Container class="mt-24 sm:mt-32 lg:mt-40">
+<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Results</h2>
 	</FadeIn>
@@ -140,7 +126,7 @@
 		<StatListItem value="2.3" label="App store rating" />
 		<StatListItem value="8" label="Pending lawsuits" />
 	</StatList>
-</Container>
+</Container> -->
 
 <!-- Contact Section -->
 <ContactSection />

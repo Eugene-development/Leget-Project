@@ -14,13 +14,13 @@
 
 	const offices = [
 		{
-			name: 'Россия',
+			name: 'Телефон',
 			address: ['+7 (915) 400-00-20']
+		},
+		{
+			name: 'Почта',
+			address: ['info@leget.ru']
 		}
-		// {
-		// 	name: 'Казахстан',
-		// 	address: ['1 Carlsberg Gate', '1260, København, Denmark']
-		// },
 		// {
 		// 	name: 'Узбекистан',
 		// 	address: ['1 Carlsberg Gate', '1260, København, Denmark']

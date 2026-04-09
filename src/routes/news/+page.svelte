@@ -20,35 +20,34 @@
 	// Новости articles data (migrated from MDX files)
 	const articles = [
 		{
-			href: '/news/future-of-web-development',
-			date: '2023-04-06',
-			title: 'The Future of Web Development: Our Predictions for 2023',
-			description:
-				"Let's explore the latest trends in web development, and regurgitate some predictions we read on X for how they will shape the industry in the coming year.",
+			href: '/news/1',
+			date: '2025-08-01',
+			title: 'Старт проекта LEGET',
+			description: 'Начало работы',
 			author: {
-				name: 'Chelsea Hagon',
-				role: 'Senior Developer',
-				image: '/images/team/chelsea-hagon.jpg'
+				name: 'Евгений Че',
+				role: 'CEO',
+				image: '/images/team/andrey.jpg'
 			}
 		},
 		{
-			href: '/news/3-lessons-we-learned-going-back-to-the-office',
-			date: '2023-02-18',
-			title: '3 Lessons We Learned Going Back to the Office',
+			href: '/news/2',
+			date: '2026-04-03',
+			title: 'Запуск сайта за 72 часа: преимущества аренды готовых решений',
 			description:
-				'Earlier this year we made the bold decision to make everyone come back to the office full-time after two years working from a dressing table in the corner of their bedroom.',
+				'Почему современному бизнесу выгоднее арендовать готовое технологичное решение, чем вкладываться в длительную и дорогостоящую разработку с нуля.',
 			author: {
-				name: 'Leslie Alexander',
-				role: 'Co-Founder / CEO',
-				image: '/images/team/leslie-alexander.jpg'
+				name: 'Евгений Че',
+				role: 'CEO LEGET',
+				image: '/images/team/andrey.jpg'
 			}
 		},
 		{
-			href: '/news/a-short-guide-to-component-naming',
-			date: '2022-12-01',
-			title: 'A Short Guide to Component Naming',
+			href: '/news/3',
+			date: '2025-12-01',
+			title: 'Как выбрать идеальный проект для вашего бизнеса',
 			description:
-				"As a developer, the most important aspect of your job is naming components. It's not just about being descriptive and clear, but also about having fun and being creative.",
+				'Разбираемся, на что обратить внимание при выборе структуры сайта, чтобы он максимально эффективно решал задачи вашего направления.',
 			author: {
 				name: 'Angela Fisher',
 				role: 'Front-end Developer',
@@ -60,17 +59,12 @@
 
 <svelte:head>
 	<title>Новости - LEGET</title>
-	<meta
-		name="description"
-		content="Будьте в курсе последних новостей отрасли."
-	/>
+	<meta name="description" content="Будьте в курсе последних новостей отрасли." />
 </svelte:head>
 
 <!-- Page Introduction -->
-<PageIntro eyebrow="Новости" title="Последние статьи и новости">
-	<p>
-		Будьте в курсе последних новостей отрасли.
-	</p>
+<PageIntro eyebrow="Информация" title="Последние новости">
+	<p>Будьте в курсе последних новостей компании.</p>
 </PageIntro>
 
 <!-- Articles List -->
@@ -113,11 +107,7 @@
 								<p class="mt-6 max-w-2xl text-base text-neutral-600">
 									{article.description}
 								</p>
-								<Button
-									href={article.href}
-									aria-label="Читать далее: {article.title}"
-									class="mt-8"
-								>
+								<Button href={article.href} aria-label="Читать далее: {article.title}" class="mt-8">
 									Читать далее
 								</Button>
 							</div>

@@ -124,14 +124,12 @@
 		<!-- Contact Form -->
 		<FadeIn class="lg:order-last">
 			<form onsubmit={handleSubmit}>
-				<h2 class="font-display text-base font-semibold text-neutral-950">
-					Заявка на сотрудничество
-				</h2>
+				<h2 class="font-display text-base font-semibold text-neutral-950">Заявка на интеграцию</h2>
 
 				{#if submitSuccess}
 					<div class="mt-6 rounded-2xl bg-green-50 p-6 text-green-800">
-						<p class="font-semibold">Thank you for your message!</p>
-						<p class="mt-2">We'll get back to you as soon as possible.</p>
+						<p class="font-semibold">Спасибо!</p>
+						<p class="mt-2">Мы свяжемся с вами в ближайшее время.</p>
 					</div>
 				{:else}
 					<div class="isolate mt-6 -space-y-px rounded-2xl bg-white/50">

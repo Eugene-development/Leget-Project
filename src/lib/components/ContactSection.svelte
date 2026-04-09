@@ -3,6 +3,7 @@
 	import Container from './Container.svelte';
 	import FadeIn from './FadeIn.svelte';
 	import Offices from './Offices.svelte';
+	import Logomark from './Logomark.svelte';
 
 	/**
 	 * ContactSection component - Call-to-action section for contacting the company
@@ -13,17 +14,18 @@
 </script>
 
 <Container class="mt-24 sm:mt-32 lg:mt-40">
-	<FadeIn class="-mx-6 rounded-4xl bg-neutral-950 px-6 py-20 sm:mx-0 sm:py-32 md:px-12">
+	<FadeIn class="relative -mx-6 rounded-4xl bg-neutral-950 px-6 py-20 sm:mx-0 sm:py-32 md:px-12">
+		<Logomark invert class="absolute top-20 right-20 hidden  sm:block sm:h-20 sm:w-20" />
 		<div class="mx-auto max-w-4xl">
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-medium text-balance text-white sm:text-4xl">
-					Расскажите нам о вашем проекте
+					Расскажите нам о себе
 				</h2>
 				<div class="mt-6 flex">
 					<Button href="/contact" invert>Свяжитесь с нами</Button>
 				</div>
 				<div class="mt-10 border-t border-white/10 pt-10">
-					<h3 class="font-display text-base font-semibold text-white">Наши контакты</h3>
+					<h3 class="font-display text-base font-semibold text-white">Наши контакты:</h3>
 					<Offices invert class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
 				</div>
 			</div>
