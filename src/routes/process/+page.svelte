@@ -16,19 +16,17 @@
 </script>
 
 <svelte:head>
-	<title>Our Process - Studio</title>
+	<title>Наш процесс - LEGET</title>
 	<meta
 		name="description"
-		content="We believe in efficiency and maximizing our resources to provide the best value to our clients."
+		content="Узнайте, как мы создаем эффективные решения для мебельного бизнеса: от сбора данных до запуска и поддержки."
 	/>
 </svelte:head>
 
 <!-- Page Introduction -->
 <PageIntro eyebrow="Процесс" title="Как мы работаем">
 	<p>
-		We believe in efficiency and maximizing our resources to provide the best value to our clients.
-		The primary way we do that is by re-using the same five projects we've been developing for the
-		past decade.
+		Мы стремимся к максимальной эффективности и прозрачности на каждом этапе разработки. Наш подход позволяет запускать качественные решения в кратчайшие сроки, обеспечивая стабильный рост вашего бизнеса.
 	</p>
 </PageIntro>
 
@@ -63,21 +61,13 @@
 					<div class="mt-6">
 						<div class="space-y-6 text-base text-neutral-600">
 							<p>
-								We work closely with our clients to understand their
-								<strong class="font-semibold text-neutral-950">needs</strong> and goals, embedding ourselves
-								in their every day operations to understand what makes their business tick.
+								Мы начинаем с глубокого погружения в специфику вашего бизнеса. Нам важно понять ваши текущие <strong class="font-semibold text-neutral-950">задачи</strong>, структуру ассортимента и целевую аудиторию, чтобы предложить наиболее эффективное решение.
 							</p>
 							<p>
-								Our team of private investigators shadow the company director's for several weeks
-								while our account managers focus on going through their trash. Our senior security
-								experts then perform social engineering hacks to gain access to their
-								<strong class="font-semibold text-neutral-950">business</strong>
-								accounts — handing that information over to our forensic accounting team.
+								На этапе сбора данных мы анализируем ваши текущие маркетинговые инструменты, логотип, фирменный стиль и технические требования. Это позволяет нам создать <strong class="font-semibold text-neutral-950">проект</strong>, который будет органично вписан в вашу бизнес-экосистему.
 							</p>
 							<p>
-								Once the full audit is complete, we report back with a comprehensive
-								<strong class="font-semibold text-neutral-950">plan</strong> and, more importantly, a
-								budget.
+								Результатом этого этапа является четкое понимание структуры будущего проекта, согласованный <strong class="font-semibold text-neutral-950">план</strong> запуска и определенный бюджет.
 							</p>
 						</div>
 
@@ -128,27 +118,19 @@
 					<div class="mt-6">
 						<div class="space-y-6 text-base text-neutral-600">
 							<p>
-								Based off of the discovery phase, we develop a comprehensive roadmap for each
-								product and start working towards delivery. The roadmap is an intricately tangled
-								mess of technical nonsense designed to drag the project out as long as possible.
+								На основе полученных данных мы приступаем к развертыванию решения. Мы используем проверенные технологические стеки, которые обеспечивают высокую скорость работы и надежность сайта.
 							</p>
 							<p>
-								Each client is assigned a key account manager to keep lines of communication open
-								and obscure the actual progress of the project. They act as a buffer between the
-								client's incessant nagging and the development team who are hard at work scouring
-								open source projects for code to re-purpose.
+								В процессе интеграции мы настраиваем все необходимые компоненты: от системы управления контентом до интеграции с внешними сервисами. Мы следим за тем, чтобы интерфейс был интуитивно понятным как для ваших клиентов, так и для ваших сотрудников.
 							</p>
 							<p>
-								Our account managers are trained to only reply to client emails after 9pm, several
-								days after the initial email. This reinforces the general aura that we are very busy
-								and dissuades clients from asking for changes.
+								Каждый этап сопровождается тщательным внутренним тестированием, что позволяет нам гарантировать отсутствие ошибок при запуске проекта.
 							</p>
 						</div>
 
-						<Blockquote author={{ name: 'Debra Fiscal', role: 'CEO of Unseal' }} class="mt-12">
+						<Blockquote author={{ name: 'Евгений Че', role: 'Основатель LEGET' }} class="mt-12">
 							<p>
-								Studio were so regular with their progress updates we almost began to think they
-								were automated!
+								Наша цель — не просто создать сайт, а предоставить бизнесу готовый инструмент, который начнет приносить результат с первого дня работы.
 							</p>
 						</Blockquote>
 					</div>
@@ -186,24 +168,13 @@
 					<div class="mt-6">
 						<div class="space-y-6 text-base text-neutral-600">
 							<p>
-								About halfway through the Build phase, we push each project out by 6 weeks due to a
-								change in
-								<strong class="font-semibold text-neutral-950">requirements</strong>. This allows us
-								to increase the budget a final time before launch.
+								Перед финальным запуском мы проводим полную проверку всех функций и страниц сайта. Мы убеждаемся, что верстка корректно отображается на всех устройствах, а формы обратной связи и аналитика работают без сбоев.
 							</p>
 							<p>
-								Despite largely using pre-built components, most of the
-								<strong class="font-semibold text-neutral-950">progress</strong>
-								on each project takes place in the final 24 hours. The development time allocated to each
-								client is actually spent making augmented reality demos that go viral on social media.
+								На этом этапе вы получаете доступ к предварительной версии <strong class="font-semibold text-neutral-950">проекта</strong> для ознакомления и финальных правок. Мы обучаем вашу команду работе с административной панелью, чтобы вы могли самостоятельно управлять контентом.
 							</p>
 							<p>
-								We ensure that the main pages of the site are
-								<strong class="font-semibold text-neutral-950">fully functional</strong>
-								at launch — the auxiliary pages will, of course, be lorem ipusm shells which get updated
-								as part of our exorbitant
-								<strong class="font-semibold text-neutral-950">maintenance</strong>
-								retainer.
+								После завершения всех проверок и получения вашего одобрения мы осуществляем перенос сайта на основной домен и открываем доступ для пользователей. Теперь ваш проект <strong class="font-semibold text-neutral-950">полностью готов</strong> к работе.
 							</p>
 						</div>
 
@@ -212,16 +183,13 @@
 						</h3>
 						<List class="mt-8">
 							<ListItem title="Тестирование">
-								Our projects always have 100% test coverage, which would be impressive if our tests
-								weren't as porous as a sieve.
+								Проводим комплексное тестирование производительности, безопасности и удобства использования интерфейса.
 							</ListItem>
 							<ListItem title="Утверждение">
-								To ensure reliability we only use the best Digital Ocean droplets that $4 a month
-								can buy.
+								Финальная проверка контента, корректности работы интеграций и всех аналитических систем.
 							</ListItem>
 							<ListItem title="Переключение на ваш домен">
-								Because we hold the API keys for every critical service your business uses, you can
-								expect a lifetime of support, and invoices, from us.
+								Бесшовный перенос сайта на ваш домен, привязка почтовых сервисов и настройка SSL-сертификата.
 							</ListItem>
 						</List>
 					</div>
@@ -244,37 +212,29 @@
 
 	<SectionIntro eyebrow="Результат" title="Сбалансированное вэб-приложение">
 		<p>
-			We strive to stay at the forefront of emerging trends and technologies, while completely
-			ignoring them and forking that old Rails project we feel comfortable using. We stand by our
-			core values to justify that decision.
+			Мы объединяем проверенные временем архитектурные решения с современными технологиями. Это позволяет нам создавать продукты, которые легко масштабировать и поддерживать в будущем.
 		</p>
 	</SectionIntro>
 
 	<Container class="mt-24">
 		<GridList>
 			<GridListItem title="Скорость">
-				The first part of any partnership is getting our designer to put your logo in our project.
-				The second step is getting them to do the colors.
+				Оптимизация кода и использование современных методов доставки данных гарантируют мгновенную загрузку страниц вашего сайта.
 			</GridListItem>
 			<GridListItem title="Эффективность">
-				We pride ourselves on never missing a deadline which is easy because most of the work was
-				done years ago.
+				Мы фокусируемся на функциях, которые действительно важны для конверсии и обеспечивают удобство покупки для ваших клиентов.
 			</GridListItem>
 			<GridListItem title="Безопасность">
-				Every business has unique needs and our greatest challenge is shoe-horning those needs into
-				something we already built.
+				Защита данных и стабильность работы системы — наш безусловный приоритет на всех этапах жизненного цикла продукта.
 			</GridListItem>
 			<GridListItem title="Конкурентность">
-				We are transparent about all of our processes, banking on the simple fact our clients never
-				actually read anything.
+				Наши решения помогают вам выделиться среди конкурентов за счет качественного дизайна и высокой производительности.
 			</GridListItem>
 			<GridListItem title="Юзабельность">
-				We foster long-term relationships with our clients that go beyond just delivering a product,
-				allowing us to invoice them for decades.
+				Продуманный пользовательский опыт (UX) делает взаимодействие с вашим брендом через сайт максимально легким и приятным.
 			</GridListItem>
 			<GridListItem title="Выгода">
-				The technological landscape is always evolving and so are we. We are constantly on the
-				lookout for new open source projects to clone.
+				Аренда готовых технологичных решений позволяет существенно сократить затраты на разработку и ускорить возврат инвестиций.
 			</GridListItem>
 		</GridList>
 	</Container>

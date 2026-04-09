@@ -21,71 +21,71 @@
 	// Team data structure matching the original Next.js implementation
 	const team = [
 		{
-			title: 'Leadership',
+			title: 'Руководство',
 			people: [
 				{
-					name: 'Leslie Alexander',
-					role: 'Co-Founder / CEO',
-					image: '/images/team/leslie-alexander.jpg'
+					name: 'Евгений Че',
+					role: 'Основатель / CEO',
+					image: '/images/team/andrey.jpg'
 				},
 				{
-					name: 'Michael Foster',
-					role: 'Co-Founder / CTO',
+					name: 'Михаил Фостер',
+					role: 'Технический директор / CTO',
 					image: '/images/team/michael-foster.jpg'
 				},
 				{
-					name: 'Dries Vincent',
-					role: 'Partner & Business Relations',
+					name: 'Дрис Винсент',
+					role: 'Партнер / Бизнес-отношения',
 					image: '/images/team/dries-vincent.jpg'
 				}
 			]
 		},
 		{
-			title: 'Team',
+			title: 'Команда',
 			people: [
 				{
-					name: 'Chelsea Hagon',
-					role: 'Senior Developer',
+					name: 'Челси Хагон',
+					role: 'Ведущий разработчик',
 					image: '/images/team/chelsea-hagon.jpg'
 				},
 				{
-					name: 'Emma Dorsey',
-					role: 'Senior Designer',
+					name: 'Эмма Дорси',
+					role: 'Ведущий дизайнер',
 					image: '/images/team/emma-dorsey.jpg'
 				},
 				{
-					name: 'Leonard Krasner',
-					role: 'VP, User Experience',
+					name: 'Леонард Краснер',
+					role: 'UX-директор',
 					image: '/images/team/leonard-krasner.jpg'
 				},
 				{
-					name: 'Blake Reid',
-					role: 'Junior Copywriter',
+					name: 'Блейк Рейд',
+					role: 'Копирайтер',
 					image: '/images/team/blake-reid.jpg'
 				},
 				{
-					name: 'Kathryn Murphy',
-					role: 'VP, Human Resources',
+					name: 'Кэтрин Мерфи',
+					role: 'HR-директор',
 					image: '/images/team/kathryn-murphy.jpg'
 				},
 				{
-					name: 'Whitney Francis',
-					role: 'Content Specialist',
+					name: 'Уитни Фрэнсис',
+					role: 'Контент-менеджер',
 					image: '/images/team/whitney-francis.jpg'
 				},
 				{
-					name: 'Jeffrey Webb',
-					role: 'Account Coordinator',
+					name: 'Джеффри Уэбб',
+					role: 'Аккаунт-менеджер',
 					image: '/images/team/jeffrey-webb.jpg'
 				},
 				{
-					name: 'Benjamin Russel',
-					role: 'Senior Developer',
+					name: 'Бенджамин Рассел',
+					role: 'Ведущий разработчик',
 					image: '/images/team/benjamin-russel.jpg'
 				},
 				{
-					name: 'Angela Fisher',
-					role: 'Front-end Developer',
+					name: 'Анжела Фишер',
+					role: 'Front-end разработчик',
 					image: '/images/team/angela-fisher.jpg'
 				}
 			]
@@ -95,18 +95,18 @@
 	// Blog articles for PageLinks section (static data since we're not using MDX)
 	const newsArticles = [
 		{
-			href: '/news/future-of-web-development',
-			title: 'The Future of Web Development',
-			date: '2023-04-06',
+			href: '/news/2',
+			title: 'Запуск сайта за 72 часа: преимущества аренды готовых решений',
+			date: '2026-04-03',
 			description:
-				"Let's explore the latest trends in web development and how they shape the future of digital experiences."
+				'Почему современному бизнесу выгоднее арендовать готовое технологичное решение, чем вкладываться в длительную и дорогостоящую разработку.'
 		},
 		{
-			href: '/news/3-lessons-we-learned',
-			title: '3 Lessons We Learned Going Back to the Office',
-			date: '2023-02-18',
+			href: '/news/3',
+			title: 'Как выбрать идеальный проект для вашего бизнеса',
+			date: '2025-12-01',
 			description:
-				"After years of working remotely, we made the bold decision to return to the office. Here's what we learned."
+				'Разбираемся, на что обратить внимание при выборе структуры сайта, чтобы он максимально эффективно решал задачи вашего направления.'
 		}
 	];
 </script>
@@ -115,26 +115,21 @@
 	<title>О нас - Легет</title>
 	<meta
 		name="description"
-		content="Мы верим, что наша сила заключается в совместном подходе, который ставит наших клиентов в центр всего, что мы делаем."
+		content="Студия LEGET: объединяем глубокую отраслевую экспертизу и передовые технологии для трансформации вашего мебельного бизнеса в цифровую эпоху."
 	/>
 </svelte:head>
 
 <!-- PageIntro with company description -->
 <PageIntro eyebrow="О нас" title="Наша сила в технологиях">
 	<p>
-		We believe that our strength lies in our collaborative approach, which puts our clients at the
-		center of everything we do.
+		Мы убеждены: успех проекта кроется в синергии глубокой отраслевой экспертизы и передовых технологий. Наша цель — трансформировать ваш бизнес в цифровую эпоху.
 	</p>
 	<div class="mt-10 max-w-2xl space-y-6 text-base">
 		<p>
-			Studio was started by three friends who noticed that developer studios were charging clients
-			double what an in-house team would cost. Since the beginning, we have been committed to doing
-			things differently by charging triple instead.
+			Студия LEGET возникла как ответ на вызовы современного мебельного рынка. Мы объединили опыт ведущих разработчиков и глубокое понимание бизнес-процессов мебельных фабрик, чтобы создавать по-настоящему эффективные инструменты.
 		</p>
 		<p>
-			At Studio, we're more than just colleagues — we're a family. This means we pay very little and
-			expect people to work late. We want our employees to bring their whole selves to work. In
-			return, we just ask that they keep themselves there until at least 6:30pm.
+			Для нас каждый проект — это не просто код и дизайн, а возможность помочь вашему бренду стать лидером. Мы выстраиваем долгосрочные партнерские отношения, основанные на прозрачности и достижении конкретных бизнес-результатов.
 		</p>
 	</div>
 </PageIntro>
@@ -151,19 +146,18 @@
 <!-- Culture section with dark background -->
 <div class="mt-24 rounded-4xl bg-neutral-950 py-24 sm:mt-32 lg:mt-40 lg:py-32">
 	<SectionIntro eyebrow="Культура компании" title="Баланс прогресса и безопасности" invert>
-		<p>We are a group of like-minded people who share the same core values.</p>
+		<p>Мы — команда профессионалов, разделяющих общие ценности и стремление к совершенству в каждой детали.</p>
 	</SectionIntro>
 	<Container class="mt-16">
 		<GridList>
-			<GridListItem title="Loyalty" invert>
-				Our team has been with us since the beginning because none of them are allowed to have
-				LinkedIn profiles.
+			<GridListItem title="Экспертиза" invert>
+				Глубокое понимание мебельной отрасли позволяет нам предлагать решения, которые учитывают специфику вашего продукта и потребности покупателей.
 			</GridListItem>
-			<GridListItem title="Trust" invert>
-				We don't care when our team works just as long as they are working every waking second.
+			<GridListItem title="Надежность" invert>
+				Мы строим доверительные отношения с партнерами, обеспечивая стабильную работу систем и оперативную поддержку на всех этапах.
 			</GridListItem>
-			<GridListItem title="Compassion" invert>
-				You never know what someone is going through at home and we make sure to never find out.
+			<GridListItem title="Инновации" invert>
+				Мы не просто следим за трендами, мы адаптируем их под реалии мебельного бизнеса, создавая уникальный клиентский опыт.
 			</GridListItem>
 		</GridList>
 	</Container>
@@ -222,7 +216,7 @@
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
 	title="Новости компании"
-	intro="Our team of experienced designers and developers has just one thing on their mind; working on your ideas to draw a smile on the face of your users worldwide. From conducting Brand Sprints to UX Design."
+	intro="Наши эксперты следят за развитием технологий и изменениями рынка, чтобы вы получали только актуальные инсайты и лучшие практики для развития вашего бизнеса."
 	pages={newsArticles}
 />
 
