@@ -76,7 +76,7 @@
 <Container class="mt-24 sm:mt-32 md:mt-56">
 	<FadeIn class="max-w-3xl">
 		<h1
-			class="font-display text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
+			class="font-display py-6 text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
 		>
 			Сайты по подписке на инфрастрктуре YandexCloud
 		</h1>

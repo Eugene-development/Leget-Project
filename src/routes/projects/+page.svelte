@@ -7,7 +7,9 @@
 	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Testimonial from '$lib/components/Testimonial.svelte';
-	import { formatDate } from '$lib/formatDate.js';
+	import Logo from '$lib/components/Logo.svelte';
+
+	// import { formatDate } from '$lib/formatDate.js';
 
 	const caseStudies = [
 		{
@@ -21,8 +23,8 @@
 			],
 			logo: '/images/clients/promo-1/logo-dark.svg',
 			href: '/projects/promo-1',
-			date: '2025-01',
-			service: 'Последнее обновление',
+			price: 5000,
+			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Debra Fiscal', role: 'CEO of Promo-1' },
 				content:
@@ -40,8 +42,8 @@
 			],
 			logo: '/images/clients/promo-2/logo-dark.svg',
 			href: '/projects/promo-2',
-			date: '2025-02',
-			service: 'Последнее обновление',
+			price: 5000,
+			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
 				content:
@@ -59,8 +61,8 @@
 			],
 			logo: '/images/clients/promo-3/logo-dark.svg',
 			href: '/projects/promo-3',
-			date: '2025-03',
-			service: 'Последнее обновление',
+			price: 5000,
+			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
 				content:
@@ -123,10 +125,8 @@
 								>
 									{caseStudy.service}
 								</p>
-								<p class="text-sm text-neutral-950 lg:mt-2">
-									<time datetime={caseStudy.date}>
-										{formatDate(caseStudy.date)}
-									</time>
+								<p class="text-sm font-semibold text-neutral-950 lg:mt-2">
+									от {caseStudy.price} ₽/мес
 								</p>
 							</div>
 						</div>
@@ -153,13 +153,17 @@
 </Container>
 
 <!-- Testimonial Section -->
-<Testimonial
-	class="mt-24 sm:mt-32 lg:mt-40"
-	client={{ name: 'Mail Smirk', logo: '/images/clients/mail-smirk/logo-dark.svg' }}
+<Testimonial class="mt-24 sm:mt-32 lg:mt-40" client={{ name: 'LEGET', LogoSnippet: LogoSnippet }}>
+	{#snippet LogoSnippet()}
+		<div class="flex items-center gap-x-4">
+			<Logo class="h-12" />
+			<span class="text-sm font-semibold tracking-wider text-neutral-950 uppercase"
+				>Команда проекта Leget</span
+			>
+		</div>
+	{/snippet}
+	Какой вариант вам больше нравится? Напишите нам и мы запустим его для вас за 72 часа.</Testimonial
 >
-	We approached <em>Studio</em> because we loved their past work. They delivered something remarkably
-	similar in record time.
-</Testimonial>
 
 <!-- Clients Section -->
 <!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
