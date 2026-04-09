@@ -16,7 +16,7 @@
     ...restProps
   } = $props();
   
-  const baseClasses = "inline-flex rounded-full px-6 py-1.5 text-sm font-semibold transition";
+  const baseClasses = "inline-flex rounded-full px-6 py-1.5 text-sm font-medium tracking-wider transition";
   
   // Color classes based on invert prop
   // invert=true: white background with dark text (for dark backgrounds)

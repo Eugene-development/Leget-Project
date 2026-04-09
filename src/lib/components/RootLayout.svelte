@@ -63,6 +63,9 @@
 	// Toggle navigation panel
 	function toggleNavigation() {
 		expanded = !expanded;
+		if (expanded) {
+			window.scrollTo({ top: 0, behavior: 'instant' });
+		}
 		// Focus management after toggle
 		setTimeout(() => {
 			if (expanded && closeRef) {
@@ -92,21 +95,22 @@
 
 <div class="flex min-h-screen w-full flex-col bg-neutral-950">
 	<header>
-		<!-- Header bar (visible when navigation is collapsed) -->
-		<div
-			class="absolute top-2 right-0 left-0 z-40 pt-14"
-			aria-hidden={expanded ? 'true' : undefined}
-			inert={expanded ? true : undefined}
-		>
-			<Header
-				{panelId}
-				icon={MenuIconSnippet}
-				{expanded}
-				onToggle={toggleNavigation}
-				{logoHovered}
-				onLogoHover={handleLogoHover}
-			/>
-		</div>
+		{#if !expanded}
+			<div
+				class="absolute top-2 right-0 left-0 z-40 pt-14"
+				aria-hidden={expanded ? 'true' : undefined}
+				inert={expanded ? true : undefined}
+			>
+				<Header
+					{panelId}
+					icon={MenuIconSnippet}
+					{expanded}
+					onToggle={toggleNavigation}
+					{logoHovered}
+					onLogoHover={handleLogoHover}
+				/>
+			</div>
+		{/if}
 
 		<!-- Navigation panel (expandable) -->
 		<div
