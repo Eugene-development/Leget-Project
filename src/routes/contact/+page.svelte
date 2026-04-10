@@ -6,6 +6,7 @@
 	import Offices from '$lib/components/Offices.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import SocialMedia from '$lib/components/SocialMedia.svelte';
+	import { getAuthApiUrl } from '$lib/utils/config.js';
 
 	// Form state
 	let formData = $state({
@@ -27,6 +28,7 @@
 	// Form submission state
 	let isSubmitting = $state(false);
 	let submitSuccess = $state(false);
+	let submitError = $state('');
 
 	// Generate unique IDs for form fields
 	let nameId = $state('');
@@ -55,20 +57,20 @@
 		errors = { name: '', email: '', message: '' };
 
 		if (!formData.name.trim()) {
-			errors.name = 'Name is required';
+			errors.name = 'Введите ваше имя';
 			isValid = false;
 		}
 
 		if (!formData.email.trim()) {
-			errors.email = 'Email is required';
+			errors.email = 'Введите email';
 			isValid = false;
 		} else if (!isValidEmail(formData.email)) {
-			errors.email = 'Please enter a valid email address';
+			errors.email = 'Введите корректный email';
 			isValid = false;
 		}
 
 		if (!formData.message.trim()) {
-			errors.message = 'Message is required';
+			errors.message = 'Введите сообщение';
 			isValid = false;
 		}
 
@@ -76,7 +78,7 @@
 	}
 
 	// Handle form submission
-	function handleSubmit(event) {
+	async function handleSubmit(event) {
 		event.preventDefault();
 
 		if (!validateForm()) {
@@ -84,20 +86,54 @@
 		}
 
 		isSubmitting = true;
+		submitError = '';
 
-		// Simulate form submission
-		setTimeout(() => {
-			isSubmitting = false;
+		try {
+			const sourceUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+			const requestData = {
+				name: formData.name.trim(),
+				email: formData.email.trim(),
+				phone: formData.phone.trim() || null,
+				company: formData.company.trim() || null,
+				message: formData.message.trim(),
+				source_url: sourceUrl
+			};
+
+			const authApiUrl = getAuthApiUrl();
+			const response = await fetch(`${authApiUrl}/notify/contact`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				},
+				body: JSON.stringify(requestData)
+			});
+
+			const result = await response.json();
+
+			if (!response.ok || !result.success) {
+				throw new Error(result.message || 'Ошибка отправки');
+			}
+
 			submitSuccess = true;
+
 			// Reset form
 			formData = {
 				name: '',
 				email: '',
 				company: '',
 				phone: '',
-				message: ''
+				message: '',
+				budget: ''
 			};
-		}, 1000);
+		} catch (err) {
+			console.error('Contact form submit error:', err);
+			submitError =
+				'Не удалось отправить заявку. Пожалуйста, попробуйте позже или напишите нам напрямую.';
+		} finally {
+			isSubmitting = false;
+		}
 	}
 
 	// Email contacts data
@@ -238,60 +274,17 @@
 								<p class="absolute -bottom-5 left-6 text-sm text-red-500">{errors.message}</p>
 							{/if}
 						</div>
-
-						<!-- Budget Radio Buttons -->
-						<!-- <div class="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
-							<fieldset>
-								<legend class="text-base/6 text-neutral-500">Budget</legend>
-								<div class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
-									<label class="flex gap-x-3">
-										<input
-											type="radio"
-											name="budget"
-											value="25"
-											bind:group={formData.budget}
-											class="h-6 w-6 flex-none appearance-none rounded-full border border-neutral-950/20 outline-hidden checked:border-[0.5rem] checked:border-neutral-950 focus-visible:ring-1 focus-visible:ring-neutral-950 focus-visible:ring-offset-2"
-										/>
-										<span class="text-base/6 text-neutral-950">$25K – $50K</span>
-									</label>
-									<label class="flex gap-x-3">
-										<input
-											type="radio"
-											name="budget"
-											value="50"
-											bind:group={formData.budget}
-											class="h-6 w-6 flex-none appearance-none rounded-full border border-neutral-950/20 outline-hidden checked:border-[0.5rem] checked:border-neutral-950 focus-visible:ring-1 focus-visible:ring-neutral-950 focus-visible:ring-offset-2"
-										/>
-										<span class="text-base/6 text-neutral-950">$50K – $100K</span>
-									</label>
-									<label class="flex gap-x-3">
-										<input
-											type="radio"
-											name="budget"
-											value="100"
-											bind:group={formData.budget}
-											class="h-6 w-6 flex-none appearance-none rounded-full border border-neutral-950/20 outline-hidden checked:border-[0.5rem] checked:border-neutral-950 focus-visible:ring-1 focus-visible:ring-neutral-950 focus-visible:ring-offset-2"
-										/>
-										<span class="text-base/6 text-neutral-950">$100K – $150K</span>
-									</label>
-									<label class="flex gap-x-3">
-										<input
-											type="radio"
-											name="budget"
-											value="150"
-											bind:group={formData.budget}
-											class="h-6 w-6 flex-none appearance-none rounded-full border border-neutral-950/20 outline-hidden checked:border-[0.5rem] checked:border-neutral-950 focus-visible:ring-1 focus-visible:ring-neutral-950 focus-visible:ring-offset-2"
-										/>
-										<span class="text-base/6 text-neutral-950">More than $150K</span>
-									</label>
-								</div>
-							</fieldset>
-						</div> -->
 					</div>
+
+					{#if submitError}
+						<div class="mt-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700">
+							{submitError}
+						</div>
+					{/if}
 
 					<Button type="submit" class="mt-10" disabled={isSubmitting}>
 						{#if isSubmitting}
-							Sending...
+							Отправка...
 						{:else}
 							Работаем!
 						{/if}

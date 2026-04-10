@@ -38,7 +38,7 @@
 		{
 			client: 'Promo-1',
 			name: 'Промо-1',
-			title: 'Мебельная компания',
+			title: 'Мебель на заказ',
 			description:
 				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
 			href: '/projects/promo-1',
@@ -47,19 +47,19 @@
 		{
 			client: 'Promo-2',
 			name: 'Промо-2',
-			title: 'Технологичный лендинг',
+			title: 'Фабрика мебели',
 			description:
 				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки для вашего продукта.',
 			href: '/projects/promo-2',
-			date: '02.04.26'
+			date: '05.04.26'
 		},
 		{
 			client: 'Promo-3',
 			name: 'Промо-3',
-			title: 'Сервис подбора',
+			title: 'Мебельный магазин',
 			description: 'Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
 			href: '/projects/promo-3',
-			date: '03.04.26'
+			date: '11.04.26'
 		}
 	];
 </script>
@@ -145,7 +145,7 @@
 					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">
 						<a href={caseStudy.href}>
 							<span class="absolute inset-0 rounded-3xl"></span>
-							<!-- {caseStudy.title} -->
+							{caseStudy.title}
 						</a>
 					</p>
 					<p class="mt-4 text-base text-neutral-600">
