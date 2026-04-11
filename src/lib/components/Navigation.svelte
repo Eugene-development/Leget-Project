@@ -18,66 +18,47 @@
 
 	// Navigation links data
 	const navigationLinks = [
+		{ href: '/', label: 'Главная' },
 		{ href: '/projects', label: 'Проекты' },
 		{ href: '/about', label: 'О нас' },
-		{ href: '/process', label: 'Внедрение' },
-		{ href: '/news', label: 'Новости' }
+		{ href: '/process', label: 'Интеграция' },
+		{ href: '/news', label: 'Новости' },
+		{ href: '/contact', label: 'Контакты' }
 	];
 </script>
 
 <!-- Navigation links section -->
-<nav class="font-display mt-px text-5xl font-medium tracking-tight text-white">
-	<!-- First row: Our Work, About Us -->
-	<div class="even:mt-px sm:bg-neutral-950">
-		<Container>
-			<div class="grid grid-cols-1 sm:grid-cols-2">
-				<a
-					href={navigationLinks[0].href}
-					class="group relative isolate -mx-6 bg-neutral-950 px-6 py-10 even:mt-px sm:mx-0 sm:px-0 sm:py-16 sm:odd:pr-16 sm:even:mt-0 sm:even:border-l sm:even:border-neutral-800 sm:even:pl-16"
-				>
-					{navigationLinks[0].label}
-					<span
-						class="absolute inset-y-0 -z-10 w-screen bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100"
-					></span>
-				</a>
-				<a
-					href={navigationLinks[1].href}
-					class="group relative isolate -mx-6 bg-neutral-950 px-6 py-10 even:mt-px sm:mx-0 sm:px-0 sm:py-16 sm:odd:pr-16 sm:even:mt-0 sm:even:border-l sm:even:border-neutral-800 sm:even:pl-16"
-				>
-					{navigationLinks[1].label}
-					<span
-						class="absolute inset-y-0 -z-10 w-screen bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100"
-					></span>
-				</a>
+<nav class="font-display mt-px text-3xl sm:text-5xl font-medium tracking-tight text-white">
+	{#each navigationLinks as link, index}
+		{#if index % 2 === 0}
+			<div class="relative sm:bg-neutral-950 border-t border-neutral-800">
+				<Container>
+					<div class="grid grid-cols-1 sm:grid-cols-2">
+						<a
+							href={link.href}
+							class="group relative isolate -mx-6 bg-neutral-950 px-6 py-6 sm:mx-0 sm:px-0 sm:py-16 sm:pr-16 border-r border-neutral-800"
+						>
+							{link.label}
+							<span
+								class="absolute inset-y-0 -z-10 right-0 left-0 bg-neutral-900 opacity-0 transition group-hover:opacity-100"
+							></span>
+						</a>
+						{#if navigationLinks[index + 1]}
+							<a
+								href={navigationLinks[index + 1].href}
+								class="group relative isolate -mx-6 bg-neutral-950 px-6 py-6 sm:mx-0 sm:px-0 sm:py-16 sm:pl-16 border-t sm:border-t-0 border-neutral-800"
+							>
+								{navigationLinks[index + 1].label}
+								<span
+									class="absolute inset-y-0 -z-10 right-0 left-0 bg-neutral-900 opacity-0 transition group-hover:opacity-100"
+								></span>
+							</a>
+						{/if}
+					</div>
+				</Container>
 			</div>
-		</Container>
-	</div>
-
-	<!-- Second row: Our Process, Blog -->
-	<div class="even:mt-px sm:bg-neutral-950">
-		<Container>
-			<div class="grid grid-cols-1 sm:grid-cols-2">
-				<a
-					href={navigationLinks[2].href}
-					class="group relative isolate -mx-6 bg-neutral-950 px-6 py-10 even:mt-px sm:mx-0 sm:px-0 sm:py-16 sm:odd:pr-16 sm:even:mt-0 sm:even:border-l sm:even:border-neutral-800 sm:even:pl-16"
-				>
-					{navigationLinks[2].label}
-					<span
-						class="absolute inset-y-0 -z-10 w-screen bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100"
-					></span>
-				</a>
-				<a
-					href={navigationLinks[3].href}
-					class="group relative isolate -mx-6 bg-neutral-950 px-6 py-10 even:mt-px sm:mx-0 sm:px-0 sm:py-16 sm:odd:pr-16 sm:even:mt-0 sm:even:border-l sm:even:border-neutral-800 sm:even:pl-16"
-				>
-					{navigationLinks[3].label}
-					<span
-						class="absolute inset-y-0 -z-10 w-screen bg-neutral-900 opacity-0 transition group-odd:right-0 group-even:left-0 group-hover:opacity-100"
-					></span>
-				</a>
-			</div>
-		</Container>
-	</div>
+		{/if}
+	{/each}
 </nav>
 
 <!-- Offices and Social Media section -->
@@ -88,14 +69,14 @@
 		<div class="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
 			<!-- Our offices -->
 			<div>
-				<h2 class="font-display text-base font-semibold text-white">Мы в странах</h2>
+				<!-- <h2 class="font-display text-base font-semibold text-white">Связь с нами</h2> -->
 				<Offices invert class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
 			</div>
 
 			<!-- Follow us -->
 			<div class="sm:border-l sm:border-transparent sm:pl-16">
 				<!-- <h2 class="font-display text-base font-semibold text-white">Мы в месенджерах</h2> -->
-				<SocialMedia class="mt-6" invert />
+				<!-- <SocialMedia class="mt-6" invert /> -->
 			</div>
 		</div>
 	</Container>

@@ -67,19 +67,23 @@
 				onclick={onToggle}
 				aria-expanded={expanded ? 'true' : 'false'}
 				aria-controls={panelId}
-				class="group -m-2.5 flex items-center gap-x-2.5 rounded-full px-6 py-2.5 transition {toggleButtonClasses}"
+				class="group -m-2.5 rounded-full px-6 py-2.5 transition w-[120px] {toggleButtonClasses}"
 				aria-label="Toggle navigation"
 			>
-				<span
-					class="text-sm font-semibold transition {invert
-						? 'text-white group-hover:text-neutral-200'
-						: 'text-neutral-950 group-hover:text-neutral-700'}"
-				>
-					{expanded ? 'Закрыть' : 'Меню'}
-				</span>
-				{#if icon}
-					{@render icon({ class: `h-6 w-6 ${iconClasses}` })}
-				{/if}
+				<div class="flex items-center gap-x-2.5 justify-center">
+					{#if !expanded}
+						<span
+							class="text-sm font-semibold transition {invert
+								? 'text-white group-hover:text-neutral-200'
+								: 'text-neutral-950 group-hover:text-neutral-700'}"
+						>
+							Меню
+						</span>
+					{/if}
+					{#if icon}
+						{@render icon({ class: `h-6 w-6 ${iconClasses}` })}
+					{/if}
+				</div>
 			</button>
 		</div>
 	</div>

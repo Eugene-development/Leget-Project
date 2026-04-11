@@ -139,9 +139,12 @@
 									<p>{paragraph}</p>
 								{/each}
 							</div>
-							<div class="mt-8 flex">
+							<div class="mt-8 flex gap-x-4">
 								<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
 									Подробнее
+								</Button>
+								<Button href="/" aria-label="View demo: {caseStudy.client}">
+									Посмотреть демо версию сайта
 								</Button>
 							</div>
 						</div>

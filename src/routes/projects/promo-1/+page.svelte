@@ -1,5 +1,6 @@
 <script>
 	import Blockquote from '$lib/components/Blockquote.svelte';
+	import Button from '$lib/components/Button.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
@@ -68,6 +69,11 @@
 <!-- Hero Image -->
 <Container class="mt-16">
 	<FadeIn>
+		<div class="mb-8 flex justify-center">
+			<Button href="/" aria-label="View demo: {caseStudy.client}">
+				Посмотреть демо версию сайта
+			</Button>
+		</div>
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
