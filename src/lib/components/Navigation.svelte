@@ -15,6 +15,7 @@
 	import Container from './Container.svelte';
 	import Offices from './Offices.svelte';
 	import SocialMedia from './SocialMedia.svelte';
+	import Button from './Button.svelte';
 
 	// Navigation links data
 	const navigationLinks = [
@@ -68,9 +69,9 @@
 			<!-- Our offices -->
 			<div class=" flex flex-col gap-x-12 gap-y-6 sm:flex-row sm:items-baseline">
 				<!-- <Offices invert /> -->
-				<div class="flex gap-x-12 text-2xl font-semibold text-white">
-					<a href="/login" class="hover:text-neutral-300">Кабинет</a>
-					<a href="/register" class="hover:text-neutral-300">Регистрация</a>
+				<div class="flex flex-wrap gap-6">
+					<Button href="/login" invert class="!px-10 !py-4 !text-xl">Кабинет</Button>
+					<Button href="/register" class="!px-10 !py-4 !text-xl bg-neutral-800 hover:bg-neutral-700">Регистрация</Button>
 				</div>
 			</div>
 
