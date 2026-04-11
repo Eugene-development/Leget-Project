@@ -91,7 +91,10 @@
 		<!-- <p class="mt-6 text-xl text-neutral-600">
 			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
 		</p> -->
-		<Button href="/projects" class="mt-10">Варианты за 5000 р/мес</Button>
+		<div class="mt-10 flex flex-wrap gap-4">
+			<Button href="/register">Регистрация</Button>
+			<Button href="/login" invert>Кабинет</Button>
+		</div>
 	</FadeIn>
 </Container>
 

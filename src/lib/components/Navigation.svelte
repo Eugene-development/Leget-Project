@@ -28,34 +28,32 @@
 </script>
 
 <!-- Navigation links section -->
-<nav class="font-display mt-px text-3xl sm:text-5xl font-medium tracking-tight text-white">
+<nav class="font-display mt-px text-3xl font-medium tracking-tight text-white sm:text-5xl">
 	{#each navigationLinks as link, index}
 		{#if index % 2 === 0}
-			<div class="relative sm:bg-neutral-950 border-t border-neutral-800">
-				<Container>
-					<div class="grid grid-cols-1 sm:grid-cols-2">
+			<div class="relative border-t border-neutral-800 sm:bg-neutral-950">
+				<div class="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2">
+					<a
+						href={link.href}
+						class="group relative isolate border-r border-neutral-800 bg-neutral-950 px-6 py-6 sm:py-16 sm:pl-6 lg:pl-8"
+					>
+						{link.label}
+						<span
+							class="absolute inset-y-0 right-0 left-0 -z-10 bg-neutral-900 opacity-0 transition group-hover:opacity-100"
+						></span>
+					</a>
+					{#if navigationLinks[index + 1]}
 						<a
-							href={link.href}
-							class="group relative isolate -mx-6 bg-neutral-950 px-6 py-6 sm:mx-0 sm:px-0 sm:py-16 sm:pr-16 border-r border-neutral-800"
+							href={navigationLinks[index + 1].href}
+							class="group relative isolate border-neutral-800 bg-neutral-950 px-6 py-6 border-t sm:mx-0 sm:border-t-0 sm:py-16 sm:pl-16"
 						>
-							{link.label}
+							{navigationLinks[index + 1].label}
 							<span
-								class="absolute inset-y-0 -z-10 right-0 left-0 bg-neutral-900 opacity-0 transition group-hover:opacity-100"
+								class="absolute inset-y-0 right-0 left-0 -z-10 bg-neutral-900 opacity-0 transition group-hover:opacity-100"
 							></span>
 						</a>
-						{#if navigationLinks[index + 1]}
-							<a
-								href={navigationLinks[index + 1].href}
-								class="group relative isolate -mx-6 bg-neutral-950 px-6 py-6 sm:mx-0 sm:px-0 sm:py-16 sm:pl-16 border-t sm:border-t-0 border-neutral-800"
-							>
-								{navigationLinks[index + 1].label}
-								<span
-									class="absolute inset-y-0 -z-10 right-0 left-0 bg-neutral-900 opacity-0 transition group-hover:opacity-100"
-								></span>
-							</a>
-						{/if}
-					</div>
-				</Container>
+					{/if}
+				</div>
 			</div>
 		{/if}
 	{/each}
@@ -68,9 +66,12 @@
 	<Container>
 		<div class="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
 			<!-- Our offices -->
-			<div>
-				<!-- <h2 class="font-display text-base font-semibold text-white">Связь с нами</h2> -->
-				<Offices invert class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
+			<div class="mt-10 flex flex-col gap-x-12 gap-y-6 sm:flex-row sm:items-baseline">
+				<Offices invert />
+				<div class="flex gap-x-6 text-sm font-semibold text-white">
+					<a href="/register" class="hover:text-neutral-300">Регистрация</a>
+					<a href="/login" class="hover:text-neutral-300">Кабинет</a>
+				</div>
 			</div>
 
 			<!-- Follow us -->

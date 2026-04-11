@@ -116,10 +116,6 @@
 	<meta name="description" content="Войдите в свой аккаунт для управления подпиской и сайтами." />
 </svelte:head>
 
-<PageIntro eyebrow="Вход" title="Добро пожаловать">
-	<!-- <p>Войдите в свой аккаунт для доступа к панели управления и настройкам.</p> -->
-</PageIntro>
-
 <Container class="mt-24 sm:mt-24 lg:mt-32">
 	<div class="mx-auto max-w-2xl">
 		<FadeIn>

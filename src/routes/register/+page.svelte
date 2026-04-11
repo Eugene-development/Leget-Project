@@ -140,10 +140,6 @@
 	/>
 </svelte:head>
 
-<PageIntro eyebrow="Регистрация" title="Присоединяйтесь к нам">
-	<!-- <p>Заполните форму регистрации, и мы свяжемся с вами для завершения настройки вашего аккаунта.</p> -->
-</PageIntro>
-
 <Container class="mt-24 sm:mt-24 lg:mt-32">
 	<div class="mx-auto max-w-2xl">
 		<FadeIn>
@@ -245,7 +241,10 @@
 					</Button>
 
 					<p class="mt-6 text-sm text-neutral-600">
-						Уже есть аккаунт? <a href="/login" class="font-semibold text-neutral-950 hover:underline">Войти в личный кабинет</a>
+						Уже есть аккаунт? <a
+							href="/login"
+							class="font-semibold text-neutral-950 hover:underline">Войти в личный кабинет</a
+						>
 					</p>
 				{/if}
 			</form>
@@ -253,7 +252,8 @@
 			<Border class="mt-16 pt-16">
 				<h2 class="font-display text-base font-semibold text-neutral-950">Что дальше?</h2>
 				<p class="mt-4 text-base text-neutral-600">
-					После регистрации наш менеджер свяжется с вами для обсуждения деталей подписки и настройки вашего сайта. Обычно это занимает не более 24 часов.
+					После регистрации наш менеджер свяжется с вами для обсуждения деталей подписки и настройки
+					вашего сайта. Обычно это занимает не более 24 часов.
 				</p>
 			</Border>
 		</FadeIn>

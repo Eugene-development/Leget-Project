@@ -44,7 +44,7 @@
 
 		// Close navigation when clicking on any link inside the navigation panel
 		function onClick(event) {
-			if (event.target instanceof HTMLElement) {
+			if (event.target instanceof Element) {
 				const link = event.target.closest('a');
 				// Close menu when clicking any navigation link inside the nav panel
 				if (link && navPanelRef?.contains(link)) {

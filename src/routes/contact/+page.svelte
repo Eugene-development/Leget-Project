@@ -138,7 +138,7 @@
 
 	// Email contacts data
 	const emailContacts = [
-		{ label: 'Руководство', email: 'info@leget.ru' },
+		{ label: 'Сотрудничество', email: 'info@leget.ru' },
 		{ label: 'Работа в компании', email: 'hr@leget.ru' }
 	];
 </script>
@@ -150,10 +150,6 @@
 		content="Давайте работать вместе. Мы с нетерпением ждем вашего ответа!"
 	/>
 </svelte:head>
-
-<PageIntro eyebrow="Свяжитесь с нами" title="Давайте работать вместе">
-	<p>Мы с нетерпением ждем вашего решения о сотрудничестве</p>
-</PageIntro>
 
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<div class="grid grid-cols-1 gap-x-8 gap-y-24 lg:grid-cols-2">

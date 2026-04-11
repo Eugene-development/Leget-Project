@@ -25,7 +25,7 @@
   
   const colorClasses = $derived(
     invert 
-      ? "bg-white text-neutral-950 hover:bg-neutral-200"
+      ? "bg-neutral-100 text-neutral-950 hover:bg-neutral-200"
       : "bg-neutral-950 text-white hover:bg-neutral-800"
   );
   

@@ -16,11 +16,11 @@
 		{
 			name: 'Телефон',
 			address: ['+7 (915) 400-00-20']
-		},
-		{
-			name: 'Почта',
-			address: ['info@leget.ru']
 		}
+		// {
+		// 	name: 'Почта',
+		// 	address: ['info@leget.ru']
+		// }
 		// {
 		// 	name: 'Узбекистан',
 		// 	address: ['1 Carlsberg Gate', '1260, København, Denmark']
