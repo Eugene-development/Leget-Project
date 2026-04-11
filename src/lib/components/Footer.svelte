@@ -39,9 +39,16 @@
 			title: 'Компания',
 			links: [
 				{ title: 'О нас', href: '/about' },
-				{ title: 'Процесс', href: '/process' },
+				{ title: 'Интеграция', href: '/process' },
 				{ title: 'Новости', href: '/news' },
-				{ title: 'Свяжитесь с нами', href: '/contact' }
+				{ title: 'Контакты', href: '/contact' }
+			]
+		},
+		{
+			title: 'Личный кабинет',
+			links: [
+				{ title: 'Регистрация', href: '/register' },
+				{ title: 'Вход', href: '/login' }
 			]
 		}
 		// {
