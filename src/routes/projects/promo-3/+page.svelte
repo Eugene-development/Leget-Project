@@ -30,8 +30,11 @@
 </script>
 
 <svelte:head>
-	<title>{caseStudy.client} Case Study - Studio</title>
-	<meta name="description" content={caseStudy.description} />
+	<title>Проект Промо-3 — Интерактивный сайт с продуманной структурой | LEGET</title>
+	<meta
+		name="description"
+		content="Интерактивный интерфейс с проработанной структурой для вовлечения пользователей. Современное решение для вашего технологичного бизнеса."
+	/>
 </svelte:head>
 
 <!-- Page Introduction with Project Header -->

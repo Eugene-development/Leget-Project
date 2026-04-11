@@ -65,10 +65,10 @@
 </script>
 
 <svelte:head>
-	<title>Studio - Award-winning development studio</title>
+	<title>LEGET — Сайты по подписке на инфраструктуре Yandex Cloud</title>
 	<meta
 		name="description"
-		content="We are a development studio working at the intersection of design and technology."
+		content="Готовые к внедрению тематические сайты для вашего бизнеса. Запуск за 72 часа на вашем домене. Профессиональные решения на базе Yandex Cloud."
 	/>
 </svelte:head>
 

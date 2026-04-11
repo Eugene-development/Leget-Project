@@ -112,8 +112,11 @@
 </script>
 
 <svelte:head>
-	<title>Вход - Легет</title>
-	<meta name="description" content="Войдите в свой аккаунт для управления подпиской и сайтами." />
+	<title>Вход в личный кабинет — LEGET</title>
+	<meta
+		name="description"
+		content="Авторизуйтесь в личном кабинете LEGET для управления вашими проектами и доступа к инструментам настройки сайта."
+	/>
 </svelte:head>
 
 <Container class="mt-24 sm:mt-24 lg:mt-32">

@@ -42,8 +42,11 @@
 </script>
 
 <svelte:head>
-	<title>{caseStudy.client} - Studio</title>
-	<meta name="description" content={caseStudy.description} />
+	<title>Проект Промо-1 — Многостраничный сайт для мебельной компании | LEGET</title>
+	<meta
+		name="description"
+		content="Описание проекта Промо-1: многостраничный сайт с настраиваемыми функциями, идеально подходящий для мебельного бизнеса."
+	/>
 </svelte:head>
 
 <!-- Page Introduction with Project Header -->

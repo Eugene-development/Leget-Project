@@ -58,8 +58,11 @@
 </script>
 
 <svelte:head>
-	<title>Новости - LEGET</title>
-	<meta name="description" content="Будьте в курсе последних новостей отрасли." />
+	<title>Новости и полезные статьи — Студия LEGET</title>
+	<meta
+		name="description"
+		content="Лента новостей компании LEGET. Полезные статьи о запуске сайтов, аренде готовых решений и развитии бизнеса в цифровую эпоху."
+	/>
 </svelte:head>
 
 <!-- Page Introduction -->

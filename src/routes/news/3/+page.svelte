@@ -40,8 +40,11 @@
 </script>
 
 <svelte:head>
-	<title>{article.title} - LEGET</title>
-	<meta name="description" content={article.description} />
+	<title>{article.title} — Блог LEGET</title>
+	<meta
+		name="description"
+		content="Советы по выбору структуры и дизайна сайта для максимально эффективного решения задач вашего бизнес-направления. На что обратить внимание при выборе готового проекта."
+	/>
 </svelte:head>
 
 <Container as="article" class="mt-24 sm:mt-32 lg:mt-40">

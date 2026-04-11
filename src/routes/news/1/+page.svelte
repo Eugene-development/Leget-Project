@@ -42,8 +42,11 @@
 </script>
 
 <svelte:head>
-	<title>{article.title} - LEGET</title>
-	<meta name="description" content={article.description} />
+	<title>{article.title} — Новости LEGET</title>
+	<meta
+		name="description"
+		content="Официальный запуск проекта LEGET. Рассказываем о начале нашего пути и целях команды по трансформации мебельного бизнеса."
+	/>
 </svelte:head>
 
 <Container as="article" class="mt-24 sm:mt-32 lg:mt-40">

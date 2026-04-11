@@ -85,10 +85,10 @@
 </script>
 
 <svelte:head>
-	<title>Наши проекты - Leget</title>
+	<title>Готовые проекты сайтов для бизнеса — Студия LEGET</title>
 	<meta
 		name="description"
-		content="We believe in efficiency and maximizing our resources to provide the best value to our clients."
+		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 5000 ₽/мес."
 	/>
 </svelte:head>
 

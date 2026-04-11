@@ -40,8 +40,11 @@
 </script>
 
 <svelte:head>
-	<title>{article.title} - LEGET</title>
-	<meta name="description" content={article.description} />
+	<title>{article.title} — Блог LEGET</title>
+	<meta
+		name="description"
+		content="Почему бизнесу выгоднее арендовать готовое технологичное решение, чем вкладываться в дорогую и длительную разработку с нуля. Разбираем экономику и технологии."
+	/>
 </svelte:head>
 
 <Container as="article" class="mt-24 sm:mt-32 lg:mt-40">
