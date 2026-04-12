@@ -19,6 +19,7 @@
 	import Logo from './Logo.svelte';
 	import Logomark from './Logomark.svelte';
 	import Button from './Button.svelte';
+	import { regionState } from '$lib/state/region.svelte';
 
 	let {
 		panelId = '',
@@ -57,6 +58,37 @@
 
 		<!-- Right side: Contact button and menu toggle -->
 		<div class="flex items-center gap-x-8">
+			<button
+				type="button"
+				class="hidden items-center gap-x-2 text-sm font-medium transition sm:flex {invert
+					? 'text-neutral-300 hover:text-white'
+					: 'text-neutral-600 hover:text-neutral-950'}"
+				onclick={() => {
+					regionState.isCityModalOpen = true;
+				}}
+			>
+				<svg
+					class="h-4 w-4 {invert ? 'text-neutral-400' : 'text-neutral-500'}"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+					/>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+					/>
+				</svg>
+				{regionState.selectedCity}
+			</button>
+
 			<Button href="tel:+79154000020" {invert}>
 				+7 (915) 400-00-20
 			</Button>

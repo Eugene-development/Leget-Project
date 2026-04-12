@@ -20,6 +20,7 @@
 	import Navigation from './Navigation.svelte';
 	import Footer from './Footer.svelte';
 	import GridPattern from './GridPattern.svelte';
+	import BotFilterModal from './BotFilterModal.svelte';
 	import MenuIcon from './icons/MenuIcon.svelte';
 	import XIcon from './icons/XIcon.svelte';
 	import { slide } from 'svelte/transition';
@@ -172,3 +173,5 @@
 		</div>
 	</div>
 </div>
+
+<BotFilterModal />
