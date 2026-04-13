@@ -20,7 +20,7 @@
 
 	// Navigation links data
 	const navigationLinks = [
-		{ href: '/', label: 'Главная' },
+		{ href: '/prices', label: 'Цены' },
 		{ href: '/projects', label: 'Проекты' },
 		{ href: '/about', label: 'О нас' },
 		{ href: '/process', label: 'Интеграция' },
@@ -30,14 +30,14 @@
 </script>
 
 <!-- Navigation links section -->
-<nav class="font-display mt-px text-3xl font-medium tracking-tight text-white sm:text-5xl">
+<nav class="font-display mt-px text-2xl font-medium tracking-tight text-white sm:text-4xl">
 	{#each navigationLinks as link, index}
 		{#if index % 2 === 0}
 			<div class="relative border-t border-neutral-800 sm:bg-neutral-950">
-				<div class="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2">
+				<div class="mx-auto grid max-w-7xl grid-cols-2">
 					<a
 						href={link.href}
-						class="group relative isolate border-r border-neutral-800 bg-neutral-950 px-6 py-6 sm:py-16 sm:pl-6 lg:pl-8"
+						class="group relative isolate border-r border-neutral-800 bg-neutral-950 px-4 py-8 sm:py-16 sm:pl-6 lg:pl-8"
 					>
 						{link.label}
 						<span
@@ -47,7 +47,7 @@
 					{#if navigationLinks[index + 1]}
 						<a
 							href={navigationLinks[index + 1].href}
-							class="group relative isolate border-t border-neutral-800 bg-neutral-950 px-6 py-6 sm:mx-0 sm:border-t-0 sm:py-16 sm:pl-16"
+							class="group relative isolate bg-neutral-950 px-4 py-8 sm:mx-0 sm:py-16 sm:pl-16"
 						>
 							{navigationLinks[index + 1].label}
 							<span
@@ -66,14 +66,16 @@
 	class="relative bg-neutral-950 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-neutral-800"
 >
 	<Container>
-		<div class="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
+		<div class="grid grid-cols-1 gap-y-10 pt-10 pb-14 sm:grid-cols-2 sm:pt-16">
 			<!-- Our offices -->
-			<div class=" flex flex-col gap-x-12 gap-y-6 sm:flex-row sm:items-baseline sm:col-span-2">
+			<div class=" flex flex-col gap-x-12 gap-y-6 sm:col-span-2 sm:flex-row sm:items-baseline">
 				<!-- <Offices invert /> -->
-				<div class="flex flex-col items-start gap-y-6 w-full sm:flex-row sm:items-center sm:justify-between">
+				<div
+					class="flex w-full flex-col items-start gap-y-6 sm:flex-row sm:items-center sm:justify-between"
+				>
 					<button
 						type="button"
-						class="flex items-center gap-x-2 text-base font-medium text-neutral-300 hover:text-white transition"
+						class="flex items-center gap-x-2 text-base font-medium text-neutral-300 transition hover:text-white"
 						onclick={() => {
 							regionState.isCountryModalOpen = true;
 						}}
@@ -101,7 +103,11 @@
 					</button>
 					<div class="flex items-center gap-4">
 						<Button href="/login" invert class="!px-5 !py-2.5 !text-base">Кабинет</Button>
-						<Button href="/register" class="!px-5 !py-2.5 !text-base bg-neutral-800 hover:bg-neutral-700">Регистрация</Button>
+						<Button
+							href="/register"
+							class="bg-neutral-800 !px-5 !py-2.5 !text-base hover:bg-neutral-700"
+							>Регистрация</Button
+						>
 					</div>
 				</div>
 			</div>

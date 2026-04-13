@@ -98,7 +98,7 @@
 	<header>
 		{#if !expanded}
 			<div
-				class="absolute top-2 right-0 left-0 z-40 pt-14"
+				class="absolute top-2 right-0 left-0 z-40 pt-10"
 				aria-hidden={expanded ? 'true' : undefined}
 				inert={expanded ? true : undefined}
 			>
@@ -129,7 +129,7 @@
 				>
 					<div class="bg-neutral-800">
 						<!-- Header inside navigation panel -->
-						<div class="bg-neutral-950 pt-14 pb-16">
+						<div class="bg-neutral-950 pt-10 pb-14">
 							<Header
 								invert
 								{panelId}
@@ -151,7 +151,7 @@
 
 	<!-- Main content area with white background and rounded corners -->
 	<div
-		class="relative flex flex-auto overflow-hidden bg-white pt-14"
+		class="relative flex flex-auto overflow-hidden bg-white pt-10"
 		style="border-top-left-radius: 20px; border-top-right-radius: 20px;"
 	>
 		<div class="relative isolate flex w-full flex-col pt-9">

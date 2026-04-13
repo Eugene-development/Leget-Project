@@ -39,8 +39,11 @@
   --text-7xl: 4rem;
   --text-7xl--line-height: 4.5rem;
 
-  /* Custom radius */
-  --radius-4xl: 2.5rem;
+  /* Custom radius - reduced for a "small radius" look */
+  --radius-4xl: 1rem;
+  --radius-3xl: 0.75rem;
+  --radius-2xl: 0.5rem;
+  --radius-xl: 0.375rem;
 
   /* Font families */
   --font-sans: Mona Sans, ui-sans-serif, system-ui, sans-serif,
