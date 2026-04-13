@@ -3,7 +3,6 @@
 	import Button from '$lib/components/Button.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
-	import PageIntro from '$lib/components/PageIntro.svelte';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
 
 	// Form state
@@ -21,6 +20,7 @@
 	// Form submission state
 	let isSubmitting = $state(false);
 	let submitError = $state('');
+	let needsVerification = $state(false);
 
 	// Generate unique IDs for form fields
 	let emailId = $state('');
@@ -31,13 +31,10 @@
 		passwordId = crypto.randomUUID();
 	});
 
-	// Validate email format
 	function isValidEmail(email) {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 	}
 
-	// Validate form
 	function validateForm() {
 		let isValid = true;
 		errors = { email: '', password: '' };
@@ -61,23 +58,16 @@
 		return isValid;
 	}
 
-	// Handle form submission
 	async function handleSubmit(event) {
 		event.preventDefault();
 
-		if (!validateForm()) {
-			return;
-		}
+		if (!validateForm()) return;
 
 		isSubmitting = true;
 		submitError = '';
+		needsVerification = false;
 
 		try {
-			const requestData = {
-				email: formData.email.trim(),
-				password: formData.password
-			};
-
 			const authApiUrl = getAuthApiUrl();
 			const response = await fetch(`${authApiUrl}/auth/login`, {
 				method: 'POST',
@@ -85,26 +75,36 @@
 					'Content-Type': 'application/json',
 					Accept: 'application/json'
 				},
-				body: JSON.stringify(requestData)
+				body: JSON.stringify({
+					email: formData.email.trim().toLowerCase(),
+					password: formData.password
+				})
 			});
 
 			const result = await response.json();
 
 			if (!response.ok || !result.success) {
+				if (result.errors?.email) errors.email = result.errors.email[0];
 				throw new Error(result.message || 'Ошибка входа');
 			}
 
-			// Store token if provided
+			// Store JWT token
 			if (result.token) {
 				localStorage.setItem('auth_token', result.token);
 			}
 
-			// Redirect to dashboard or home
-			window.location.href = '/';
+			// Store email verification status
+			if (result.email_verified !== undefined) {
+				localStorage.setItem('email_verified', result.email_verified ? '1' : '0');
+			}
+
+			// Redirect to personal cabinet
+			window.location.href = '/lk';
 		} catch (err) {
-			console.error('Login form submit error:', err);
-			submitError =
-				err.message || 'Не удалось войти в систему. Проверьте правильность введенных данных.';
+			console.error('Login error:', err);
+			if (!errors.email) {
+				submitError = err.message || 'Не удалось войти в систему. Проверьте правильность введённых данных.';
+			}
 		} finally {
 			isSubmitting = false;
 		}
@@ -181,20 +181,7 @@
 					</div>
 				{/if}
 
-				<div class="mt-6 flex items-center justify-between">
-					<label class="flex items-center gap-2 text-sm text-neutral-600">
-						<input
-							type="checkbox"
-							class="h-4 w-4 rounded border-neutral-300 text-neutral-950 focus:ring-neutral-950"
-						/>
-						<span>Запомнить меня</span>
-					</label>
-					<a href="/reset-password" class="text-sm font-semibold text-neutral-950 hover:underline">
-						Забыли пароль?
-					</a>
-				</div>
-
-				<Button type="submit" class="mt-10" disabled={isSubmitting}>
+				<Button type="submit" id="login-submit-btn" class="mt-10" disabled={isSubmitting}>
 					{#if isSubmitting}
 						Вход...
 					{:else}

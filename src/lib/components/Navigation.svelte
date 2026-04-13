@@ -16,6 +16,7 @@
 	import Offices from './Offices.svelte';
 	import SocialMedia from './SocialMedia.svelte';
 	import Button from './Button.svelte';
+	import { regionState } from '$lib/state/region.svelte';
 
 	// Navigation links data
 	const navigationLinks = [
@@ -67,11 +68,41 @@
 	<Container>
 		<div class="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
 			<!-- Our offices -->
-			<div class=" flex flex-col gap-x-12 gap-y-6 sm:flex-row sm:items-baseline">
+			<div class=" flex flex-col gap-x-12 gap-y-6 sm:flex-row sm:items-baseline sm:col-span-2">
 				<!-- <Offices invert /> -->
-				<div class="flex flex-wrap gap-6">
-					<Button href="/login" invert class="!px-10 !py-4 !text-xl">Кабинет</Button>
-					<Button href="/register" class="!px-10 !py-4 !text-xl bg-neutral-800 hover:bg-neutral-700">Регистрация</Button>
+				<div class="flex flex-col items-start gap-y-6 w-full sm:flex-row sm:items-center sm:justify-between">
+					<button
+						type="button"
+						class="flex items-center gap-x-2 text-base font-medium text-neutral-300 hover:text-white transition"
+						onclick={() => {
+							regionState.isCountryModalOpen = true;
+						}}
+					>
+						<svg
+							class="h-4 w-4 text-neutral-400"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+							/>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+							/>
+						</svg>
+						{regionState.selectedCountry}
+					</button>
+					<div class="flex items-center gap-4">
+						<Button href="/login" invert class="!px-5 !py-2.5 !text-base">Кабинет</Button>
+						<Button href="/register" class="!px-5 !py-2.5 !text-base bg-neutral-800 hover:bg-neutral-700">Регистрация</Button>
+					</div>
 				</div>
 			</div>
 

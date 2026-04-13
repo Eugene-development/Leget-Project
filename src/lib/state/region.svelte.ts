@@ -1,30 +1,30 @@
 export class RegionState {
-	selectedCity = $state<string>('Москва и МО');
-	hasConfirmedCity = $state<boolean>(false);
-	isCityModalOpen = $state<boolean>(false);
+	selectedCountry = $state<string>('Россия');
+	hasConfirmedCountry = $state<boolean>(false);
+	isCountryModalOpen = $state<boolean>(false);
 
 	init() {
 		if (typeof window !== 'undefined') {
-			const savedCity = localStorage.getItem('leget_selected_city');
-			if (savedCity) {
-				this.selectedCity = savedCity;
+			const savedCountry = localStorage.getItem('leget_selected_country');
+			if (savedCountry) {
+				this.selectedCountry = savedCountry;
 			}
 			const confirmed = sessionStorage.getItem('leget_bot_filter_confirmed');
 			if (confirmed === 'true') {
-				this.hasConfirmedCity = true;
+				this.hasConfirmedCountry = true;
 			}
 		}
 	}
 
-	setCity(city: string) {
-		this.selectedCity = city;
+	setCountry(country: string) {
+		this.selectedCountry = country;
 		if (typeof window !== 'undefined') {
-			localStorage.setItem('leget_selected_city', city);
+			localStorage.setItem('leget_selected_country', country);
 		}
 	}
 
-	confirmCity() {
-		this.hasConfirmedCity = true;
+	confirmCountry() {
+		this.hasConfirmedCountry = true;
 		if (typeof window !== 'undefined') {
 			sessionStorage.setItem('leget_bot_filter_confirmed', 'true');
 		}
