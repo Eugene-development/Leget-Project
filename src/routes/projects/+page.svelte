@@ -16,10 +16,9 @@
 			client: 'Для мебельных компаний',
 			title: 'Промо-1',
 			description:
-				'Promo-1 is a project for the furniture company. It allows you to create a professional web presence in a matter of hours.',
+				'Проект для мебельной компании. Позволяет создать профессиональное присутствие в интернете за считанные часы.',
 			summary: [
-				'Promo-1 is a project for the furniture company. It allows you to create a professional web presence in a matter of hours.',
-				'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
+				'Проект для мебельной компании. Позволяет создать профессиональное присутствие в интернете за считанные часы. Ознакомьтесь с проектом и оцените возможности готовых решений от LEGET.'
 			],
 			logo: '/images/clients/promo-1/logo-dark.svg',
 			href: '/projects/promo-1',
@@ -27,48 +26,47 @@
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Debra Fiscal', role: 'CEO of Promo-1' },
-				content:
-					'Мы верим в эффективность и максимизацию наших ресурсов для обеспечения наилучшей ценности для наших клиентов. Основной способ сделать это — повторное использование одних и тех же проектов, которые мы разрабатываем на протяжении десятилетия.'
-			}
-		},
-		{
-			client: 'Для медицинских центров',
-			title: 'Промо-2',
-			description:
-				'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
-			summary: [
-				'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
-				'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
-			],
-			logo: '/images/clients/promo-2/logo-dark.svg',
-			href: '/projects/promo-2',
-			price: 5000,
-			service: 'Подписка',
-			testimonial: {
-				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
-				content:
-					'Этот проект позволили нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы.'
-			}
-		},
-		{
-			client: 'Для IT стартапов',
-			title: 'Промо-3',
-			description:
-				'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
-			summary: [
-				'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
-				'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
-			],
-			logo: '/images/clients/promo-3/logo-dark.svg',
-			href: '/projects/promo-3',
-			price: 5000,
-			service: 'Подписка',
-			testimonial: {
-				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
-				content:
-					'Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать.'
+				content: ''
 			}
 		}
+		// {
+		// 	client: 'Для медицинских центров',
+		// 	title: 'Промо-2',
+		// 	description:
+		// 		'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
+		// 	summary: [
+		// 		'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
+		// 		'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
+		// 	],
+		// 	logo: '/images/clients/promo-2/logo-dark.svg',
+		// 	href: '/projects/promo-2',
+		// 	price: 5000,
+		// 	service: 'Подписка',
+		// 	testimonial: {
+		// 		author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
+		// 		content:
+		// 			'Этот проект позволили нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы.'
+		// 	}
+		// },
+		// {
+		// 	client: 'Для IT стартапов',
+		// 	title: 'Промо-3',
+		// 	description:
+		// 		'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
+		// 	summary: [
+		// 		'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
+		// 		'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
+		// 	],
+		// 	logo: '/images/clients/promo-3/logo-dark.svg',
+		// 	href: '/projects/promo-3',
+		// 	price: 5000,
+		// 	service: 'Подписка',
+		// 	testimonial: {
+		// 		author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
+		// 		content:
+		// 			'Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать.'
+		// 	}
+		// }
 	];
 
 	// Client logos for the "You're in good company" section
@@ -95,8 +93,8 @@
 <!-- Page Introduction -->
 <PageIntro eyebrow="Наши продукты" title="Готовые проекты сайтов">
 	<p>
-		Мы верим в эффективность и максимизацию наших ресурсов для обеспечения наилучшей ценности для
-		наших клиентов.
+		Эффективные решения для вашего бизнеса от компании LEGET. Выберите готовый проект и запустите
+		сайт за 72 часа.
 	</p>
 </PageIntro>
 
@@ -126,7 +124,7 @@
 									{caseStudy.service}
 								</p>
 								<p class="text-sm font-semibold text-neutral-950 lg:mt-2">
-									от {caseStudy.price} ₽/мес
+									{caseStudy.price} ₽/мес
 								</p>
 							</div>
 						</div>
@@ -142,9 +140,6 @@
 							<div class="mt-8 flex gap-x-4">
 								<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
 									Подробнее
-								</Button>
-								<Button href="/" aria-label="View demo: {caseStudy.client}">
-									Посмотреть демо версию сайта
 								</Button>
 							</div>
 						</div>

@@ -28,7 +28,7 @@
 		client: 'Promo-1',
 		title: 'Promo-1',
 		description:
-			'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
+			'Многостраничный сайт с множеством настраиваемых функций и разделов. Отличная юзабельность и адаптивность под любые устройства вкупе с современным дизайном.',
 		heroImage: '/images/projects/promo-1/hero.jpg',
 		date: '2023-01',
 		service: 'Web development, CMS',
@@ -73,7 +73,11 @@
 <Container class="mt-16">
 	<FadeIn>
 		<div class="mb-8 flex justify-center">
-			<Button href="/" aria-label="View demo: {caseStudy.client}">
+			<Button
+				href="https://novostroy.org"
+				target="_blank"
+				aria-label="View demo: {caseStudy.client}"
+			>
 				Посмотреть демо версию сайта
 			</Button>
 		</div>
