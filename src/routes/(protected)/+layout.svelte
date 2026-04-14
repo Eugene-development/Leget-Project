@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
 
+	let { children } = $props();
 	let isChecking = $state(true);
 	let isAuthenticated = $state(false);
 	let isEmailVerified = $state(false);
@@ -111,6 +112,6 @@
 
 {:else if isAuthenticated && isEmailVerified}
 	<!-- Authenticated and verified — show protected content -->
-	<slot />
+	{@render children()}
 
 {/if}
