@@ -29,9 +29,9 @@
 		title: 'Promo-1',
 		description:
 			'Многостраничный сайт с множеством настраиваемых функций и разделов. Отличная юзабельность и адаптивность под любые устройства вкупе с современным дизайном.',
-		heroImage: '/images/projects/promo-1/hero.jpg',
+		heroImage: '/images/projects/promo-1/hero.png',
 		date: '2023-01',
-		service: 'Web development, CMS',
+		service: 'Web development, SvelteKit',
 		testimonial: {
 			author: { name: 'Евгений Че', role: 'Директор по маркетингу' },
 			image: '/images/projects/promo-1/debra-fiscal.jpg',
@@ -42,10 +42,10 @@
 </script>
 
 <svelte:head>
-	<title>Проект Промо-1 — Многостраничный сайт для мебельной компании | LEGET</title>
+	<title>Проект Promo-1 — Универсальный многостраничный сайт | LEGET</title>
 	<meta
 		name="description"
-		content="Описание проекта Промо-1: многостраничный сайт с настраиваемыми функциями, идеально подходящий для мебельного бизнеса."
+		content="Описание шаблона Promo-1: современный многостраничный сайт с настраиваемыми функциями, созданный на стеке SvelteKit."
 	/>
 </svelte:head>
 
@@ -95,29 +95,19 @@
 <!-- Overview Section -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Overview</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Описание проекта</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Having written one of the most shared posts on medium.com ("<em
-					>How to cash out your Dad's 401K without him knowing</em
-				>") Promo-1 approached us looking to build out their own news section.
+				Шаблон Promo-1 — это современное решение для многостраничного корпоративного сайта или интернет-витрины. Разработанный на базе SvelteKit, он обеспечивает молниеносную скорость работы и отличные показатели SEO.
 			</p>
 			<p>
-				The news section would help drive new traffic to their site and serve as a resource-hub for
-				users already trying to exploit their network for money. Because it was so important that
-				they own their own content, we decided that an on-prem solution would be best.
+				Структура шаблона позволяет легко адаптировать его под различные виды бизнеса, будь то производство мебели, строительные услуги или любое другое направление, требующее детального представления товаров и услуг.
 			</p>
 			<p>
-				We installed 24 Mac Minis bought from craigslist in the storage cupboard of their office.
-				One machine would be used for the web server and another one for the build server. The other
-				22 were for redundancy, and to DDOS squarespace.com every few months to keep them on their
-				toes.
+				В шаблоне реализованы все необходимые разделы: от функционального каталога до страниц с описанием процесса работы и контактной информации. Внимание к деталям в дизайне и коде гарантирует высокий уровень конверсии и доверие пользователей.
 			</p>
 			<p>
-				To optimise their search traffic we used an innovative technique. Every post has a shadow
-				post only visible to web crawlers that is some variation of "<em
-					>Gary Vee is looking to invest in new founders</em
-				>". Like bees to honey.
+				Полная адаптивность обеспечивает корректное отображение на всех типах устройств, что позволяет клиентам с комфортом взаимодействовать с сайтом в любое время и из любого места.
 			</p>
 		</div>
 	</FadeIn>

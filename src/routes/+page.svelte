@@ -42,7 +42,8 @@
 			description:
 				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
 			href: '/projects/promo-1',
-			date: '01.04.26'
+			date: '01.04.26',
+			status: 'active'
 		},
 		{
 			client: 'Promo-2',
@@ -51,7 +52,8 @@
 			description:
 				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки для вашего продукта.',
 			href: '/projects/promo-2',
-			date: '05.04.26'
+			date: '05.04.26',
+			status: 'draft'
 		},
 		{
 			client: 'Promo-3',
@@ -59,7 +61,8 @@
 			title: 'Мебельный магазин',
 			description: 'Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
 			href: '/projects/promo-3',
-			date: '11.04.26'
+			date: '11.04.26',
+			status: 'draft'
 		}
 	];
 </script>
@@ -76,17 +79,20 @@
 <Container class="mt-24 sm:mt-32 md:mt-56">
 	<FadeIn class="max-w-3xl">
 		<h1
-			class="font-display py-6 text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
+			class="font-display py-6 text-5xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
 		>
 			Сайты по подписке на инфрастрктуре YandexCloud
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
-			Готовые тематические сайты для вашего бизнеса от компании LEGET. Выберите готовый вариант и мы
-			запустим его для вас за 72 часа на вашем домене.
+			Готовые сайты для мебельного бизнеса от компании LEGET. Выберите готовый вариант и мы запустим
+			его для вас за 72 часа на вашем домене.
 		</p>
 		<p class="mt-2 text-xl text-neutral-600">
 			Дружелюбная к SEO и рекламному продвижению архитектура выведет ваш бизнес на шаг вперёд
 			конкурентов.
+		</p>
+		<p class="mt-2 text-xl text-neutral-600">
+			Стоимость подписки на сайт всего <span class="text-neutral-900">от 1000 рублей</span> в месяц.
 		</p>
 		<!-- <p class="mt-6 text-xl text-neutral-600">
 			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
@@ -146,14 +152,24 @@
 						</time>
 					</p>
 					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">
-						<a href={caseStudy.href}>
-							<span class="absolute inset-0 rounded-3xl"></span>
+						{#if caseStudy.status === 'active'}
+							<a href={caseStudy.href}>
+								{caseStudy.title}
+							</a>
+						{:else}
 							{caseStudy.title}
-						</a>
+						{/if}
 					</p>
-					<p class="mt-4 text-base text-neutral-600">
+					<p class="mt-4 flex-auto text-base text-neutral-600">
 						{caseStudy.description}
 					</p>
+					<div class="mt-8 flex">
+						{#if caseStudy.status === 'active'}
+							<Button href={caseStudy.href}>Подробнее</Button>
+						{:else}
+							<Button disabled class="cursor-not-allowed opacity-50">В разработке</Button>
+						{/if}
+					</div>
 				</article>
 			</FadeIn>
 		{/each}

@@ -12,7 +12,9 @@
 		domain: 'leget.ru',
 		phones: ['+7 (999) 000-00-01'],
 		emails: ['info@leget.ru'],
-		addresses: ['г. Москва, ул. Пушкина, д. Колотушкина']
+		addresses: ['г. Москва, ул. Пушкина, д. Колотушкина'],
+		yandex_metrica: '',
+		google_analytics: ''
 	});
 
 	function addPhone() {
@@ -45,18 +47,18 @@
 	<meta name="description" content="Управление глобальными параметрами вашего сайта на LEGET" />
 </svelte:head>
 
-<PageIntro title="Настройки сайта" eyebrow="Конфигурация">
-	<p>Управляйте логотипом, контактными данными и другими параметрами отображения вашего проекта.</p>
+<PageIntro title="Настройки сайтов" eyebrow="Конфигурация">
+	<!-- <p>Управляйте логотипом, контактными данными и другими параметрами отображения вашего проекта.</p> -->
 </PageIntro>
 
-<Container class="mt-24 mb-24 sm:mt-32 lg:mt-40">
+<Container class="mt-12 mb-24 sm:mt-20 lg:mt-24">
 	<FadeInStagger>
 		<FadeIn>
-			<div class="flex flex-col gap-12 max-w-3xl">
+			<div class="flex max-w-3xl flex-col gap-12">
 				<div class="space-y-8">
 					<!-- Logo Section -->
 					<div class="group relative">
-						<label class="block text-sm font-semibold text-neutral-950">Логотип</label>
+						<span class="block text-sm font-semibold text-neutral-950">Логотип</span>
 						<div class="mt-4 flex items-center gap-8">
 							<div
 								class="flex size-24 items-center justify-center overflow-hidden rounded-2xl bg-neutral-100 shadow-inner ring-1 ring-neutral-950/5"
@@ -140,7 +142,7 @@
 
 						<div class="group relative">
 							<label for="site-domain" class="block text-sm font-semibold text-neutral-950"
-								>Домен на сайт</label
+								>Домен сайта</label
 							>
 							<input
 								type="text"
@@ -152,10 +154,38 @@
 						</div>
 					</div>
 
+					<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+						<div class="group relative">
+							<label for="yandex-metrica" class="block text-sm font-semibold text-neutral-950"
+								>Яндекс Метрика</label
+							>
+							<input
+								type="text"
+								id="yandex-metrica"
+								bind:value={siteSettings.yandex_metrica}
+								placeholder="ID счётчика (напр. 12345678)"
+								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
+							/>
+						</div>
+
+						<div class="group relative">
+							<label for="google-analytics" class="block text-sm font-semibold text-neutral-950"
+								>Google Analytics</label
+							>
+							<input
+								type="text"
+								id="google-analytics"
+								bind:value={siteSettings.google_analytics}
+								placeholder="ID отслеживания (напр. G-XXXXXXXXXX)"
+								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
+							/>
+						</div>
+					</div>
+
 					<!-- Array: Phones -->
 					<div class="group relative">
 						<div class="mb-2 flex items-center justify-between">
-							<label class="block text-sm font-semibold text-neutral-950">Телефоны</label>
+							<span class="block text-sm font-semibold text-neutral-950">Телефоны</span>
 							<button
 								type="button"
 								onclick={addPhone}
@@ -183,6 +213,7 @@
 										type="tel"
 										bind:value={siteSettings.phones[i]}
 										placeholder="+7 (___) ___-__-__"
+										aria-label="Номер телефона {i + 1}"
 										class="block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 									/>
 									<button
@@ -212,7 +243,7 @@
 					<!-- Array: Emails -->
 					<div class="group relative">
 						<div class="mb-2 flex items-center justify-between">
-							<label class="block text-sm font-semibold text-neutral-950">Почта (Email)</label>
+							<span class="block text-sm font-semibold text-neutral-950">Почта на сайт</span>
 							<button
 								type="button"
 								onclick={addEmail}
@@ -240,6 +271,7 @@
 										type="email"
 										bind:value={siteSettings.emails[i]}
 										placeholder="example@mail.com"
+										aria-label="Электронная почта {i + 1}"
 										class="block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 									/>
 									<button
@@ -269,7 +301,7 @@
 					<!-- Array: Addresses -->
 					<div class="group relative">
 						<div class="mb-2 flex items-center justify-between">
-							<label class="block text-sm font-semibold text-neutral-950">Адреса</label>
+							<span class="block text-sm font-semibold text-neutral-950">Адреса</span>
 							<button
 								type="button"
 								onclick={addAddress}
@@ -297,6 +329,7 @@
 										bind:value={siteSettings.addresses[i]}
 										placeholder="Введите адрес..."
 										rows="2"
+										aria-label="Адрес {i + 1}"
 										class="block w-full resize-none rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 									></textarea>
 									<button
