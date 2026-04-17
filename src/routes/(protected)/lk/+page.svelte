@@ -5,21 +5,35 @@
 	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { goto } from '$app/navigation';
+	import { getContext } from 'svelte';
 
-	let account = $state({
-		name: 'Евгений Целноков',
-		email: 'evgenij.celnokov@example.com',
-		phone: '+7 (999) 123-45-67',
-		messenger: '@evgenij_celnokov',
-		balance: 15400
+	// Получаем данные пользователя и баланс из protected layout
+	const getUserData = getContext('userData');
+	let userData = $derived(getUserData());
+
+	// Баланс — только для отображения, берём из API
+	let balance = $derived(parseFloat(userData.balance) || 0);
+
+	// Поля формы — редактируемые, инициализируются из данных пользователя
+	let formName = $state('');
+	let formEmail = $state('');
+	let formPhone = $state('');
+	let formMessenger = $state('');
+	let initialized = $state(false);
+
+	// Инициализируем поля формы при получении данных пользователя
+	$effect(() => {
+		if (userData.user && !initialized) {
+			formName = userData.user.name ?? '';
+			formEmail = userData.user.email ?? '';
+			formPhone = userData.user.phone ?? '';
+			initialized = true;
+		}
 	});
 
 	function handleLogout() {
-		// Remove authentication data
 		localStorage.removeItem('auth_token');
 		localStorage.removeItem('email_verified');
-
-		// Redirect to login page
 		goto('/login');
 	}
 </script>
@@ -64,7 +78,7 @@
 							<div>
 								<p class="text-sm font-semibold text-neutral-600">Баланс на счёте</p>
 								<p class="mt-2 text-4xl font-semibold text-neutral-950">
-									{account.balance.toLocaleString('ru-RU')} ₽
+									{balance.toLocaleString('ru-RU')} ₽
 								</p>
 							</div>
 							<Button>Пополнить</Button>
@@ -80,7 +94,7 @@
 							<input
 								type="text"
 								id="owner-name"
-								bind:value={account.name}
+								bind:value={formName}
 								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 							/>
 						</div>
@@ -92,7 +106,7 @@
 							<input
 								type="email"
 								id="owner-email"
-								bind:value={account.email}
+								bind:value={formEmail}
 								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 							/>
 						</div>
@@ -104,7 +118,7 @@
 							<input
 								type="tel"
 								id="owner-phone"
-								bind:value={account.phone}
+								bind:value={formPhone}
 								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 							/>
 						</div>
@@ -116,7 +130,7 @@
 							<input
 								type="text"
 								id="owner-messenger"
-								bind:value={account.messenger}
+								bind:value={formMessenger}
 								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
 							/>
 						</div>

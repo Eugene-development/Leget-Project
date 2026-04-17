@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { setContext } from 'svelte';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
 
 	let { children } = $props();
@@ -9,6 +10,11 @@
 	let isAuthenticated = $state(false);
 	let isEmailVerified = $state(false);
 	let user = $state(null);
+	let balance = $state('0.00');
+
+	// Передаём данные пользователя и баланс в дочерние компоненты через context
+	const userData = $derived({ user, balance });
+	setContext('userData', () => userData);
 
 	$effect(() => {
 		if (browser) {
@@ -53,6 +59,7 @@
 			}
 
 			user = result.user;
+			balance = result.balance ?? '0.00';
 			isEmailVerified = result.email_verified ?? false;
 			isAuthenticated = true;
 		} catch (err) {
