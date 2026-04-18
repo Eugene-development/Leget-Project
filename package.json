@@ -24,5 +24,9 @@
 		"svelte": "^5.48.2",
 		"tailwindcss": "^4.1.18",
 		"vite": "^7.3.1"
+	},
+	"dependencies": {
+		"graphql-request": "^7.4.0",
+		"runed": "^0.37.1"
 	}
 }

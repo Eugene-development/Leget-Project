@@ -62,7 +62,7 @@
 						</p> -->
 					</div>
 					<div class="flex gap-3">
-						<Button href="/settings" invert>Ваши сайты</Button>
+						<Button href="/lk/sites" invert>Ваши сайты</Button>
 						<Button onclick={handleLogout} class="bg-neutral-600 text-white hover:bg-neutral-700">
 							Выйти
 						</Button>

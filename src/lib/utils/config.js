@@ -14,3 +14,13 @@ export function getAuthApiUrl() {
 	}
 	return import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8000/api';
 }
+
+/**
+ * @returns {string} Leget API base URL (e.g. https://api.leget.ru)
+ */
+export function getApiUrl() {
+	if (typeof window !== 'undefined' && window.__APP_CONFIG__?.API_URL) {
+		return window.__APP_CONFIG__.API_URL;
+	}
+	return import.meta.env.VITE_API_URL || 'http://localhost:8080';
+}
