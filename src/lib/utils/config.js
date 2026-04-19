@@ -12,7 +12,7 @@ export function getAuthApiUrl() {
 	if (typeof window !== 'undefined' && window.__APP_CONFIG__?.AUTH_API_URL) {
 		return window.__APP_CONFIG__.AUTH_API_URL + '/api';
 	}
-	return import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8000/api';
+	return import.meta.env.VITE_AUTH_URL || 'http://localhost:8000/api';
 }
 
 /**
@@ -22,5 +22,5 @@ export function getApiUrl() {
 	if (typeof window !== 'undefined' && window.__APP_CONFIG__?.API_URL) {
 		return window.__APP_CONFIG__.API_URL;
 	}
-	return import.meta.env.VITE_API_URL || 'http://localhost:8080';
+	return import.meta.env.VITE_API_URL || 'http://localhost:8001/api';
 }
