@@ -24,3 +24,15 @@ export function getApiUrl() {
 	}
 	return import.meta.env.VITE_API_URL || 'http://localhost:8001/api';
 }
+
+/**
+ * Returns the GraphQL endpoint URL.
+ * The GraphQL route is registered at /graphql (no /api prefix),
+ * so we strip a trailing /api segment from the base URL if present.
+ *
+ * @returns {string} e.g. https://api.leget.ru/graphql
+ */
+export function getGraphQLUrl() {
+	const base = getApiUrl().replace(/\/api\/?$/, '');
+	return `${base}/graphql`;
+}

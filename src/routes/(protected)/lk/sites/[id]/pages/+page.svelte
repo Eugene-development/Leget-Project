@@ -63,7 +63,15 @@
 	<meta name="description" content="Управление страницами сайта на платформе LEGET" />
 </svelte:head>
 
-<PageIntro title="Страницы сайта" eyebrow="Управление контентом">
+<PageIntro
+	title="Страницы сайта"
+	breadcrumbs={[
+		{ label: 'Личный кабинет', href: '/lk' },
+		{ label: 'Мои сайты', href: '/lk/sites' },
+		{ label: 'Настройки сайта', href: `/lk/sites/${licenseId}` },
+		{ label: 'Страницы сайта' }
+	]}
+>
 	<p>Список страниц вашего сайта. Создавайте новые страницы и редактируйте существующие.</p>
 </PageIntro>
 

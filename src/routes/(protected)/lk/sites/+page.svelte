@@ -13,6 +13,7 @@
 				id
 				domain
 				name
+				templateId
 				isActive
 				status
 				createdAt
@@ -23,6 +24,16 @@
 	let licenses = $state([]);
 	let isLoading = $state(true);
 	let error = $state(null);
+
+	/** Map templateId to a human-readable template name */
+	const TEMPLATE_NAMES = {
+		2: 'Promo-1',
+		3: 'Promo-2'
+	};
+
+	function getTemplateName(templateId) {
+		return templateId ? (TEMPLATE_NAMES[templateId] ?? `Шаблон #${templateId}`) : null;
+	}
 
 	$effect(() => {
 		if (browser) {
@@ -51,7 +62,13 @@
 	<meta name="description" content="Управление вашими сайтами на платформе LEGET" />
 </svelte:head>
 
-<PageIntro title="Мои сайты" eyebrow="Управление сайтами">
+<PageIntro
+	title="Мои сайты"
+	breadcrumbs={[
+		{ label: 'Личный кабинет', href: '/lk' },
+		{ label: 'Мои сайты' }
+	]}
+>
 	<p>Список ваших сайтов на платформе. Выберите сайт для управления настройками и страницами.</p>
 </PageIntro>
 
@@ -144,6 +161,14 @@
 									<p class="mt-1 truncate text-sm text-neutral-500">
 										{license.domain}
 									</p>
+									{#if getTemplateName(license.templateId)}
+										<p class="mt-1 text-xs text-neutral-400">
+											Шаблон:
+											<span class="font-medium text-neutral-600">
+												{getTemplateName(license.templateId)}
+											</span>
+										</p>
+									{/if}
 								</div>
 								<div class="flex shrink-0 items-center gap-3">
 									{#if license.isActive && license.status === 'active'}
@@ -152,6 +177,13 @@
 										>
 											<span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
 											Активен
+										</span>
+									{:else if license.status === 'cancelled'}
+										<span
+											class="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600"
+										>
+											<span class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>
+											Отменён
 										</span>
 									{:else}
 										<span

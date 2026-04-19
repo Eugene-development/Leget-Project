@@ -12,11 +12,17 @@
 	 * Requirements: 4.2, 4.3
 	 */
 
+	import { browser } from '$app/environment';
 	import Container from './Container.svelte';
 	import Offices from './Offices.svelte';
 	import SocialMedia from './SocialMedia.svelte';
 	import Button from './Button.svelte';
 	import { regionState } from '$lib/state/region.svelte';
+
+	// Determine cabinet link based on auth state
+	const cabinetHref = $derived(
+		browser && localStorage.getItem('auth_token') ? '/lk' : '/login'
+	);
 
 	// Navigation links data
 	const navigationLinks = [
@@ -102,7 +108,7 @@
 						{regionState.selectedCountry}
 					</button>
 					<div class="flex items-center gap-4">
-						<Button href="/login" invert class="!px-5 !py-2.5 !text-base">Кабинет</Button>
+						<Button href={cabinetHref} invert class="!px-5 !py-2.5 !text-base">Кабинет</Button>
 						<Button
 							href="/register"
 							class="bg-neutral-800 !px-5 !py-2.5 !text-base hover:bg-neutral-700"

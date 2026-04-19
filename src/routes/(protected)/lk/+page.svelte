@@ -43,11 +43,7 @@
 	<meta name="description" content="Управление аккаунтом и настройками сайта LEGET" />
 </svelte:head>
 
-<PageIntro title="Личный кабинет" eyebrow="Профиль и настройки">
-	<!-- <p>
-		Управляйте своими персональными данными и глобальными параметрами вашего сайта в одном месте.
-	</p> -->
-</PageIntro>
+<PageIntro title="Личный кабинет" eyebrow="Профиль и настройки"></PageIntro>
 
 <Container class="mt-12 mb-24 sm:mt-20 lg:mt-24">
 	<FadeInStagger class="flex flex-col gap-y-32">

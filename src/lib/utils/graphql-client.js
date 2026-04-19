@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
-import { getApiUrl } from './config.js';
+import { getGraphQLUrl } from './config.js';
 
 /**
  * Creates a GraphQLClient instance configured with the leget-api
@@ -10,7 +10,7 @@ import { getApiUrl } from './config.js';
 export function getGraphQLClient() {
 	const token = localStorage.getItem('auth_token');
 
-	return new GraphQLClient(`${getApiUrl()}/graphql`, {
+	return new GraphQLClient(getGraphQLUrl(), {
 		headers: {
 			...(token ? { Authorization: `Bearer ${token}` } : {})
 		}

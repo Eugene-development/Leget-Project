@@ -10,7 +10,12 @@
 	import StatListItem from '$lib/components/StatListItem.svelte';
 	import TagList from '$lib/components/TagList.svelte';
 	import TagListItem from '$lib/components/TagListItem.svelte';
+	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 	import { formatDate } from '$lib/formatDate.js';
+
+	// templateId=3 corresponds to Promo-2 (see ComponentResolver.svelte)
+	const TEMPLATE_ID = 3;
+	let modalOpen = $state(false);
 
 	const caseStudy = {
 		client: 'Promo-2',
@@ -60,11 +65,28 @@
 <!-- Hero Image -->
 <Container class="mt-16">
 	<FadeIn>
-		<div class="mb-8 flex justify-center">
+		<div class="mb-8 flex flex-wrap justify-center gap-4">
 			<Button href="/" aria-label="View demo: {caseStudy.client}">
 				Посмотреть демо версию сайта
 			</Button>
+			<Button
+				invert={false}
+				onclick={() => (modalOpen = true)}
+				aria-label="Подписаться на лицензию {caseStudy.client}"
+			>
+				Подписаться на лицензию
+			</Button>
 		</div>
+
+		<SubscribeLicenseModal
+			open={modalOpen}
+			templateId={TEMPLATE_ID}
+			templateName="Promo-2"
+			onClose={() => (modalOpen = false)}
+			onSuccess={(id) => {
+				modalOpen = false;
+			}}
+		/>
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}

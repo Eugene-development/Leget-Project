@@ -104,7 +104,16 @@
 	<meta name="description" content="Создание новой страницы сайта на платформе LEGET" />
 </svelte:head>
 
-<PageIntro title="Новая страница" eyebrow="Создание страницы">
+<PageIntro
+	title="Новая страница"
+	breadcrumbs={[
+		{ label: 'Личный кабинет', href: '/lk' },
+		{ label: 'Мои сайты', href: '/lk/sites' },
+		{ label: 'Настройки сайта', href: `/lk/sites/${licenseId}` },
+		{ label: 'Страницы сайта', href: `/lk/sites/${licenseId}/pages` },
+		{ label: 'Новая страница' }
+	]}
+>
 	<p>Заполните данные для создания новой страницы вашего сайта.</p>
 </PageIntro>
 
