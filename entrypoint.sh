@@ -26,7 +26,7 @@ if [ -f "/run/secrets/auth_api_url" ]; then
 fi
 
 # Set production defaults if no secrets provided
-FINAL_API_BASE_URL="${API_BASE_URL_VALUE:-https://crud.leget.ru}"
+FINAL_API_BASE_URL="${API_BASE_URL_VALUE:-https://api.leget.ru}"
 FINAL_AUTH_API_URL="${AUTH_API_URL_VALUE:-https://auth.leget.ru}"
 FINAL_FRONTEND_URL="${FRONTEND_URL_VALUE:-https://leget.ru}"
 
