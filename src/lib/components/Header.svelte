@@ -49,11 +49,18 @@
 			aria-label="Home"
 			onmouseenter={() => onLogoHover(true)}
 			onmouseleave={() => onLogoHover(false)}
+			class="flex items-end gap-x-0"
 		>
 			<!-- Logomark for mobile (small screens) -->
 			<Logomark class="h-10 sm:hidden" {invert} filled={logoHovered} />
 			<!-- Full Logo for larger screens -->
 			<Logo class="hidden h-12 sm:block" {invert} filled={logoHovered} />
+			<span
+				class="text-5xl -ml-2 leading-none font-semibold tracking-normal {invert
+					? 'text-white'
+					: 'text-neutral-950'}"
+				>Léget</span
+			>
 		</a>
 
 		<!-- Right side: Contact button and menu toggle -->
