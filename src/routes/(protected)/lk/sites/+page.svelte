@@ -27,8 +27,8 @@
 
 	/** Map templateId to a human-readable template name */
 	const TEMPLATE_NAMES = {
-		2: 'Promo-1',
-		3: 'Promo-2'
+		1: 'Promo-1',
+		2: 'Promo-2'
 	};
 
 	function getTemplateName(templateId) {
@@ -139,8 +139,11 @@
 						У вас пока нет сайтов
 					</h3>
 					<p class="mt-2 text-sm text-neutral-600">
-						Создайте свой первый сайт, чтобы начать работу с платформой.
+						Выберите шаблон и создайте свой первый сайт.
 					</p>
+					<div class="mt-6">
+						<Button href="/projects">Выбрать шаблон</Button>
+					</div>
 				</div>
 			</FadeIn>
 		{:else}

@@ -13,8 +13,8 @@
 	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 	import { formatDate } from '$lib/formatDate.js';
 
-	// templateId=3 corresponds to Promo-2 (see ComponentResolver.svelte)
-	const TEMPLATE_ID = 3;
+	// templateId=2 corresponds to Promo-2
+	const TEMPLATE_ID = 2;
 	let modalOpen = $state(false);
 
 	const caseStudy = {

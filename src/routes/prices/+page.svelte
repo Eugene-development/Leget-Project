@@ -7,26 +7,32 @@
 	import ListItem from '$lib/components/ListItem.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 
 	const pricingTiers = [
 		{
 			name: 'Лендинг',
 			price: '1 000',
 			period: 'мес',
-			description: 'Идеальное решение для старта. Быстрый запуск продукта или услуги.'
+			description: 'Идеальное решение для старта. Быстрый запуск продукта или услуги.',
+			status: 'dev' // В разработке
 		},
 		{
 			name: 'Фирменный сайт',
 			price: '5 000',
 			period: 'мес',
 			description: 'Полноценное представительство вашего бизнеса в интернете.',
-			featured: true
+			featured: true,
+			status: 'active',
+			href: '/projects'
 		},
 		{
 			name: 'Интернет-магазин',
 			price: '10 000',
 			period: 'мес',
-			description: 'Мощный инструмент для эффективных онлайн-продаж.'
+			description: 'Мощный инструмент для эффективных онлайн-продаж.',
+			status: 'dev' // В разработке
 		}
 	];
 
@@ -60,6 +66,19 @@
 			description: 'Настройка отправки всех обращений с сайта на вашу почту'
 		}
 	];
+
+	function handleSubscribe(tier) {
+		if (tier.status !== 'active') return;
+		if (browser) {
+			const token = localStorage.getItem('auth_token');
+			if (!token) {
+				const returnUrl = encodeURIComponent('/prices');
+				goto(`/login?redirect=${returnUrl}`);
+			} else {
+				goto(tier.href);
+			}
+		}
+	}
 </script>
 
 <svelte:head>
@@ -117,9 +136,23 @@
 						</div>
 					</div>
 					<div class="mt-10">
-						<Button href="/register" invert={!tier.featured} class="w-full justify-center"
-							>Оформить подписку</Button
-						>
+						{#if tier.status === 'active'}
+							<Button
+								onclick={() => handleSubscribe(tier)}
+								invert={!tier.featured}
+								class="w-full justify-center"
+							>
+								Выбрать шаблон
+							</Button>
+						{:else}
+							<button
+								disabled
+								class="w-full cursor-not-allowed rounded-full px-6 py-3 text-sm font-semibold opacity-50
+								{tier.featured ? 'bg-white text-neutral-950' : 'bg-neutral-950 text-white'}"
+							>
+								В разработке
+							</button>
+						{/if}
 					</div>
 				</div>
 			</FadeIn>

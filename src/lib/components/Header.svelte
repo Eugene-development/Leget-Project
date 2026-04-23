@@ -54,9 +54,9 @@
 			<!-- Logomark for mobile (small screens) -->
 			<Logomark class="h-10 sm:hidden" {invert} filled={logoHovered} />
 			<!-- Full Logo for larger screens -->
-			<Logo class="hidden h-12 sm:block" {invert} filled={logoHovered} />
+			<Logo class="hidden h-9 sm:block" {invert} filled={logoHovered} />
 			<span
-				class="text-5xl -ml-2 leading-none font-semibold tracking-normal {invert
+				class="text-3xl -ml-3 leading-none font-semibold tracking-normal {invert
 					? 'text-white'
 					: 'text-neutral-950'}"
 				>Léget</span

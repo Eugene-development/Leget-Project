@@ -15,11 +15,15 @@
 	const clients = [
 		{ name: 'Yandex Cloud' },
 		{ name: 'SvelteKit' },
+		{ name: 'Terraform' },
 		{ name: 'Laravel' },
-		{ name: 'MySQL' },
 		{ name: 'Kubernetes' },
 		{ name: 'GraphQL' },
 		{ name: 'Nginx' },
+		{ name: 'MySQL' },
+		{ name: 'Redis' },
+		{ name: 'S3' },
+		{ name: 'n8n' },
 		{ name: 'Tailwind' }
 	];
 	// const clients = [

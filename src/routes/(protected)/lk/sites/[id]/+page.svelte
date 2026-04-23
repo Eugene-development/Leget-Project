@@ -49,7 +49,7 @@
 	`;
 
 	/** Map templateId to human-readable name */
-	const TEMPLATE_NAMES = { 2: 'Promo-1', 3: 'Promo-2' };
+	const TEMPLATE_NAMES = { 1: 'Promo-1', 2: 'Promo-2' };
 
 	let licenseId = $derived($page.params.id);
 
