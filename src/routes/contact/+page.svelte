@@ -6,6 +6,7 @@
 	import Offices from '$lib/components/Offices.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import SocialMedia from '$lib/components/SocialMedia.svelte';
+	import { regionState } from '$lib/state/region.svelte';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
 
 	// Form state
@@ -153,8 +154,63 @@
 
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<div class="grid grid-cols-1 gap-x-8 gap-y-24 lg:grid-cols-2">
+		<!-- Contact Details -->
+		<FadeIn>
+			<h2 class="font-display text-base font-semibold text-neutral-950">Наши контакты</h2>
+			<p class="mt-2.5 text-base text-neutral-600">
+				Предпочитаете делать дела лично? Свяжитесь с нами.
+			</p>
+
+			<div class="mt-13 grid grid-cols-1 gap-8 sm:grid-cols-2">
+				<div>
+					<h3 class="text-sm font-semibold text-neutral-950">Телефон</h3>
+					<p class="mt-1">
+						<a
+							href="tel:+79154000020"
+							class="text-sm text-neutral-600 transition hover:text-neutral-950"
+						>
+							+7 (915) 400-00-20
+						</a>
+					</p>
+				</div>
+				<div>
+					<h3 class="text-sm font-semibold text-neutral-950">Страна</h3>
+					<button
+						type="button"
+						class="mt-1 text-sm text-neutral-600 transition hover:text-neutral-950"
+						onclick={() => {
+							regionState.isCountryModalOpen = true;
+						}}
+					>
+						{regionState.selectedCountry}
+					</button>
+				</div>
+			</div>
+
+			<Border class="mt-16 pt-16">
+				<h2 class="font-display text-base font-semibold text-neutral-950">Рабочая почта</h2>
+				<dl class="mt-6 grid grid-cols-1 gap-8 text-sm sm:grid-cols-2">
+					{#each emailContacts as contact}
+						<div>
+							<dt class="font-semibold text-neutral-950">{contact.label}</dt>
+							<dd>
+								<a href="mailto:{contact.email}" class="text-neutral-600 hover:text-neutral-950">
+									{contact.email}
+								</a>
+							</dd>
+						</div>
+					{/each}
+				</dl>
+			</Border>
+
+			<!-- <Border class="mt-16 pt-16">
+				<h2 class="font-display text-base font-semibold text-neutral-950">Follow us</h2>
+				<SocialMedia class="mt-6" />
+			</Border> -->
+		</FadeIn>
+
 		<!-- Contact Form -->
-		<FadeIn class="lg:order-last">
+		<FadeIn>
 			<form onsubmit={handleSubmit}>
 				<h2 class="font-display text-base font-semibold text-neutral-950">Заявка на интеграцию</h2>
 
@@ -287,37 +343,6 @@
 					</Button>
 				{/if}
 			</form>
-		</FadeIn>
-
-		<!-- Contact Details -->
-		<FadeIn>
-			<h2 class="font-display text-base font-semibold text-neutral-950">Наши контакты</h2>
-			<p class="mt-2.5 text-base text-neutral-600">
-				Предпочитаете делать дела лично? Свяжитесь с нами.
-			</p>
-
-			<Offices class="mt-13 grid grid-cols-1 gap-8 sm:grid-cols-2" />
-
-			<Border class="mt-16 pt-16">
-				<h2 class="font-display text-base font-semibold text-neutral-950">Рабочая почта</h2>
-				<dl class="mt-6 grid grid-cols-1 gap-8 text-sm sm:grid-cols-2">
-					{#each emailContacts as contact}
-						<div>
-							<dt class="font-semibold text-neutral-950">{contact.label}</dt>
-							<dd>
-								<a href="mailto:{contact.email}" class="text-neutral-600 hover:text-neutral-950">
-									{contact.email}
-								</a>
-							</dd>
-						</div>
-					{/each}
-				</dl>
-			</Border>
-
-			<!-- <Border class="mt-16 pt-16">
-				<h2 class="font-display text-base font-semibold text-neutral-950">Follow us</h2>
-				<SocialMedia class="mt-6" />
-			</Border> -->
 		</FadeIn>
 	</div>
 </Container>

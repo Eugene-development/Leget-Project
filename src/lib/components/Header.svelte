@@ -56,7 +56,7 @@
 			<!-- Full Logo for larger screens -->
 			<Logo class="hidden h-9 sm:block" {invert} filled={logoHovered} />
 			<span
-				class="text-3xl -ml-3 leading-none font-semibold tracking-normal {invert
+				class="text-3xl ml-1 sm:-ml-3 leading-none font-semibold tracking-normal {invert
 					? 'text-white'
 					: 'text-neutral-950'}"
 				>Léget</span
@@ -65,9 +65,11 @@
 
 		<!-- Right side: Contact button and menu toggle -->
 		<div class="flex items-center gap-x-8">
-			<Button href="tel:+79154000020" {invert}>
-				+7 (915) 400-00-20
-			</Button>
+			<div class="hidden sm:block">
+				<Button href="tel:+79154000020" {invert}>
+					+7 (915) 400-00-20
+				</Button>
+			</div>
 
 			<!-- Menu toggle button -->
 			<button

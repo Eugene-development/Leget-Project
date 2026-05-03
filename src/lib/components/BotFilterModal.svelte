@@ -41,7 +41,7 @@
 					isBotFilterModalOpen = true;
 					botFilterMountedTime = Date.now();
 				}
-			}, 5000);
+			}, 30000);
 		}
 	});
 </script>

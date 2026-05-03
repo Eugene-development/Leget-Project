@@ -29,7 +29,7 @@
 		{ href: '/prices', label: 'Цены' },
 		{ href: '/projects', label: 'Проекты' },
 		{ href: '/about', label: 'О нас' },
-		{ href: '/process', label: 'Интеграция' },
+		{ href: '/process', label: 'Процесс' },
 		{ href: '/news', label: 'Новости' },
 		{ href: '/contact', label: 'Контакты' }
 	];
@@ -43,7 +43,7 @@
 				<div class="mx-auto grid max-w-7xl grid-cols-2">
 					<a
 						href={link.href}
-						class="group relative isolate border-r border-neutral-800 bg-neutral-950 px-4 py-8 sm:py-16 sm:pl-6 lg:pl-8"
+						class="group relative isolate border-r border-neutral-800 bg-neutral-950 pl-10 pr-4 py-8 sm:py-16 sm:pl-6 lg:pl-8"
 					>
 						{link.label}
 						<span
@@ -53,7 +53,7 @@
 					{#if navigationLinks[index + 1]}
 						<a
 							href={navigationLinks[index + 1].href}
-							class="group relative isolate bg-neutral-950 px-4 py-8 sm:mx-0 sm:py-16 sm:pl-16"
+							class="group relative isolate bg-neutral-950 pl-10 pr-4 py-8 sm:mx-0 sm:py-16 sm:pl-16"
 						>
 							{navigationLinks[index + 1].label}
 							<span
@@ -79,34 +79,6 @@
 				<div
 					class="flex w-full flex-col items-start gap-y-6 sm:flex-row sm:items-center sm:justify-between"
 				>
-					<button
-						type="button"
-						class="flex items-center gap-x-2 text-base font-medium text-neutral-300 transition hover:text-white"
-						onclick={() => {
-							regionState.isCountryModalOpen = true;
-						}}
-					>
-						<svg
-							class="h-4 w-4 text-neutral-400"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-							/>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-							/>
-						</svg>
-						{regionState.selectedCountry}
-					</button>
 					<div class="flex items-center gap-4">
 						<Button href={cabinetHref} invert class="!px-5 !py-2.5 !text-base">Кабинет</Button>
 						<Button
@@ -114,6 +86,56 @@
 							class="bg-neutral-800 !px-5 !py-2.5 !text-base hover:bg-neutral-700"
 							>Регистрация</Button
 						>
+					</div>
+
+					<div class="flex flex-row items-center gap-4 sm:flex-col sm:items-end sm:gap-2">
+						<button
+							type="button"
+							class="flex items-center gap-x-2 text-base font-medium text-neutral-300 transition hover:text-white"
+							onclick={() => {
+								regionState.isCountryModalOpen = true;
+							}}
+						>
+							<svg
+								class="h-4 w-4 text-neutral-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								/>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+								/>
+							</svg>
+							{regionState.selectedCountry}
+						</button>
+						<a
+							href="tel:+79154000020"
+							class="flex items-center gap-x-2 text-base font-medium text-neutral-300 transition hover:text-white"
+						>
+							<svg
+								class="h-4 w-4 text-neutral-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+								/>
+							</svg>
+							+7 (915) 400-00-20
+						</a>
 					</div>
 				</div>
 			</div>

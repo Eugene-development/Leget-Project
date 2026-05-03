@@ -4,13 +4,12 @@
 	import FadeIn from './FadeIn.svelte';
 	import Offices from './Offices.svelte';
 	import Logomark from './Logomark.svelte';
+	import { regionState } from '$lib/state/region.svelte';
 
-	/**
-	 * ContactSection component - Call-to-action section for contacting the company
-	 * Features dark background with office locations and contact button
-	 *
-	 * Requirements: 5.6
-	 */
+	const emailContacts = [
+		{ label: 'Сотрудничество', email: 'info@leget.ru' },
+		{ label: 'Работа в компании', email: 'hr@leget.ru' }
+	];
 </script>
 
 <Container class="mt-24 sm:mt-32 lg:mt-40">
@@ -26,7 +25,47 @@
 				</div>
 				<div class="mt-10 border-t border-white/10 pt-10">
 					<h3 class="font-display text-base font-semibold text-white">Наши контакты:</h3>
-					<Offices invert class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
+
+					<div class="mt-8 grid grid-cols-1 gap-8 text-sm sm:grid-cols-2 lg:grid-cols-3">
+						{#each emailContacts as contact}
+							<div>
+								<div class="font-semibold text-white">{contact.label}</div>
+								<div class="mt-1">
+									<a
+										href="mailto:{contact.email}"
+										class="text-neutral-400 transition hover:text-white"
+									>
+										{contact.email}
+									</a>
+								</div>
+							</div>
+						{/each}
+					</div>
+
+					<div class="mt-10 border-t border-white/5 pt-10">
+						<div class="grid grid-cols-1 gap-8 text-sm sm:grid-cols-2 lg:grid-cols-3">
+							<div>
+								<div class="font-semibold text-white">Страна</div>
+								<button
+									type="button"
+									class="mt-1 text-neutral-400 transition hover:text-white"
+									onclick={() => {
+										regionState.isCountryModalOpen = true;
+									}}
+								>
+									{regionState.selectedCountry}
+								</button>
+							</div>
+							<div>
+								<div class="font-semibold text-white">Телефон</div>
+								<div class="mt-1">
+									<a href="tel:+79154000020" class="text-neutral-400 transition hover:text-white">
+										+7 (915) 400-00-20
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
