@@ -10,21 +10,26 @@
 	import StatListItem from '$lib/components/StatListItem.svelte';
 	import TagList from '$lib/components/TagList.svelte';
 	import TagListItem from '$lib/components/TagListItem.svelte';
+	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 	import { formatDate } from '$lib/formatDate.js';
+
+	// templateId=3 corresponds to Promo-3
+	const TEMPLATE_ID = 3;
+	let modalOpen = $state(false);
 
 	const caseStudy = {
 		client: 'Promo-3',
 		title: 'Promo-3',
 		description:
-			'Find love in the face of fear — Phobia is a dating app that matches users based on their mutual phobias so they can be scared together.',
+			'Мощный инструмент для эффективных онлайн-продаж. Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
 		heroImage: '/images/projects/promo-3/hero.jpg',
-		date: '2022-06',
-		service: 'App development',
+		date: '2025-05',
+		service: 'Подписка',
 		testimonial: {
-			author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
+			author: { name: 'Евгений Че', role: 'Директор по маркетингу' },
 			image: '/images/projects/promo-3/jenny-wilson.jpg',
 			content:
-				"The team at Studio went above and beyond with our onboarding, even finding a way to access the user's microphone without triggering one of those annoying permission dialogs."
+				"Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать."
 		}
 	};
 </script>
@@ -60,11 +65,30 @@
 <!-- Hero Image -->
 <Container class="mt-16">
 	<FadeIn>
-		<div class="mb-8 flex justify-center">
+		<div class="mb-8 flex flex-wrap justify-center gap-4">
 			<Button href="/" aria-label="View demo: {caseStudy.client}">
 				Посмотреть демо версию сайта
 			</Button>
+			<Button
+				invert={false}
+				onclick={() => (modalOpen = true)}
+				aria-label="Подписаться на лицензию {caseStudy.client}"
+			>
+				Подписаться на лицензию
+			</Button>
 		</div>
+
+		<SubscribeLicenseModal
+			open={modalOpen}
+			templateId={TEMPLATE_ID}
+			templateName="Promo-3"
+			price="310"
+			period="день"
+			onClose={() => (modalOpen = false)}
+			onSuccess={(id) => {
+				modalOpen = false;
+			}}
+		/>
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
@@ -79,27 +103,16 @@
 <!-- Overview Section -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Overview</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Описание проекта</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Noticing incredibly high churn, the team at Promo-3 came to the conclusion that, instead of
-				having a fundamentally flawed business idea, they needed to improve their onboarding
-				process.
+				Шаблон Promo-3 — это мощная платформа для создания полноценного интернет-магазина. Продуманный каталог, удобная корзина и интеграция с платежными системами делают этот шаблон лучшим выбором для e-commerce.
 			</p>
 			<p>
-				Previously users selected their phobias manually but this led to some users selecting things
-				they weren't actually afraid of to increase their matches.
+				Интерактивные элементы интерфейса повышают вовлеченность пользователей и способствуют увеличению среднего чека. Современная архитектура гарантирует стабильную работу даже при высоких нагрузках.
 			</p>
 			<p>
-				To combat this, we developed a system for Promo-3 that displays a slideshow of common
-				phobias during onboarding. We then use malware to surreptitiously access their microphone
-				and detect when they have audible reactions. We measure the pitch, volume and duration of
-				their screams and feed that information to the matching algorithm.
-			</p>
-			<p>
-				The next phase is a VR version of the onboarding flow where users are subjected to a series
-				of scenarios that will determine their fears. We are currently developing the first
-				scenario, working title: "Jumping out of a plane full of spiders".
+				Мы уделили особое внимание мобильной версии, чтобы ваши клиенты могли совершать покупки с любого устройства в один клик.
 			</p>
 		</div>
 	</FadeIn>

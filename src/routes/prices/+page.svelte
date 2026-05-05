@@ -13,15 +13,15 @@
 	const pricingTiers = [
 		{
 			name: 'Лендинг',
-			price: '1 000',
-			period: 'мес',
+			price: '30',
+			period: 'день',
 			description: 'Идеальное решение для старта. Быстрый запуск продукта или услуги.',
 			status: 'dev' // В разработке
 		},
 		{
 			name: 'Фирменный сайт',
-			price: '5 000',
-			period: 'мес',
+			price: '170',
+			period: 'день',
 			description: 'Полноценное представительство вашего бизнеса в интернете.',
 			featured: true,
 			status: 'active',
@@ -29,8 +29,8 @@
 		},
 		{
 			name: 'Интернет-магазин',
-			price: '10 000',
-			period: 'мес',
+			price: '310',
+			period: 'день',
 			description: 'Мощный инструмент для эффективных онлайн-продаж.',
 			status: 'dev' // В разработке
 		}

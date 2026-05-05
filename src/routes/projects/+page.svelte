@@ -22,51 +22,49 @@
 			],
 			logo: '/images/clients/promo-1/logo-dark.svg',
 			href: '/projects/promo-1',
-			price: 5000,
+			price: 170,
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Debra Fiscal', role: 'CEO of Promo-1' },
 				content: ''
 			}
+		},
+		{
+			client: 'Для медицинских центров',
+			title: 'Промо-2',
+			description:
+				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки. Профессиональное решение для быстрого запуска вашего бизнеса.',
+			summary: [
+				'Промо-2 — это проект с акцентом на чистоту линий и удобство восприятия информации. Идеально подходит для медицинских центров и сервисных компаний.'
+			],
+			logo: '/images/clients/promo-2/logo-dark.svg',
+			href: '/projects/promo-2',
+			price: 30,
+			service: 'Подписка',
+			testimonial: {
+				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
+				content:
+					'Этот проект позволил нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы.'
+			}
+		},
+		{
+			client: 'Для IT стартапов',
+			title: 'Промо-3',
+			description:
+				'Мощный инструмент для эффективных онлайн-продаж. Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
+			summary: [
+				'Промо-3 предлагает расширенные возможности для демонстрации продуктов и взаимодействия с аудиторией. Современный стек технологий обеспечивает максимальную производительность.'
+			],
+			logo: '/images/clients/promo-3/logo-dark.svg',
+			href: '/projects/promo-3',
+			price: 310,
+			service: 'Подписка',
+			testimonial: {
+				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
+				content:
+					'Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать.'
+			}
 		}
-		// {
-		// 	client: 'Для медицинских центров',
-		// 	title: 'Промо-2',
-		// 	description:
-		// 		'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
-		// 	summary: [
-		// 		'Promo-2 is a project for medical centers. It allows you to create a professional web presence in a matter of hours.',
-		// 		'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
-		// 	],
-		// 	logo: '/images/clients/promo-2/logo-dark.svg',
-		// 	href: '/projects/promo-2',
-		// 	price: 5000,
-		// 	service: 'Подписка',
-		// 	testimonial: {
-		// 		author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
-		// 		content:
-		// 			'Этот проект позволили нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы.'
-		// 	}
-		// },
-		// {
-		// 	client: 'Для IT стартапов',
-		// 	title: 'Промо-3',
-		// 	description:
-		// 		'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
-		// 	summary: [
-		// 		'Promo-3 is a project for IT startups. It allows you to create a professional web presence in a matter of hours.',
-		// 		'We developed a custom CMS to power their news with and optimised their site to rank higher for search engines.'
-		// 	],
-		// 	logo: '/images/clients/promo-3/logo-dark.svg',
-		// 	href: '/projects/promo-3',
-		// 	price: 5000,
-		// 	service: 'Подписка',
-		// 	testimonial: {
-		// 		author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
-		// 		content:
-		// 			'Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать.'
-		// 	}
-		// }
 	];
 
 	// Client logos for the "You're in good company" section
@@ -86,7 +84,7 @@
 	<title>Готовые проекты сайтов для бизнеса — Студия LEGET</title>
 	<meta
 		name="description"
-		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 5000 ₽/мес."
+		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 30 ₽/день."
 	/>
 </svelte:head>
 
@@ -124,7 +122,7 @@
 									{caseStudy.service}
 								</p>
 								<p class="text-sm font-semibold text-neutral-950 lg:mt-2">
-									{caseStudy.price} ₽/мес
+									{caseStudy.price} ₽/день
 								</p>
 							</div>
 						</div>
@@ -160,7 +158,7 @@
 			>
 		</div>
 	{/snippet}
-	Какой вариант вам больше нравится? Напишите нам и мы запустим его для вас за 72 часа.</Testimonial
+	Какой вариант вам больше нравится? Напишите нам и мы настроим его для вас за 72 часа.</Testimonial
 >
 
 <!-- Clients Section -->

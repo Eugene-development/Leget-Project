@@ -20,9 +20,7 @@
 	import { regionState } from '$lib/state/region.svelte';
 
 	// Determine cabinet link based on auth state
-	const cabinetHref = $derived(
-		browser && localStorage.getItem('auth_token') ? '/lk' : '/login'
-	);
+	const cabinetHref = $derived(browser && localStorage.getItem('auth_token') ? '/lk' : '/login');
 
 	// Navigation links data
 	const navigationLinks = [
@@ -43,7 +41,7 @@
 				<div class="mx-auto grid max-w-7xl grid-cols-2">
 					<a
 						href={link.href}
-						class="group relative isolate border-r border-neutral-800 bg-neutral-950 pl-10 pr-4 py-8 sm:py-16 sm:pl-6 lg:pl-8"
+						class="group relative isolate border-r border-neutral-800 bg-neutral-950 py-8 pr-4 pl-10 sm:py-16 sm:pl-6 lg:pl-8"
 					>
 						{link.label}
 						<span
@@ -53,7 +51,7 @@
 					{#if navigationLinks[index + 1]}
 						<a
 							href={navigationLinks[index + 1].href}
-							class="group relative isolate bg-neutral-950 pl-10 pr-4 py-8 sm:mx-0 sm:py-16 sm:pl-16"
+							class="group relative isolate bg-neutral-950 py-8 pr-4 pl-10 sm:mx-0 sm:py-16 sm:pl-16"
 						>
 							{navigationLinks[index + 1].label}
 							<span

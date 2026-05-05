@@ -21,15 +21,15 @@
 		client: 'Promo-2',
 		title: 'Promo-2',
 		description:
-			'Unseal is the first NFT platform where users can mint and trade NFTs of their own personal health records, allowing them to take control of their data.',
+			'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки. Профессиональное решение для быстрого запуска вашего бизнеса.',
 		heroImage: '/images/projects/promo-2/hero.jpg',
-		date: '2022-10',
-		service: 'Blockchain development',
+		date: '2025-04',
+		service: 'Подписка',
 		testimonial: {
-			author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
+			author: { name: 'Евгений Че', role: 'Директор по маркетингу' },
 			image: '/images/projects/promo-2/emily-selman.jpg',
 			content:
-				"Studio did an amazing job building out our core blockchain infrastructure and I'm sure once PlaceboCoin rallies they'll be able to finish the project."
+				"Этот проект позволил нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы."
 		}
 	};
 </script>
@@ -82,6 +82,8 @@
 			open={modalOpen}
 			templateId={TEMPLATE_ID}
 			templateName="Promo-2"
+			price="30"
+			period="день"
 			onClose={() => (modalOpen = false)}
 			onSuccess={(id) => {
 				modalOpen = false;
@@ -101,24 +103,16 @@
 <!-- Overview Section -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Overview</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Описание проекта</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Annoyed that his wife's gynaecologist would not disclose the results of her pap smear,
-				Promo-2's founder Kevin came up with the idea of using the block chain to store individual
-				health records.
+				Шаблон Promo-2 — это идеальное решение для быстрого старта. Минималистичный дизайн не отвлекает от главного — вашего продукта или услуги.
 			</p>
 			<p>
-				Promo-2 approached us early in their development, having just raised funds through an ICO of
-				their cryptocurrency PlaceboCoin. Having never worked on a web3 product we decided to farm
-				the project out to an agency in Kyiv and skim profits off the top. Despite frequent
-				complaints about missile strikes and power outages, the Ukrainians delivered the brief ahead
-				of schedule.
+				Благодаря оптимизированному коду и отсутствию лишних элементов, сайт на базе этого шаблона загружается мгновенно, что крайне важно для удержания мобильного трафика.
 			</p>
 			<p>
-				After reaching a high of $12k, PlaceboCoin went to zero in a matter of hours. Because we
-				took payment in PlaceboCoin but our subcontractors insisted on being paid in USD we have
-				taken a huge financial loss on this project.
+				Гибкие настройки позволяют легко изменить цветовую схему и типографику под ваш бренд, сохраняя при этом профессиональный вид и высокую конверсию.
 			</p>
 		</div>
 	</FadeIn>

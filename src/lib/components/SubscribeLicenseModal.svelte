@@ -23,6 +23,8 @@
 		open = false,
 		templateId,
 		templateName = 'шаблон',
+		price = '170',
+		period = 'день',
 		onClose = () => {},
 		onSuccess = () => {}
 	} = $props();
@@ -155,7 +157,7 @@
 						Подписаться на «{templateName}»
 					</h2>
 					<p class="mt-1 text-sm text-neutral-500">
-						Шаблон «Фирменный сайт» — 5 000 ₽/мес
+						Шаблон «{templateName}» — {price} ₽/{period}
 					</p>
 				</div>
 				<button
