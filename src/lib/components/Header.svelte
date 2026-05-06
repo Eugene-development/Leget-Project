@@ -56,19 +56,16 @@
 			<!-- Full Logo for larger screens -->
 			<Logo class="hidden h-9 sm:block" {invert} filled={logoHovered} />
 			<span
-				class="text-3xl ml-1 sm:-ml-3 leading-none font-semibold tracking-normal {invert
+				class="ml-1 text-3xl leading-none font-semibold tracking-normal sm:-ml-4 {invert
 					? 'text-white'
-					: 'text-neutral-950'}"
-				>Léget</span
+					: 'text-neutral-950'}">Léget</span
 			>
 		</a>
 
 		<!-- Right side: Contact button and menu toggle -->
 		<div class="flex items-center gap-x-8">
 			<div class="hidden sm:block">
-				<Button href="tel:+79154000020" {invert}>
-					+7 (915) 400-00-20
-				</Button>
+				<Button href="tel:+79154000020" {invert}>+7 (915) 400-00-20</Button>
 			</div>
 
 			<!-- Menu toggle button -->
@@ -77,10 +74,10 @@
 				onclick={onToggle}
 				aria-expanded={expanded ? 'true' : 'false'}
 				aria-controls={panelId}
-				class="group -m-2.5 rounded-full px-6 py-2.5 transition w-[120px] {toggleButtonClasses}"
+				class="group -m-2.5 w-[120px] rounded-full px-6 py-2.5 transition {toggleButtonClasses}"
 				aria-label="Toggle navigation"
 			>
-				<div class="flex items-center gap-x-2.5 justify-center">
+				<div class="flex items-center justify-center gap-x-2.5">
 					{#if !expanded}
 						<span
 							class="text-sm font-semibold transition {invert
