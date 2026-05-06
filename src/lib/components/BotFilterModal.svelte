@@ -46,7 +46,13 @@
 	});
 </script>
 
-<Modal bind:showModal={isBotFilterModalOpen} title="Выберите вашу страну" dismissible={false}>
+<Modal
+	bind:showModal={isBotFilterModalOpen}
+	title="Выберите вашу страну"
+	dismissible={false}
+	position="bottom-right"
+	showBackdrop={false}
+>
 	<div class="flex flex-col gap-6">
 		<p class="text-sm text-neutral-600">
 			Для продолжения работы с сайтом, пожалуйста, выберите вашу страну. Это поможет нам показывать

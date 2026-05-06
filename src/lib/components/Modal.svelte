@@ -7,11 +7,15 @@
 		showModal = $bindable(false),
 		title = '',
 		dismissible = true,
+		position = 'center',
+		showBackdrop = true,
 		children
 	}: {
 		showModal?: boolean;
 		title?: string;
 		dismissible?: boolean;
+		position?: 'center' | 'bottom-right';
+		showBackdrop?: boolean;
 		children?: Snippet;
 	} = $props();
 
@@ -33,15 +37,34 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
-		class="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-950/60 p-4 backdrop-blur-sm"
+		class="fixed inset-0 z-[100] flex p-4 {position === 'center'
+			? 'items-center justify-center'
+			: 'pointer-events-none items-end justify-end'}"
 		transition:fade={{ duration: 300 }}
-		onclick={close}
 	>
+		{#if showBackdrop}
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<div
+				class="absolute inset-0 bg-neutral-950/60 backdrop-blur-sm pointer-events-auto"
+				transition:fade={{ duration: 300 }}
+				onclick={close}
+			></div>
+		{/if}
+
 		<!-- Modal Dialog -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<div
-			class="relative w-full max-w-2xl max-h-[calc(100dvh-2rem)] overflow-y-auto overflow-x-hidden rounded-3xl bg-white p-6 shadow-2xl sm:p-8"
-			transition:fly={{ y: 50, duration: 400, easing: backOut }}
+			class="relative w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overflow-x-hidden rounded-3xl bg-white p-6 shadow-2xl pointer-events-auto sm:p-8 {position ===
+			'center'
+				? 'max-w-2xl'
+				: 'mb-4 mr-4 max-w-sm'}"
+			transition:fly={{
+				y: position === 'center' ? 50 : 20,
+				x: position === 'center' ? 0 : 20,
+				duration: 400,
+				easing: backOut
+			}}
 			onclick={(e) => e.stopPropagation()}
 			role="dialog"
 			aria-modal="true"
@@ -66,7 +89,11 @@
 			{/if}
 
 			{#if title}
-				<h3 class="mb-6 text-2xl font-semibold tracking-tight text-neutral-950">
+				<h3
+					class="font-semibold tracking-tight text-neutral-950 {position === 'center'
+						? 'mb-6 text-2xl'
+						: 'mb-3 text-lg'}"
+				>
 					{title}
 				</h3>
 			{/if}
