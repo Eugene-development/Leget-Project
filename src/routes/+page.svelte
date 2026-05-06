@@ -88,17 +88,15 @@
 			Сайты по подписке на инфрастрктуре YandexCloud
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
-			Готовые сайты для мебельного бизнеса от компании <span class="font-bold text-neutral-900"
+			Готовые сайты для мебельного бизнеса на платформе <span class="font-bold text-neutral-900"
 				>Léget</span
 			>. Выберите готовый вариант и мы настроим его для вас за 72 часа на вашем домене.
 		</p>
 		<p class="mt-2 text-xl text-neutral-600">
 			Дружелюбная к SEO и рекламному продвижению архитектура выведет ваш бизнес на шаг вперёд
-			конкурентов.
+			конкурентов <span class="text-neutral-900">всего за 170 рублей</span> в день.
 		</p>
-		<p class="mt-2 text-xl text-neutral-600">
-			Стоимость подписки на сайт <span class="text-neutral-900">всего 170 рублей</span> в день.
-		</p>
+		
 		<!-- <p class="mt-6 text-xl text-neutral-600">
 			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
 		</p> -->
