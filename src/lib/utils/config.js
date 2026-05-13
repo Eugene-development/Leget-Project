@@ -10,7 +10,8 @@
  */
 export function getAuthApiUrl() {
 	if (typeof window !== 'undefined' && window.__APP_CONFIG__?.AUTH_API_URL) {
-		return window.__APP_CONFIG__.AUTH_API_URL.trim() + '/api';
+		const base = window.__APP_CONFIG__.AUTH_API_URL.trim().replace(/\/api\/?$/, '');
+		return `${base}/api`;
 	}
 	return import.meta.env.VITE_AUTH_URL || 'http://localhost:8000/api';
 }

@@ -10,9 +10,9 @@
 export async function handle({ event, resolve }) {
 	// Serve runtime config for the browser
 	if (event.url.pathname === '/config.js') {
-		const apiBaseUrl = process.env.RUNTIME_API_BASE_URL || 'https://api.leget.ru';
-		const authApiUrl = process.env.RUNTIME_AUTH_API_URL || 'https://auth.leget.ru';
-		const frontendUrl = process.env.RUNTIME_FRONTEND_URL || 'https://leget.ru';
+		const apiBaseUrl = process.env.RUNTIME_API_BASE_URL || process.env.VITE_API_URL || 'http://localhost:8001/api';
+		const authApiUrl = process.env.RUNTIME_AUTH_API_URL || process.env.VITE_AUTH_URL || 'http://localhost:8000';
+		const frontendUrl = process.env.RUNTIME_FRONTEND_URL || process.env.VITE_FRONTEND_URL || 'http://localhost:5173';
 
 		const body = `window.__APP_CONFIG__ = {
     API_BASE_URL: '${apiBaseUrl}',
