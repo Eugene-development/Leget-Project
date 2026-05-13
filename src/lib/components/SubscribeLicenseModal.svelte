@@ -18,6 +18,7 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
+	import { formatDate } from '$lib/formatDate.js';
 
 	let {
 		open = false,
@@ -38,6 +39,7 @@
 				templateId
 				isActive
 				status
+				createdAt
 			}
 		}
 	`;
@@ -154,10 +156,10 @@
 			<div class="mb-6 flex items-start justify-between gap-4">
 				<div>
 					<h2 class="font-display text-xl font-semibold text-neutral-950">
-						Подписаться на «{templateName}»
+						Шаблон «{templateName}» — {price} ₽/{period}
 					</h2>
 					<p class="mt-1 text-sm text-neutral-500">
-						Шаблон «{templateName}» — {price} ₽/{period}
+						Средства начнут списываться с баланса по истечении 3-дневного тестового периода
 					</p>
 				</div>
 				<button
@@ -166,7 +168,12 @@
 					aria-label="Закрыть"
 				>
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					</svg>
 				</button>
 			</div>
@@ -175,71 +182,50 @@
 			{#if isLoading}
 				<div class="flex items-center justify-center py-10">
 					<svg class="h-7 w-7 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
-						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+						></circle>
+						<path
+							class="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+						></path>
 					</svg>
 					<span class="ml-3 text-sm text-neutral-500">Загрузка...</span>
 				</div>
-
 			{:else if error}
 				<div class="rounded-2xl border border-red-100 bg-red-50 p-4 text-sm text-red-600">
 					{error}
 				</div>
-
-			{:else if licenses.length === 0}
-				<!-- No licenses yet — offer to create one -->
-				<div class="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-center">
-					<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100">
-						<svg class="h-6 w-6 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.5v15m7.5-7.5h-15" />
-						</svg>
-					</div>
-					<p class="text-sm font-semibold text-neutral-950">У вас пока нет сайтов</p>
-					<p class="mt-1 text-sm text-neutral-500">
-						Создайте новый сайт с шаблоном «{templateName}» прямо сейчас
-					</p>
-					<button
-						onclick={createAndSubscribe}
-						disabled={isSaving}
-						class="mt-4 w-full rounded-xl bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-700 disabled:opacity-50"
-					>
-						{isSaving ? 'Создаём сайт...' : 'Создать сайт с этим шаблоном'}
-					</button>
-				</div>
-
 			{:else}
-				<!-- Has licenses — let user pick one -->
-				<p class="mb-4 text-sm text-neutral-500">
-					Выберите сайт, которому хотите назначить шаблон, или создайте новый:
-				</p>
-				<ul class="flex flex-col gap-3">
-					{#each licenses as license (license.id)}
-						<li class="flex items-center justify-between gap-4 rounded-2xl border border-neutral-100 bg-neutral-50 px-5 py-4">
-							<div class="min-w-0">
-								<p class="truncate font-medium text-neutral-950">
-									{license.name || license.domain}
-								</p>
-								<p class="truncate text-xs text-neutral-500">{license.domain}</p>
-								{#if license.templateId === templateId}
-									<span class="mt-1 inline-block text-xs font-medium text-green-600">
-										✓ Уже использует этот шаблон
-									</span>
-								{/if}
-							</div>
-							{#if successLicenseId === license.id}
-								<span class="shrink-0 text-sm font-semibold text-green-600">Применено ✓</span>
-							{:else}
-								<button
-									onclick={() => subscribe(license.id)}
-									disabled={isSaving || license.templateId === templateId}
-									class="shrink-0 rounded-lg bg-neutral-950 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									{license.templateId === templateId ? 'Выбран' : 'Выбрать'}
-								</button>
-							{/if}
-						</li>
-					{/each}
-				</ul>
+				{@const filteredLicenses = licenses.filter((l) => l.templateId === templateId)}
+				{#if filteredLicenses.length > 0}
+					<p class="mb-4 text-sm text-neutral-500">
+						Ваши сайты, которые уже используют этот шаблон:
+					</p>
+					<ul class="flex flex-col gap-3">
+						{#each filteredLicenses as license (license.id)}
+							<li
+								class="flex items-center justify-between gap-4 rounded-2xl border border-neutral-100 bg-neutral-50 px-5 py-4"
+							>
+								<div class="min-w-0">
+									<p class="truncate font-medium text-neutral-950">
+										{license.name || license.domain}
+									</p>
+									<p class="truncate text-xs text-neutral-500">{license.domain}</p>
+									{#if license.createdAt}
+										<p class="mt-1 text-xs text-neutral-500">
+											Подписка активна с: {formatDate(license.createdAt)}
+										</p>
+									{/if}
+								</div>
+							</li>
+						{/each}
+					</ul>
+				{:else}
+					<div class="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-center">
+						<p class="text-sm text-neutral-500">У вас пока нет сайтов, использующих этот шаблон.</p>
+					</div>
+				{/if}
 
 				<!-- Option to create a new license -->
 				<div class="mt-4 border-t border-neutral-100 pt-4">

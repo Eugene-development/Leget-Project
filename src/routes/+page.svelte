@@ -22,8 +22,8 @@
 		{ name: 'Nginx' },
 		{ name: 'MySQL' },
 		{ name: 'Redis' },
-		{ name: 'S3' },
-		{ name: 'n8n' },
+		{ name: 'S3 Storage' },
+		{ name: 'Kafka' },
 		{ name: 'Tailwind' }
 	];
 	// const clients = [
@@ -41,7 +41,7 @@
 	const caseStudies = [
 		{
 			client: 'Promo-1',
-			name: 'Промо-1',
+			name: 'Promo-1',
 			title: 'Мебель на заказ',
 			description:
 				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
@@ -51,7 +51,7 @@
 		},
 		{
 			client: 'Promo-2',
-			name: 'Промо-2',
+			name: 'Promo-2',
 			title: 'Фабрика мебели',
 			description:
 				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки для вашего продукта.',
@@ -61,7 +61,7 @@
 		},
 		{
 			client: 'Promo-3',
-			name: 'Промо-3',
+			name: 'Promo-3',
 			title: 'Мебельный магазин',
 			description: 'Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
 			href: '/projects/promo-3',
@@ -96,7 +96,7 @@
 			Дружелюбная к SEO и рекламному продвижению архитектура выведет ваш бизнес на шаг вперёд
 			конкурентов <span class="text-neutral-900">всего за 170 рублей</span> в день.
 		</p>
-		
+
 		<!-- <p class="mt-6 text-xl text-neutral-600">
 			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
 		</p> -->
@@ -148,10 +148,10 @@
 					class="relative flex w-full flex-col rounded-3xl p-6 ring-1 ring-neutral-950/5 transition hover:bg-neutral-50 sm:p-8"
 				>
 					<p class="mt-6 flex gap-x-2 text-sm text-neutral-950">
-						<span class="font-semibold">{caseStudy.name}</span>
+						<span class="font-semibold">Шаблон: {caseStudy.name}</span>
 						<span class="text-neutral-300" aria-hidden="true">/</span>
 						<time dateTime={caseStudy.date}>
-							{caseStudy.date}
+							Обновление: {caseStudy.date}
 						</time>
 					</p>
 					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">

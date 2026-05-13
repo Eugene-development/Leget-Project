@@ -39,7 +39,8 @@
 			],
 			logo: '/images/clients/promo-2/logo-dark.svg',
 			href: '/projects/promo-2',
-			price: 30,
+			inDevelopment: true,
+			price: 170,
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
@@ -57,7 +58,8 @@
 			],
 			logo: '/images/clients/promo-3/logo-dark.svg',
 			href: '/projects/promo-3',
-			price: 310,
+			inDevelopment: true,
+			price: 170,
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
@@ -84,7 +86,7 @@
 	<title>Готовые проекты сайтов для бизнеса — Студия LEGET</title>
 	<meta
 		name="description"
-		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 30 ₽/день."
+		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 170 ₽/день."
 	/>
 </svelte:head>
 
@@ -136,9 +138,19 @@
 								{/each}
 							</div>
 							<div class="mt-8 flex gap-x-4">
-								<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
-									Подробнее
-								</Button>
+								{#if caseStudy.inDevelopment}
+									<Button
+										disabled
+										class="cursor-not-allowed opacity-50 disabled:pointer-events-none disabled:hover:bg-neutral-950"
+										aria-label="Шаблон в разработке: {caseStudy.client}"
+									>
+										В разработке
+									</Button>
+								{:else}
+									<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
+										Подробнее
+									</Button>
+								{/if}
 							</div>
 						</div>
 					</Border>

@@ -82,7 +82,7 @@
 			open={modalOpen}
 			templateId={TEMPLATE_ID}
 			templateName="Promo-2"
-			price="30"
+			price="170"
 			period="день"
 			onClose={() => (modalOpen = false)}
 			onSuccess={(id) => {

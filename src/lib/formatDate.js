@@ -7,7 +7,13 @@ export function formatDate(dateString) {
 	let parts = dateString.split('-');
 	let hasDay = parts.length > 2;
 
-	return new Date(`${dateString}T00:00:00Z`).toLocaleDateString('ru-RU', {
+	// If it's a full ISO string (contains T) or already has time, use as is.
+	// Otherwise, append T00:00:00Z to ensure consistent UTC parsing.
+	const date = (dateString.includes('T') || dateString.includes(' '))
+		? new Date(dateString)
+		: new Date(`${dateString}T00:00:00Z`);
+
+	return date.toLocaleDateString('ru-RU', {
 		day: hasDay ? '2-digit' : undefined,
 		month: hasDay ? '2-digit' : 'long',
 		year: 'numeric',
