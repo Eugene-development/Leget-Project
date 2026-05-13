@@ -21,9 +21,21 @@
 		}
 	`;
 
+	const UPDATE_LICENSE_DOMAIN_MUTATION = `
+		mutation UpdateLicense($id: ID!, $domain: String!) {
+			updateLicense(id: $id, domain: $domain) {
+				id
+				domain
+			}
+		}
+	`;
+
 	let licenses = $state([]);
 	let isLoading = $state(true);
 	let error = $state(null);
+
+	let domainValues = $state({});
+	let isUpdating = $state({});
 
 	/** Map templateId to a human-readable template name */
 	const TEMPLATE_NAMES = {
@@ -48,11 +60,39 @@
 		try {
 			const data = await graphqlRequest(MY_LICENSES_QUERY);
 			licenses = data.myLicenses ?? [];
+			// Инициализируем значения доменов
+			licenses.forEach(l => {
+				domainValues[l.id] = l.domain || '';
+			});
 		} catch (err) {
 			console.error('Failed to fetch licenses:', err);
 			error = err.message || 'Не удалось загрузить список сайтов';
 		} finally {
 			isLoading = false;
+		}
+	}
+
+	async function handleUpdateDomain(licenseId) {
+		const domain = domainValues[licenseId];
+		if (!domain) return;
+
+		isUpdating[licenseId] = true;
+		try {
+			const data = await graphqlRequest(UPDATE_LICENSE_DOMAIN_MUTATION, {
+				id: licenseId,
+				domain
+			});
+			
+			// Обновляем локальное состояние
+			const index = licenses.findIndex(l => l.id === licenseId);
+			if (index !== -1) {
+				licenses[index] = { ...licenses[index], domain: data.updateLicense.domain };
+			}
+		} catch (err) {
+			console.error('Failed to update domain:', err);
+			alert(err.message || 'Не удалось обновить домен');
+		} finally {
+			isUpdating[licenseId] = false;
 		}
 	}
 </script>
@@ -150,68 +190,94 @@
 			<FadeIn>
 				<div class="flex max-w-3xl flex-col gap-6">
 					{#each licenses as license (license.id)}
-						<a
-							href="/lk/sites/{license.id}"
+						<div
 							class="group rounded-3xl border border-neutral-100 bg-neutral-50 p-6 shadow-sm ring-1 ring-neutral-950/5 transition hover:bg-white hover:shadow-md"
 						>
-							<div class="flex items-center justify-between gap-4">
-								<div class="min-w-0 flex-1">
-									<h3
-										class="font-display text-lg font-semibold text-neutral-950 group-hover:text-neutral-700"
-									>
-										{license.name || license.domain}
-									</h3>
-									<p class="mt-1 truncate text-sm text-neutral-500">
-										{license.domain}
-									</p>
-									{#if getTemplateName(license.templateId)}
-										<p class="mt-1 text-xs text-neutral-400">
-											Шаблон:
-											<span class="font-medium text-neutral-600">
-												{getTemplateName(license.templateId)}
-											</span>
+							<div class="flex flex-col gap-6">
+								<div class="flex items-start justify-between gap-4">
+									<a href="/lk/sites/{license.id}" class="min-w-0 flex-1">
+										<h3
+											class="font-display text-lg font-semibold text-neutral-950 hover:text-neutral-700"
+										>
+											{license.name || license.domain}
+										</h3>
+										<p class="mt-1 truncate text-sm text-neutral-500">
+											{license.domain}
 										</p>
-									{/if}
+										{#if getTemplateName(license.templateId)}
+											<p class="mt-1 text-xs text-neutral-400">
+												Шаблон:
+												<span class="font-medium text-neutral-600">
+													{getTemplateName(license.templateId)}
+												</span>
+											</p>
+										{/if}
+									</a>
+									<div class="flex shrink-0 items-center gap-3">
+										{#if license.isActive && license.status === 'active'}
+											<span
+												class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
+											>
+												<span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+												Активен
+											</span>
+										{:else if license.status === 'cancelled'}
+											<span
+												class="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600"
+											>
+												<span class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>
+												Отменён
+											</span>
+										{:else}
+											<span
+												class="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700"
+											>
+												<span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+												Приостановлен
+											</span>
+										{/if}
+										<a href="/lk/sites/{license.id}">
+											<svg
+												class="h-5 w-5 text-neutral-400 transition hover:text-neutral-600"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2"
+													d="M9 5l7 7-7 7"
+												/>
+											</svg>
+										</a>
+									</div>
 								</div>
-								<div class="flex shrink-0 items-center gap-3">
-									{#if license.isActive && license.status === 'active'}
-										<span
-											class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
-										>
-											<span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
-											Активен
-										</span>
-									{:else if license.status === 'cancelled'}
-										<span
-											class="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600"
-										>
-											<span class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>
-											Отменён
-										</span>
-									{:else}
-										<span
-											class="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700"
-										>
-											<span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
-											Приостановлен
-										</span>
-									{/if}
-									<svg
-										class="h-5 w-5 text-neutral-400 transition group-hover:text-neutral-600"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M9 5l7 7-7 7"
+
+								<!-- Поле назначения домена -->
+								<div class="flex flex-col gap-3 pt-4 border-t border-neutral-100">
+									<label for="domain-{license.id}" class="text-sm font-semibold text-neutral-950">
+										Назначить домен
+									</label>
+									<div class="flex gap-3">
+										<input
+											id="domain-{license.id}"
+											type="text"
+											placeholder="example.com"
+											bind:value={domainValues[license.id]}
+											class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-2 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
 										/>
-									</svg>
+										<Button 
+											class="px-4 py-2"
+											onclick={() => handleUpdateDomain(license.id)}
+											disabled={isUpdating[license.id] || !domainValues[license.id] || domainValues[license.id] === license.domain}
+										>
+											{isUpdating[license.id] ? '...' : 'Ок'}
+										</Button>
+									</div>
 								</div>
 							</div>
-						</a>
+						</div>
 					{/each}
 				</div>
 			</FadeIn>
