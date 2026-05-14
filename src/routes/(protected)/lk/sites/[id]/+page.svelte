@@ -13,7 +13,6 @@
 			license(id: $id) {
 				id
 				name
-				metaDescription
 				domain
 				templateId
 				isActive
@@ -28,20 +27,17 @@
 		mutation UpdateLicense(
 			$id: ID!
 			$name: String
-			$metaDescription: String
 			$headerData: JSON
 			$footerData: JSON
 		) {
 			updateLicense(
 				id: $id
 				name: $name
-				metaDescription: $metaDescription
 				headerData: $headerData
 				footerData: $footerData
 			) {
 				id
 				name
-				metaDescription
 				headerData
 				footerData
 			}
@@ -59,13 +55,9 @@
 
 	// ── Basic fields ──────────────────────────────────────────────
 	let formName = $state('');
-	let formMetaDescription = $state('');
 
 	// ── Contact / site info (stored in header_data & footer_data) ─
 	let formCity = $state('');
-	let formPhones = $state(['']);
-	let formEmails = $state(['']);
-	let formAddresses = $state(['']);
 	let formYandexMetrica = $state('');
 	let formGoogleAnalytics = $state('');
 
@@ -89,14 +81,10 @@
 			license = data.license;
 
 			formName = license.name ?? '';
-			formMetaDescription = license.metaDescription ?? '';
 
 			// Hydrate contact fields from header_data
 			const h = license.headerData ?? {};
 			formCity             = h.city             ?? '';
-			formPhones           = h.phones?.length   ? [...h.phones]    : [''];
-			formEmails           = h.emails?.length   ? [...h.emails]    : [''];
-			formAddresses        = h.addresses?.length ? [...h.addresses] : [''];
 			formYandexMetrica    = h.yandexMetrica    ?? '';
 			formGoogleAnalytics  = h.googleAnalytics  ?? '';
 		} catch (err) {
@@ -109,18 +97,11 @@
 
 	/** Build header_data / footer_data from form fields */
 	function buildJsonData() {
-		const phones    = formPhones.filter(Boolean);
-		const emails    = formEmails.filter(Boolean);
-		const addresses = formAddresses.filter(Boolean);
-
 		const existing = license?.headerData ?? {};
 
 		const headerData = {
 			...existing,
 			city:             formCity             || null,
-			phones:           phones.length   ? phones    : null,
-			emails:           emails.length   ? emails    : null,
-			addresses:        addresses.length ? addresses : null,
 			yandexMetrica:    formYandexMetrica    || null,
 			googleAnalytics:  formGoogleAnalytics  || null,
 		};
@@ -128,9 +109,6 @@
 		const existingFooter = license?.footerData ?? {};
 		const footerData = {
 			...existingFooter,
-			phones:    phones.length   ? phones    : null,
-			emails:    emails.length   ? emails    : null,
-			addresses: addresses.length ? addresses : null,
 		};
 
 		return { headerData, footerData };
@@ -148,7 +126,6 @@
 			const data = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
 				id: licenseId,
 				name: formName,
-				metaDescription: formMetaDescription,
 				headerData,
 				footerData,
 			});
@@ -173,9 +150,6 @@
 		}
 	}
 
-	// ── Array field helpers ───────────────────────────────────────
-	function addItem(arr) { arr.push(''); }
-	function removeItem(arr, i) { arr.splice(i, 1); if (arr.length === 0) arr.push(''); }
 
 	// ── Cancel license ────────────────────────────────────────────
 	const CANCEL_LICENSE_MUTATION = `
@@ -306,30 +280,16 @@
 							<h3 class="font-display text-lg font-semibold text-neutral-950">Основное</h3>
 
 							<div class="group relative">
-								<label for="site-name" class="block text-sm font-semibold text-neutral-950">Название сайта</label>
+								<label for="site-name" class="block text-sm font-semibold text-neutral-950">Название проекта</label>
 								<input
 									type="text"
 									id="site-name"
 									bind:value={formName}
-									placeholder="Введите название сайта"
+									placeholder="Введите название проекта"
 									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
 								/>
 								{#if fieldErrors.name}
 									<p class="mt-2 text-sm text-red-600">{fieldErrors.name}</p>
-								{/if}
-							</div>
-
-							<div class="group relative">
-								<label for="site-meta-description" class="block text-sm font-semibold text-neutral-950">Мета-описание</label>
-								<textarea
-									id="site-meta-description"
-									bind:value={formMetaDescription}
-									placeholder="Краткое описание сайта для поисковых систем"
-									rows="3"
-									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
-								></textarea>
-								{#if fieldErrors.metaDescription || fieldErrors.meta_description}
-									<p class="mt-2 text-sm text-red-600">{fieldErrors.metaDescription || fieldErrors.meta_description}</p>
 								{/if}
 							</div>
 
@@ -356,103 +316,6 @@
 							</div>
 						</section>
 
-						<!-- ── Section: Контакты ── -->
-						<section class="space-y-6">
-							<h3 class="font-display text-lg font-semibold text-neutral-950">Контакты</h3>
-
-							<!-- Phones -->
-							<div class="group relative">
-								<div class="mb-3 flex items-center justify-between">
-									<span class="text-sm font-semibold text-neutral-950">Телефоны</span>
-									<button type="button" onclick={() => addItem(formPhones)} class="flex items-center gap-1 text-xs font-semibold text-neutral-950 hover:text-neutral-600">
-										<svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
-											<path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-										</svg>
-										Добавить
-									</button>
-								</div>
-								<div class="space-y-3">
-									{#each formPhones as _, i}
-										<div class="flex items-center gap-3">
-											<input
-												type="tel"
-												bind:value={formPhones[i]}
-												placeholder="+7 (___) ___-__-__"
-												aria-label="Номер телефона {i + 1}"
-												class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
-											/>
-											<button type="button" onclick={() => removeItem(formPhones, i)} class="rounded-full p-2 text-neutral-400 transition hover:bg-red-50 hover:text-red-500" title="Удалить">
-												<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
-													<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-												</svg>
-											</button>
-										</div>
-									{/each}
-								</div>
-							</div>
-
-							<!-- Emails -->
-							<div class="group relative">
-								<div class="mb-3 flex items-center justify-between">
-									<span class="text-sm font-semibold text-neutral-950">Почта на сайт</span>
-									<button type="button" onclick={() => addItem(formEmails)} class="flex items-center gap-1 text-xs font-semibold text-neutral-950 hover:text-neutral-600">
-										<svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
-											<path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-										</svg>
-										Добавить
-									</button>
-								</div>
-								<div class="space-y-3">
-									{#each formEmails as _, i}
-										<div class="flex items-center gap-3">
-											<input
-												type="email"
-												bind:value={formEmails[i]}
-												placeholder="example@mail.com"
-												aria-label="Электронная почта {i + 1}"
-												class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
-											/>
-											<button type="button" onclick={() => removeItem(formEmails, i)} class="rounded-full p-2 text-neutral-400 transition hover:bg-red-50 hover:text-red-500" title="Удалить">
-												<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
-													<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-												</svg>
-											</button>
-										</div>
-									{/each}
-								</div>
-							</div>
-
-							<!-- Addresses -->
-							<div class="group relative">
-								<div class="mb-3 flex items-center justify-between">
-									<span class="text-sm font-semibold text-neutral-950">Адреса</span>
-									<button type="button" onclick={() => addItem(formAddresses)} class="flex items-center gap-1 text-xs font-semibold text-neutral-950 hover:text-neutral-600">
-										<svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
-											<path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-										</svg>
-										Добавить
-									</button>
-								</div>
-								<div class="space-y-3">
-									{#each formAddresses as _, i}
-										<div class="flex items-start gap-3">
-											<textarea
-												bind:value={formAddresses[i]}
-												placeholder="Введите адрес..."
-												rows="2"
-												aria-label="Адрес {i + 1}"
-												class="block w-full resize-none rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
-											></textarea>
-											<button type="button" onclick={() => removeItem(formAddresses, i)} class="mt-3 rounded-full p-2 text-neutral-400 transition hover:bg-red-50 hover:text-red-500" title="Удалить">
-												<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
-													<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-												</svg>
-											</button>
-										</div>
-									{/each}
-								</div>
-							</div>
-						</section>
 
 						<!-- ── Section: Аналитика ── -->
 						<section class="space-y-6">

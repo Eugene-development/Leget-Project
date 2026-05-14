@@ -27,7 +27,7 @@
 	// Navigation structure
 	const navigation = [
 		{
-			title: 'Проекты',
+			title: 'Шаблоны',
 			links: [
 				{ title: 'Promo 1', href: '/projects/promo-1' },
 				{ title: 'Promo 2', href: '/projects/promo-2' },
