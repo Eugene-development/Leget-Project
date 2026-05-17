@@ -72,7 +72,7 @@
 		{ label: 'Страницы сайта' }
 	]}
 >
-	<p>Список страниц вашего сайта. Создавайте новые страницы и редактируйте существующие.</p>
+	<!-- <p>Список страниц вашего сайта. Создавайте новые страницы и редактируйте существующие.</p> -->
 </PageIntro>
 
 <Container class="mt-12 mb-24 sm:mt-20 lg:mt-24">
@@ -80,18 +80,8 @@
 		{#if isLoading}
 			<FadeIn>
 				<div class="flex items-center justify-center py-16">
-					<svg
-						class="h-8 w-8 animate-spin text-neutral-400"
-						fill="none"
-						viewBox="0 0 24 24"
-					>
-						<circle
-							class="opacity-25"
-							cx="12"
-							cy="12"
-							r="10"
-							stroke="currentColor"
-							stroke-width="4"
+					<svg class="h-8 w-8 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
 						></circle>
 						<path
 							class="opacity-75"
@@ -137,9 +127,7 @@
 					<h3 class="font-display text-xl font-semibold text-neutral-950">
 						У вас пока нет страниц
 					</h3>
-					<p class="mt-2 text-sm text-neutral-600">
-						Создайте первую страницу для вашего сайта.
-					</p>
+					<p class="mt-2 text-sm text-neutral-600">Создайте первую страницу для вашего сайта.</p>
 					<div class="mt-6">
 						<Button href="/lk/sites/{licenseId}/pages/new">Создать страницу</Button>
 					</div>
@@ -150,7 +138,8 @@
 				<div class="flex max-w-3xl flex-col gap-6">
 					<div class="flex items-center justify-between">
 						<p class="text-sm text-neutral-500">
-							{pages.length} {pages.length === 1 ? 'страница' : pages.length < 5 ? 'страницы' : 'страниц'}
+							{pages.length}
+							{pages.length === 1 ? 'страница' : pages.length < 5 ? 'страницы' : 'страниц'}
 						</p>
 						<Button href="/lk/sites/{licenseId}/pages/new" invert>Создать страницу</Button>
 					</div>

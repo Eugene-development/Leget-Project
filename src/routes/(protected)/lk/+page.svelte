@@ -58,6 +58,7 @@
 						</p> -->
 					</div>
 					<div class="flex gap-3">
+						<Button href="/lk/balance" invert>Баланс и платежи</Button>
 						<Button href="/lk/sites" invert>Ваши сайты</Button>
 						<Button onclick={handleLogout} class="bg-neutral-600 text-white hover:bg-neutral-700">
 							Выйти
@@ -66,20 +67,7 @@
 				</div>
 
 				<div class="space-y-12">
-					<!-- Balance at the top -->
-					<div
-						class="rounded-3xl border border-white/50 bg-neutral-50 p-8 shadow-sm ring-1 ring-neutral-950/5"
-					>
-						<div class="flex flex-wrap items-center justify-between gap-6">
-							<div>
-								<p class="text-sm font-semibold text-neutral-600">Баланс на счёте</p>
-								<p class="mt-2 text-4xl font-semibold text-neutral-950">
-									{balance.toLocaleString('ru-RU')} ₽
-								</p>
-							</div>
-							<Button>Пополнить</Button>
-						</div>
-					</div>
+
 
 					<!-- Form Fields Grid -->
 					<div class="grid grid-cols-1 gap-8 md:grid-cols-2">

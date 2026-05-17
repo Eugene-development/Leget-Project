@@ -19,6 +19,7 @@
 				status
 				headerData
 				footerData
+				faviconUrl
 			}
 		}
 	`;
@@ -29,12 +30,14 @@
 			$name: String
 			$headerData: JSON
 			$footerData: JSON
+			$faviconUrl: String
 		) {
 			updateLicense(
 				id: $id
 				name: $name
 				headerData: $headerData
 				footerData: $footerData
+				faviconUrl: $faviconUrl
 			) {
 				id
 				name
@@ -55,6 +58,7 @@
 
 	// ── Basic fields ──────────────────────────────────────────────
 	let formName = $state('');
+	let formFaviconUrl = $state('');
 
 	// ── Contact / site info (stored in header_data & footer_data) ─
 	let formCity = $state('');
@@ -81,6 +85,7 @@
 			license = data.license;
 
 			formName = license.name ?? '';
+			formFaviconUrl = license.faviconUrl ?? '';
 
 			// Hydrate contact fields from header_data
 			const h = license.headerData ?? {};
@@ -128,6 +133,7 @@
 				name: formName,
 				headerData,
 				footerData,
+				faviconUrl: formFaviconUrl
 			});
 
 			license = { ...license, ...data.updateLicense };
@@ -147,6 +153,42 @@
 			}
 		} finally {
 			isSaving = false;
+		}
+	}
+	// ── Favicon Upload ───────────────────────────────────────────
+	let isUploadingFavicon = $state(false);
+
+	async function handleFaviconUpload(e) {
+		const file = e.target.files?.[0];
+		if (!file) return;
+
+		isUploadingFavicon = true;
+		error = null;
+
+		try {
+			// 1. Get pre-signed URL
+			const { generateUploadUrl: uploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
+				filename: file.name,
+				mimeType: file.type,
+				folder: 'favicons'
+			});
+
+			// 2. Upload to S3
+			const uploadResponse = await fetch(uploadData.uploadUrl, {
+				method: 'PUT',
+				body: file,
+				headers: { 'Content-Type': file.type }
+			});
+
+			if (!uploadResponse.ok) throw new Error('Ошибка при загрузке файла в хранилище');
+
+			// 3. Set URL in form
+			formFaviconUrl = uploadData.objectUrl;
+		} catch (err) {
+			console.error('Favicon upload failed:', err);
+			error = 'Не удалось загрузить фавиконку: ' + (err.message || 'неизвестная ошибка');
+		} finally {
+			isUploadingFavicon = false;
 		}
 	}
 
@@ -291,6 +333,37 @@
 								{#if fieldErrors.name}
 									<p class="mt-2 text-sm text-red-600">{fieldErrors.name}</p>
 								{/if}
+							</div>
+
+							<div class="group relative">
+								<label for="favicon-upload" class="block text-sm font-semibold text-neutral-950">Фавиконка</label>
+								<div class="mt-2 flex items-center gap-6">
+									<div class="flex h-16 w-16 items-center justify-center rounded-2xl border border-neutral-200 bg-neutral-50 overflow-hidden">
+										{#if formFaviconUrl}
+											<img src={formFaviconUrl} alt="Favicon" class="h-8 w-8 object-contain" />
+										{:else}
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neutral-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+											</svg>
+										{/if}
+									</div>
+									<div class="flex flex-col gap-2">
+										<label class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50">
+											{isUploadingFavicon ? 'Загрузка...' : 'Выбрать файл'}
+											<input type="file" id="favicon-upload" accept="image/*" class="hidden" onchange={handleFaviconUpload} disabled={isUploadingFavicon} />
+										</label>
+										{#if formFaviconUrl}
+											<button 
+												type="button" 
+												onclick={() => formFaviconUrl = ''} 
+												class="text-left text-xs font-semibold text-red-600 hover:text-red-700"
+											>
+												Удалить
+											</button>
+										{/if}
+										<p class="text-[10px] text-neutral-400">PNG, ICO или SVG, до 1 МБ</p>
+									</div>
+								</div>
 							</div>
 
 							<div class="group relative">
