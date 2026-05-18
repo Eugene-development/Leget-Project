@@ -27,7 +27,7 @@
 		{ href: '/prices', label: 'Цены' },
 		{ href: '/projects', label: 'Проекты' },
 		{ href: '/about', label: 'О нас' },
-		{ href: '/process', label: 'Процесс' },
+		{ href: '/process', label: 'Настройка' },
 		{ href: '/news', label: 'Новости' },
 		{ href: '/contact', label: 'Контакты' }
 	];

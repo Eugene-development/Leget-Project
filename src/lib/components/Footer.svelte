@@ -30,8 +30,8 @@
 			title: 'Шаблоны',
 			links: [
 				{ title: 'Promo 1', href: '/projects/promo-1' },
-				{ title: 'Promo 2', href: '/projects/promo-2' },
-				{ title: 'Promo 3', href: '/projects/promo-3' },
+				{ title: 'Promo 2', disabled: true },
+				{ title: 'Promo 3', disabled: true },
 				{ title: 'Смотреть все', href: '/projects', hasArrow: true }
 			]
 		},
@@ -39,7 +39,7 @@
 			title: 'Компания',
 			links: [
 				{ title: 'О нас', href: '/about' },
-				{ title: 'Интеграция', href: '/process' },
+				{ title: 'Настройка', href: '/process' },
 				{ title: 'Новости', href: '/news' },
 				{ title: 'Контакты', href: '/contact' }
 			]
@@ -87,12 +87,16 @@
 							<ul role="list" class="mt-4 text-sm text-neutral-700">
 								{#each section.links as link, linkIndex}
 									<li class="mt-4">
+									{#if link.disabled}
+										<span class="cursor-not-allowed text-neutral-400" title="В разработке">{link.title}</span>
+									{:else}
 										<a href={link.href} class="transition hover:text-neutral-950">
 											{link.title}
 											{#if link.hasArrow}
 												<span aria-hidden="true">→</span>
 											{/if}
 										</a>
+									{/if}
 									</li>
 								{/each}
 							</ul>

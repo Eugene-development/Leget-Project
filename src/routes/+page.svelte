@@ -101,8 +101,8 @@
 			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
 		</p> -->
 		<div class="mt-10 flex flex-wrap gap-4">
-			<Button href="/register">Регистрация</Button>
-			<Button href="/login" invert>Кабинет</Button>
+			<Button href="/register" class="px-8 py-3 text-lg">Зарегистрировать аккаунт</Button>
+			<Button href="/login" invert class="px-8 py-3 text-lg">Войти в кабинет</Button>
 		</div>
 	</FadeIn>
 </Container>
