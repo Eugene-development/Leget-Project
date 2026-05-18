@@ -56,7 +56,7 @@
 			<!-- Full Logo for larger screens -->
 			<Logo class="hidden h-9 sm:block" {invert} filled={logoHovered} />
 			<span
-				class="ml-1 text-3xl leading-none font-semibold tracking-normal sm:-ml-4 {invert
+				class="ml-1 text-4xl leading-none font-semibold tracking-normal sm:text-3xl sm:-ml-4 {invert
 					? 'text-white'
 					: 'text-neutral-950'}">Léget</span
 			>
