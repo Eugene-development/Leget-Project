@@ -20,13 +20,14 @@
 	// Новости articles data (migrated from MDX files)
 	const articles = [
 		{
-			href: '/news/1',
-			date: '2025-08-01',
-			title: 'Старт проекта LEGET',
-			description: 'Начало работы',
+			href: '/news/4',
+			date: '2026-05-18',
+			title: 'Скорость — главный фактор юзабилити: как мы ускорили LEGET',
+			description:
+				'Исследования показывают: 53% пользователей покидают сайт, если он грузится дольше 3 секунд. Мы провели оптимизацию сервисов LEGET — ускорение API-запросов, кэширование, сжатие контента и оптимизацию фронтенда — что значительно повысило скорость работы платформы.',
 			author: {
 				name: 'Евгений Че',
-				role: 'CEO',
+				role: 'CEO LEGET',
 				image: '/images/team/andrey.jpg'
 			}
 		},
@@ -52,6 +53,17 @@
 				name: 'Angela Fisher',
 				role: 'Front-end Developer',
 				image: '/images/team/angela-fisher.jpg'
+			}
+		},
+		{
+			href: '/news/1',
+			date: '2025-08-01',
+			title: 'Старт проекта LEGET',
+			description: 'Начало работы',
+			author: {
+				name: 'Евгений Че',
+				role: 'CEO',
+				image: '/images/team/andrey.jpg'
 			}
 		}
 	];
@@ -90,15 +102,8 @@
 										</time>
 									</dd>
 									<dt class="sr-only">Author</dt>
+									<!-- Аватарка автора скрыта -->
 									<dd class="mt-6 flex gap-x-4">
-										<div class="flex-none overflow-hidden rounded-xl bg-neutral-100">
-											<img
-												alt=""
-												src={article.author.image}
-												class="h-12 w-12 object-cover grayscale"
-												loading="lazy"
-											/>
-										</div>
 										<div class="text-sm text-neutral-950">
 											<div class="font-semibold">
 												{article.author.name}
