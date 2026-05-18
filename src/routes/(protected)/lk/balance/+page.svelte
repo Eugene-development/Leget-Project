@@ -7,6 +7,7 @@
 	import TopUpModal from '$lib/components/TopUpModal.svelte';
 	import { browser } from '$app/environment';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
+	import { getApiUrl } from '$lib/utils/config.js';
 
 	const MY_WALLET_QUERY = `
 		query MyWallet($first: Int!, $page: Int) {
@@ -31,6 +32,20 @@
 		}
 	`;
 
+	const MY_INVOICES_QUERY = `
+		query MyInvoices {
+			myInvoices {
+				id
+				number
+				amount
+				status
+				companyName
+				inn
+				createdAt
+			}
+		}
+	`;
+
 	let wallet = $state(null);
 	let transactions = $state([]);
 	let isLoading = $state(true);
@@ -46,6 +61,11 @@
 	let selectedDay = $state(null);
 	let currentPage = $state(1);
 	let hasMorePages = $state(false);
+
+	// Счета на оплату (расчётный счёт)
+	let invoices = $state([]);
+	let isLoadingInvoices = $state(false);
+	let downloadingId = $state(null); // ID счёта, который сейчас скачивается
 
 	function changeMonth(delta) {
 		const newDate = new Date(calendarYear, calendarMonth + delta, 1);
@@ -152,6 +172,50 @@
 			fetchWallet();
 		}
 	}
+
+	async function fetchInvoices() {
+		isLoadingInvoices = true;
+		try {
+			const data = await graphqlRequest(MY_INVOICES_QUERY);
+			invoices = data.myInvoices ?? [];
+		} catch (err) {
+			console.error('Failed to fetch invoices:', err);
+		} finally {
+			isLoadingInvoices = false;
+		}
+	}
+
+	function handleInvoiceCreated(invoice) {
+		// Добавляем новый счёт в начало списка без полного перезапроса
+		invoices = [invoice, ...invoices];
+	}
+
+	async function downloadInvoice(invoiceId) {
+		const base = getApiUrl().replace(/\/api\/?$/, '');
+		const token = localStorage.getItem('auth_token');
+		downloadingId = invoiceId;
+		try {
+			const response = await fetch(`${base}/invoices/${invoiceId}/download`, {
+				headers: token ? { Authorization: `Bearer ${token}` } : {}
+			});
+			if (!response.ok) throw new Error('Ошибка загрузки');
+			const html = await response.text();
+			const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+			const url = URL.createObjectURL(blob);
+			const win = window.open(url, '_blank');
+			setTimeout(() => URL.revokeObjectURL(url), 1000);
+			if (!win) alert('Разрешите всплывающие окна для открытия счёта');
+		} catch (err) {
+			console.error('Invoice download error:', err);
+			alert('Не удалось открыть счёт. Попробуйте позже.');
+		} finally {
+			downloadingId = null;
+		}
+	}
+
+	$effect(() => {
+		if (browser) fetchInvoices();
+	});
 
 	function groupTransactionsByDay(transactions) {
 		if (!transactions) return [];
@@ -345,7 +409,7 @@
 						</FadeIn>
 					{:else}
 						<div class="flex flex-col gap-10">
-							{#each groupedTransactions as group}
+							{#each groupedTransactions as group (group.date)}
 								<FadeIn>
 									<div class="flex flex-col gap-4">
 										<h3
@@ -450,6 +514,7 @@
 						<div class="flex items-center justify-between rounded-3xl bg-neutral-50 p-6">
 							<button
 								onclick={() => changeMonth(-1)}
+								aria-label="Предыдущий месяц"
 								class="flex h-10 w-10 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50"
 							>
 								<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -466,6 +531,7 @@
 							</h3>
 							<button
 								onclick={() => changeMonth(1)}
+								aria-label="Следующий месяц"
 								class="flex h-10 w-10 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50"
 							>
 								<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -482,12 +548,12 @@
 
 					<FadeInStagger>
 						<div class="grid grid-cols-7 gap-px overflow-hidden rounded-3xl bg-neutral-200 border border-neutral-200 shadow-sm mt-8">
-							{#each ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] as dayName}
+							{#each ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] as dayName (dayName)}
 								<div class="bg-neutral-50 py-3 text-center text-xs font-bold text-neutral-500 uppercase">
 									{dayName}
 								</div>
 							{/each}
-							{#each calendarDays as day}
+							{#each calendarDays as day, i (day.day ? 'day-' + day.day : 'pad-' + i)}
 								{#if day.day}
 									<button 
 										onclick={() => selectedDay = selectedDay === day.day ? null : day.day}
@@ -572,12 +638,110 @@
 					</FadeInStagger>
 				{/if}
 			</div>
-		{/if}
-	</FadeInStagger>
-</Container>
+				<!-- Invoices Section -->
+				<FadeIn>
+					<div class="flex flex-col gap-6">
+						<div class="flex items-center justify-between">
+							<h2 class="font-display text-2xl font-semibold text-neutral-950">Счета на оплату</h2>
+							<button
+								onclick={() => (isModalOpen = true)}
+								class="flex items-center gap-1.5 text-sm font-semibold text-neutral-500 transition hover:text-neutral-950"
+							>
+								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+								</svg>
+								Выставить счёт
+							</button>
+						</div>
+
+						{#if isLoadingInvoices}
+							<div class="flex items-center gap-2 py-4 text-sm text-neutral-400">
+								<svg class="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+								</svg>
+								Загрузка счетов...
+							</div>
+						{:else if invoices.length === 0}
+							<div class="rounded-3xl border border-neutral-100 bg-neutral-50 p-10 text-center">
+								<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-100">
+									<svg class="h-6 w-6 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+									</svg>
+								</div>
+								<p class="text-sm text-neutral-500">Счета ещё не выставлялись</p>
+								<p class="mt-1 text-xs text-neutral-400">Нажмите «Пополнить баланс» и выберите вкладку «Расчётный счёт»</p>
+							</div>
+						{:else}
+							<div class="overflow-hidden rounded-3xl border border-neutral-100 bg-white shadow-sm ring-1 ring-neutral-950/5">
+								<!-- Заголовок таблицы -->
+								<div class="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 border-b border-neutral-100 bg-neutral-50 px-5 py-3">
+									<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">Номер / Плательщик</span>
+									<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">Дата</span>
+									<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">Сумма</span>
+									<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">Статус</span>
+								</div>
+								<ul class="divide-y divide-neutral-100">
+									{#each invoices as inv (inv.id)}
+										<li class="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 p-5">
+											<!-- Номер и плательщик -->
+											<div class="min-w-0">
+												<p class="truncate font-medium text-neutral-950">№ {inv.number}</p>
+												<p class="mt-0.5 truncate text-xs text-neutral-500">
+													{inv.companyName}{inv.inn ? ', ИНН ' + inv.inn : ''}
+												</p>
+											</div>
+											<!-- Дата -->
+											<span class="whitespace-nowrap text-sm text-neutral-500">
+												{new Date(inv.createdAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })}
+											</span>
+											<!-- Сумма -->
+											<span class="whitespace-nowrap font-semibold text-neutral-950">
+												{parseFloat(inv.amount).toLocaleString('ru-RU')} ₽
+											</span>
+											<!-- Статус + кнопка -->
+											<div class="flex items-center gap-3">
+												<span class="rounded-full px-2.5 py-0.5 text-xs font-semibold
+													{inv.status === 'paid'
+														? 'bg-green-50 text-green-700'
+														: inv.status === 'cancelled'
+															? 'bg-red-50 text-red-600'
+															: 'bg-amber-50 text-amber-700'}"
+												>
+													{inv.status === 'paid' ? 'Оплачен' : inv.status === 'cancelled' ? 'Отменён' : 'Ожидает оплаты'}
+												</span>
+												<button
+													onclick={() => downloadInvoice(inv.id)}
+													disabled={downloadingId === inv.id}
+													class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-neutral-200 text-neutral-500 transition hover:border-neutral-950 hover:text-neutral-950 disabled:opacity-40"
+													title="Открыть счёт"
+												>
+													{#if downloadingId === inv.id}
+														<svg class="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+															<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+															<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+														</svg>
+													{:else}
+														<svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+														</svg>
+													{/if}
+												</button>
+											</div>
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
+					</div>
+				</FadeIn>
+			{/if}
+		</FadeInStagger>
+	</Container>
 
 <TopUpModal
 	open={isModalOpen}
 	onClose={() => (isModalOpen = false)}
 	onSuccess={handleTopUpSuccess}
+	onInvoiceCreated={handleInvoiceCreated}
 />
