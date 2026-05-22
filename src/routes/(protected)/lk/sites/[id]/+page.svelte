@@ -47,6 +47,31 @@
 		}
 	`;
 
+	const GET_CATALOG_QUERY = `
+		query GetCatalog {
+			rubrics {
+				id
+				value
+				slug
+				categories {
+					id
+					value
+					slug
+					is_enabled
+				}
+			}
+		}
+	`;
+
+	const TOGGLE_CATEGORY_MUTATION = `
+		mutation ToggleCategory($id: ID!, $isEnabled: Boolean!) {
+			toggleCategory(id: $id, isEnabled: $isEnabled) {
+				id
+				is_enabled
+			}
+		}
+	`;
+
 	/** Map templateId to human-readable name */
 	const TEMPLATE_NAMES = { 1: 'Promo-1', 2: 'Promo-2' };
 
@@ -70,11 +95,72 @@
 	let successMessage = $state('');
 	let fieldErrors = $state({});
 
+	// ── Catalog categories management ─────────────────────────────
+	let rubrics = $state([]);
+	let isCatalogLoading = $state(true);
+	let catalogError = $state(null);
+	let togglingCategoryIds = $state(new Set());
+
 	$effect(() => {
 		if (browser && licenseId) {
 			fetchLicense();
+			fetchCatalog();
 		}
 	});
+
+	async function fetchCatalog() {
+		isCatalogLoading = true;
+		catalogError = null;
+		try {
+			const data = await graphqlRequest(GET_CATALOG_QUERY);
+			rubrics = data.rubrics ?? [];
+		} catch (err) {
+			console.error('Failed to fetch catalog:', err);
+			catalogError = err.message || 'Не удалось загрузить каталог';
+		} finally {
+			isCatalogLoading = false;
+		}
+	}
+
+	async function handleToggleCategory(categoryId, currentEnabled) {
+		if (togglingCategoryIds.has(categoryId)) return;
+
+		const newEnabled = !currentEnabled;
+		
+		// Optimistic update
+		rubrics = rubrics.map(rubric => ({
+			...rubric,
+			categories: rubric.categories.map(cat => 
+				cat.id === categoryId ? { ...cat, is_enabled: newEnabled } : cat
+			)
+		}));
+
+		// Set toggling state
+		const newToggling = new Set(togglingCategoryIds);
+		newToggling.add(categoryId);
+		togglingCategoryIds = newToggling;
+
+		try {
+			await graphqlRequest(TOGGLE_CATEGORY_MUTATION, {
+				id: categoryId,
+				isEnabled: newEnabled
+			});
+		} catch (err) {
+			console.error('Failed to toggle category:', err);
+			// Revert state if failed
+			rubrics = rubrics.map(rubric => ({
+				...rubric,
+				categories: rubric.categories.map(cat => 
+					cat.id === categoryId ? { ...cat, is_enabled: currentEnabled } : cat
+				)
+			}));
+			alert('Не удалось изменить статус категории: ' + (err.message || 'неизвестная ошибка'));
+		} finally {
+			const finalToggling = new Set(togglingCategoryIds);
+			finalToggling.delete(categoryId);
+			togglingCategoryIds = finalToggling;
+		}
+	}
 
 	async function fetchLicense() {
 		isLoading = true;
@@ -415,6 +501,84 @@
 									/>
 								</div>
 							</div>
+						</section>
+
+						<!-- ── Section: Каталог (Рубрики и категории) ── -->
+						<section class="space-y-6 border-t border-neutral-100 pt-8">
+							<div>
+								<h3 class="font-display text-lg font-semibold text-neutral-950">Рубрики и категории в каталоге</h3>
+								<p class="mt-1 text-sm text-neutral-500">
+									Включайте и отключайте разделы каталога. Отключенные категории не будут отображаться на публичном сайте, но все связанные данные сохранятся.
+								</p>
+							</div>
+
+							{#if isCatalogLoading}
+								<div class="flex items-center gap-3 py-4">
+									<svg class="h-5 w-5 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
+										<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+										<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+									</svg>
+									<span class="text-sm text-neutral-500">Загрузка категорий каталога...</span>
+								</div>
+							{:else if catalogError}
+								<p class="text-sm text-red-600">{catalogError}</p>
+							{:else if rubrics.length === 0}
+								<p class="text-sm text-neutral-500">Разделы каталога не найдены.</p>
+							{:else}
+								<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+									{#each rubrics as rubric (rubric.id)}
+										<div class="rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5">
+											<h4 class="font-display text-base font-semibold text-neutral-900 mb-4 flex items-center justify-between">
+												<span>{rubric.value}</span>
+												<span class="text-[10px] font-normal text-neutral-400 uppercase tracking-wider">{rubric.slug}</span>
+											</h4>
+
+											{#if !rubric.categories || rubric.categories.length === 0}
+												<p class="text-xs text-neutral-400">В этой рубрике нет категорий.</p>
+											{:else}
+												<div class="divide-y divide-neutral-100/80">
+													{#each rubric.categories as category (category.id)}
+														<div class="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+															<div class="pr-4">
+																<p class="text-sm font-semibold text-neutral-900">
+																	{category.value}
+																</p>
+																<p class="text-[10px] text-neutral-400 mt-0.5">
+																	slug: {category.slug}
+																</p>
+															</div>
+
+															<!-- Switch Toggle Component -->
+															<button
+																type="button"
+																class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 {category.is_enabled ? 'bg-neutral-900' : 'bg-neutral-200'}"
+																role="switch"
+																aria-checked={category.is_enabled}
+																disabled={togglingCategoryIds.has(category.id)}
+																onclick={() => handleToggleCategory(category.id, category.is_enabled)}
+															>
+																<span class="sr-only">Toggle category enabled state</span>
+																<span
+																	class="pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {category.is_enabled ? 'translate-x-5' : 'translate-x-0'}"
+																>
+																	{#if togglingCategoryIds.has(category.id)}
+																		<span class="absolute inset-0 flex items-center justify-center">
+																			<svg class="h-3 w-3 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
+																				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+																				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+																			</svg>
+																		</span>
+																	{/if}
+																</span>
+															</button>
+														</div>
+													{/each}
+												</div>
+											{/if}
+										</div>
+									{/each}
+								</div>
+							{/if}
 						</section>
 
 						<!-- ── Submit ── -->
