@@ -53,6 +53,67 @@
 		return /^[\d\s\+\-\(\)]+$/.test(phone) && phone.replace(/\D/g, '').length >= 10;
 	}
 
+	// Password strength checks
+	const passwordRules = [
+		{ id: 'length',    label: 'Минимум 8 символов',       test: (p) => p.length >= 8 },
+		{ id: 'lower',     label: 'Строчная буква',            test: (p) => /[a-zа-яё]/.test(p) },
+		{ id: 'upper',     label: 'Заглавная буква',           test: (p) => /[A-ZА-ЯЁ]/.test(p) },
+		{ id: 'digit',     label: 'Цифра (0–9)',               test: (p) => /[0-9]/.test(p) },
+		{ id: 'special',   label: 'Спецсимвол (!@#$%…)',       test: (p) => /[^a-zA-Zа-яёА-ЯЁ0-9]/.test(p) }
+	];
+
+	function getPasswordStrength(password) {
+		if (!password) return { score: 0, label: '', color: '' };
+		const passed = passwordRules.filter((r) => r.test(password)).length;
+		if (passed <= 1) return { score: 1, label: 'Очень слабый', color: '#ef4444' };
+		if (passed === 2) return { score: 2, label: 'Слабый',      color: '#f97316' };
+		if (passed === 3) return { score: 3, label: 'Средний',     color: '#eab308' };
+		if (passed === 4) return { score: 4, label: 'Хороший',     color: '#84cc16' };
+		return              { score: 5, label: 'Надёжный',     color: '#22c55e' };
+	}
+
+	let passwordStrength = $derived(getPasswordStrength(formData.password));
+	let showPasswordHints = $state(false);
+	let showPassword = $state(false);
+	let copySuccess = $state(false);
+
+	function generatePassword() {
+		const lower   = 'abcdefghijklmnopqrstuvwxyz';
+		const upper   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		const digits  = '0123456789';
+		const special = '!@#$%^&*()-_=+[]{}|;:,.<>?';
+		const all     = lower + upper + digits + special;
+
+		// Guarantee at least one of each required class
+		const pick = (src) => src[crypto.getRandomValues(new Uint32Array(1))[0] % src.length];
+		const base = [pick(lower), pick(upper), pick(digits), pick(special)];
+
+		// Fill remaining 8 characters randomly
+		const extra = Array.from({ length: 8 }, () => pick(all));
+
+		// Fisher-Yates shuffle
+		const chars = [...base, ...extra];
+		for (let i = chars.length - 1; i > 0; i--) {
+			const j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
+			[chars[i], chars[j]] = [chars[j], chars[i]];
+		}
+
+		const pwd = chars.join('');
+		formData.password = pwd;
+		formData.password_confirmation = pwd;
+		showPassword = true;
+		showPasswordHints = true;
+		copySuccess = false;
+	}
+
+	async function copyPassword() {
+		try {
+			await navigator.clipboard.writeText(formData.password);
+			copySuccess = true;
+			setTimeout(() => (copySuccess = false), 2000);
+		} catch {}
+	}
+
 	function validateForm() {
 		let isValid = true;
 		errors = { name: '', email: '', phone: '', password: '', password_confirmation: '' };
@@ -78,8 +139,9 @@
 		if (!formData.password) {
 			errors.password = 'Введите пароль';
 			isValid = false;
-		} else if (formData.password.length < 8) {
-			errors.password = 'Пароль должен содержать минимум 8 символов';
+		} else if (passwordStrength.score < 3) {
+			const failed = passwordRules.filter((r) => !r.test(formData.password));
+			errors.password = `Пароль слишком простой. Добавьте: ${failed.map((r) => r.label.toLowerCase()).join(', ')}`;
 			isValid = false;
 		}
 
@@ -263,14 +325,15 @@
 						<!-- Password Input -->
 						<div class="group relative z-0 transition-all focus-within:z-10">
 							<input
-								type="password"
+								type={showPassword ? 'text' : 'password'}
 								id={passwordId}
 								name="password"
 								autocomplete="new-password"
 								placeholder=" "
 								required
 								bind:value={formData.password}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								onfocus={() => (showPasswordHints = true)}
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 pr-32 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
 								class:border-red-500={errors.password}
 							/>
 							<label
@@ -279,10 +342,103 @@
 							>
 								Пароль <span class="text-red-500">*</span>
 							</label>
+							<!-- Icon buttons group: show/hide · copy · generate -->
+							<div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
+								<!-- Show/hide -->
+								<button
+									type="button"
+									onclick={() => (showPassword = !showPassword)}
+									title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+									class="rounded p-1.5 text-neutral-400 transition hover:text-neutral-700 focus:outline-none"
+								>
+									{#if showPassword}
+										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+										</svg>
+									{:else}
+										<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+											<path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+										</svg>
+									{/if}
+								</button>
+								<!-- Copy (only when there's a password) -->
+								{#if formData.password}
+									<button
+										type="button"
+										onclick={copyPassword}
+										title={copySuccess ? 'Скопировано!' : 'Скопировать пароль'}
+										class="rounded p-1.5 transition focus:outline-none"
+										style="color: {copySuccess ? '#16a34a' : '#a3a3a3'}; transition: color 0.25s ease;"
+									>
+										{#if copySuccess}
+											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+												<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+											</svg>
+										{:else}
+											<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+												<path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+											</svg>
+										{/if}
+									</button>
+								{/if}
+								<!-- Generate -->
+								<button
+									type="button"
+									onclick={generatePassword}
+									title="Сгенерировать пароль"
+									class="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-neutral-400 transition hover:text-neutral-700 focus:outline-none"
+								>
+									<svg class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+									</svg>
+									<span class="leading-none">Сгенерировать</span>
+								</button>
+							</div>
 							{#if errors.password}
 								<p class="absolute -bottom-5 left-6 text-sm text-red-500">{errors.password}</p>
 							{/if}
 						</div>
+
+
+						<!-- Password strength indicator -->
+						{#if showPasswordHints || formData.password}
+							<div class="px-1 pt-4 pb-2">
+								<!-- Strength bar -->
+								<div class="flex items-center gap-3 mb-3">
+									<div class="flex flex-1 gap-1">
+										{#each [1, 2, 3, 4, 5] as step}
+											<div
+												style="background-color: {passwordStrength.score >= step ? passwordStrength.color : '#e5e7eb'}; transition: background-color 0.3s ease;"
+												class="h-1.5 flex-1 rounded-full"
+											></div>
+										{/each}
+									</div>
+									{#if formData.password}
+										<span
+											style="color: {passwordStrength.color}; transition: color 0.3s ease;"
+											class="text-xs font-semibold whitespace-nowrap"
+										>{passwordStrength.label}</span>
+									{/if}
+								</div>
+								<!-- Requirements checklist -->
+								<ul class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+									{#each passwordRules as rule}
+										{@const ok = formData.password ? rule.test(formData.password) : false}
+										<li class="flex items-center gap-1.5 text-xs" style="color: {ok ? '#16a34a' : '#6b7280'}; transition: color 0.25s ease;">
+											<svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+												{#if ok}
+													<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+												{:else}
+													<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3a1 1 0 002 0V7zm-1 6a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+												{/if}
+											</svg>
+											{rule.label}
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
 
 						<!-- Confirm Password Input -->
 						<div class="group relative z-0 transition-all focus-within:z-10">
