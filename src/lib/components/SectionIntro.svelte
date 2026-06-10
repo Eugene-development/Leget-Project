@@ -19,12 +19,13 @@
     smaller = false, 
     invert = false, 
     class: className = '', 
-    children 
+    children,
+    maxWidth = 'max-w-2xl'
   } = $props();
 </script>
 
 <Container class={className}>
-  <FadeIn class="max-w-2xl">
+  <FadeIn class={maxWidth}>
     <h2>
       {#if eyebrow}
         <span

@@ -83,15 +83,16 @@
 <Container class="mt-24 font-light sm:mt-32 md:mt-56 ">
 	<FadeIn class="max-w-3xl">
 		<h1
-			class="font-display py-6 text-5xl tracking-normal text-balance text-neutral-950 sm:text-7xl"
+			class="font-display py-6 text-5xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
 		>
-			Готовый сайт для вашего бизнеса всего за <span class=" text-neutral-900">170₽</span> в день
+			Современный сайт для вашего бизнеса за <span class="font-medium text-neutral-900">170₽</span> в
+			день
 		</h1>
 		<!-- Десктоп: полный текст -->
 		<p class="mt-6 hidden text-xl text-neutral-600 sm:block">
-			Современные сайты на технологиях <span class="font-bold text-neutral-900">YandexCloud</span> с готовыми
-			компонентами. Выберите подписку с тестовым периодом и наши специалисты запустят сайт для вас в течение
-			72 часов на вашем домене.
+			Современные решения на технологиях <span class="font-bold text-neutral-900">YandexCloud</span> с
+			готовыми компонентами. Выберите подписку с тестовым периодом и наши специалисты запустят сайт для
+			вас в течение 72 часов на вашем домене.
 		</p>
 		<!-- <p class="mt-2 hidden text-xl text-neutral-600 sm:block">
 			Дружелюбная к SEO и рекламному продвижению архитектура выведет ваш бизнес на шаг вперёд
@@ -111,7 +112,9 @@
 		</p> -->
 		<div class="mt-10 flex flex-wrap gap-4">
 			<Button href="/register" class="px-8 py-3 text-lg">Попробовать бесплатно</Button>
-			<Button href="/login" invert class="px-8 py-3 text-lg">Войти в кабинет</Button>
+			<Button href="/login" invert class="px-8 py-3 text-lg ring-1 ring-neutral-950"
+				>Войти в кабинет</Button
+			>
 		</div>
 	</FadeIn>
 </Container>
@@ -142,10 +145,13 @@
 </div>
 
 <!-- Case Studies Section -->
-<SectionIntro title="Ознакомьтесь с вариантами сайтов" class="mt-24 sm:mt-32 lg:mt-40">
+<SectionIntro
+	title="Ознакомьтесь с вариантами сайтов мебельной тематики"
+	class="mt-24 sm:mt-32 lg:mt-40"
+	maxWidth="max-w-3xl"
+>
 	<p>
-		Мы верим, что технологии — это ответ на самые сложные вызовы рынка. Наша платформа предлагает
-		новый подход в решении современных бизнес задач. От вас только решение, от нас готовый сайт.
+		Вы получаете полностью готовый сайт со стартовой структурой, категориями и демо-контентом. Вы сможете легко изменять любые тексты, добавлять товары и управлять разделами прямо на сайте сразу после простой авторизации.
 	</p>
 </SectionIntro>
 

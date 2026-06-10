@@ -81,12 +81,14 @@
 			<Button
 				href="https://novostroy.org"
 				target="_blank"
+				class="px-8 py-3 text-lg"
 				aria-label="View demo: {caseStudy.client}"
 			>
 				Посмотреть демо версию сайта
 			</Button>
 			<Button
-				invert={false}
+				invert
+				class="px-8 py-3 text-lg ring-1 ring-neutral-950"
 				onclick={() => (modalOpen = true)}
 				aria-label="Подписаться на лицензию {caseStudy.client}"
 			>
