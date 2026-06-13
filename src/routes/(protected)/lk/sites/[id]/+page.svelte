@@ -43,13 +43,14 @@
 				name
 				headerData
 				footerData
+				faviconUrl
 			}
 		}
 	`;
 
 	const GENERATE_UPLOAD_URL_MUTATION = `
-		mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String) {
-			generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder) {
+		mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String, $licenseId: ID) {
+			generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder, licenseId: $licenseId) {
 				uploadUrl
 				objectUrl
 				expiresIn
@@ -414,7 +415,8 @@
 			const { generateUploadUrl: logoUploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
 				filename: logoFile.name,
 				mimeType: logoFile.type,
-				folder: 'logos'
+				folder: 'logos',
+				licenseId: licenseId
 			});
 
 			const logoResponse = await fetch(logoUploadData.uploadUrl, {
@@ -431,7 +433,8 @@
 				const { generateUploadUrl: faviconUploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
 					filename: 'favicon.png',
 					mimeType: 'image/png',
-					folder: 'favicons'
+					folder: 'favicons',
+					licenseId: licenseId
 				});
 
 				const faviconResponse = await fetch(faviconUploadData.uploadUrl, {
@@ -446,6 +449,17 @@
 					console.error('Failed to upload automatically generated favicon');
 				}
 			}
+
+			// 4. Auto-save URLs to the backend so they persist on page refresh
+			const { headerData, footerData } = buildJsonData();
+			const saveData = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
+				id: licenseId,
+				name: formName,
+				headerData,
+				footerData,
+				faviconUrl: formFaviconUrl
+			});
+			license = { ...license, ...saveData.updateLicense };
 		} catch (err) {
 			console.error('Logo upload failed:', err);
 			error = 'Не удалось загрузить логотип: ' + (err.message || 'неизвестная ошибка');
@@ -468,7 +482,8 @@
 			const { generateUploadUrl: uploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
 				filename: file.name,
 				mimeType: file.type,
-				folder: 'favicons'
+				folder: 'favicons',
+				licenseId: licenseId
 			});
 
 			// 2. Upload to S3
@@ -482,6 +497,17 @@
 
 			// 3. Set URL in form
 			formFaviconUrl = uploadData.objectUrl;
+
+			// 4. Auto-save URL to the backend so it persists on page refresh
+			const { headerData, footerData } = buildJsonData();
+			const saveData = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
+				id: licenseId,
+				name: formName,
+				headerData,
+				footerData,
+				faviconUrl: formFaviconUrl
+			});
+			license = { ...license, ...saveData.updateLicense };
 		} catch (err) {
 			console.error('Favicon upload failed:', err);
 			error = 'Не удалось загрузить фавиконку: ' + (err.message || 'неизвестная ошибка');
@@ -677,29 +703,30 @@
 										{/if}
 									</div>
 									<div class="flex flex-col gap-2">
-										<label
-											class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
-										>
-											{isUploadingLogo ? 'Загрузка...' : 'Выбрать файл'}
-											<input
-												type="file"
-												id="logo-upload"
-												accept="image/*"
-												class="hidden"
-												onchange={handleLogoUpload}
-												disabled={isUploadingLogo}
-											/>
-										</label>
 										{#if formLogoUrl}
 											<button
 												type="button"
 												onclick={() => (formLogoUrl = '')}
-												class="text-left text-xs font-semibold text-red-600 hover:text-red-700"
+												class="rounded-2xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 text-center"
 											>
-												Удалить
+												Удалить логотип
 											</button>
+										{:else}
+											<label
+												class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 text-center"
+											>
+												{isUploadingLogo ? 'Загрузка...' : 'Выбрать файл'}
+												<input
+													type="file"
+													id="logo-upload"
+													accept="image/*"
+													class="hidden"
+													onchange={handleLogoUpload}
+													disabled={isUploadingLogo}
+												/>
+											</label>
+											<p class="text-[10px] text-neutral-400">PNG, JPG, WEBP или SVG, до 2 МБ. Фавиконка сгенерируется автоматически.</p>
 										{/if}
-										<p class="text-[10px] text-neutral-400">PNG, JPG, WEBP или SVG, до 2 МБ. Фавиконка сгенерируется автоматически.</p>
 									</div>
 								</div>
 							</div>
@@ -732,29 +759,30 @@
 										{/if}
 									</div>
 									<div class="flex flex-col gap-2">
-										<label
-											class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
-										>
-											{isUploadingFavicon ? 'Загрузка...' : 'Выбрать файл'}
-											<input
-												type="file"
-												id="favicon-upload"
-												accept="image/*"
-												class="hidden"
-												onchange={handleFaviconUpload}
-												disabled={isUploadingFavicon}
-											/>
-										</label>
 										{#if formFaviconUrl}
 											<button
 												type="button"
 												onclick={() => (formFaviconUrl = '')}
-												class="text-left text-xs font-semibold text-red-600 hover:text-red-700"
+												class="rounded-2xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 text-center"
 											>
-												Удалить
+												Удалить фавиконку
 											</button>
+										{:else}
+											<label
+												class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 text-center"
+											>
+												{isUploadingFavicon ? 'Загрузка...' : 'Выбрать файл'}
+												<input
+													type="file"
+													id="favicon-upload"
+													accept="image/*"
+													class="hidden"
+													onchange={handleFaviconUpload}
+													disabled={isUploadingFavicon}
+												/>
+											</label>
+											<p class="text-[10px] text-neutral-400">PNG, ICO или SVG, до 1 МБ</p>
 										{/if}
-										<p class="text-[10px] text-neutral-400">PNG, ICO или SVG, до 1 МБ</p>
 									</div>
 								</div>
 							</div>

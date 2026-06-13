@@ -1,8 +1,8 @@
 import { graphqlRequest } from './graphql-client.js';
 
 const GENERATE_UPLOAD_URL_MUTATION = `
-  mutation GenerateUploadUrl($filename: String!, $mimeType: String!) {
-    generateUploadUrl(filename: $filename, mimeType: $mimeType) {
+  mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $licenseId: ID) {
+    generateUploadUrl(filename: $filename, mimeType: $mimeType, licenseId: $licenseId) {
       uploadUrl
       objectUrl
       expiresIn
@@ -18,16 +18,18 @@ const GENERATE_UPLOAD_URL_MUTATION = `
  * 3. Returns the final public object URL on success.
  *
  * @param {File} file - The File object to upload (from an <input type="file"> element)
+ * @param {string|null} licenseId - Optional license ID to scope the upload directory
  * @returns {Promise<string>} The permanent object URL for the uploaded file
  * @throws {Error} If the mutation fails or the S3 PUT request fails
  */
-export async function uploadFileToS3(file) {
+export async function uploadFileToS3(file, licenseId = null) {
 	// Step 1: Request a pre-signed upload URL from the API
 	let mutationResult;
 	try {
 		mutationResult = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
 			filename: file.name,
-			mimeType: file.type
+			mimeType: file.type,
+			licenseId
 		});
 	} catch (error) {
 		throw new Error(`Failed to generate upload URL: ${error.message}`);

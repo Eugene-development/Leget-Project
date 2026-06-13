@@ -305,7 +305,7 @@
 		uploadedUrl = '';
 
 		try {
-			const url = await uploadFileToS3(file);
+			const url = await uploadFileToS3(file, licenseId);
 			uploadedUrl = url;
 			// Insert URL into the JSON editor
 			try {
