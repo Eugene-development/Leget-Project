@@ -21,6 +21,7 @@
 	import Footer from './Footer.svelte';
 	import GridPattern from './GridPattern.svelte';
 	import BotFilterModal from './BotFilterModal.svelte';
+	import ToastContainer from './ToastContainer.svelte';
 	import MenuIcon from './icons/MenuIcon.svelte';
 	import XIcon from './icons/XIcon.svelte';
 	import { slide } from 'svelte/transition';
@@ -66,6 +67,8 @@
 		expanded = !expanded;
 	}
 
+	let isFirstRender = true;
+
 	$effect(() => {
 		if (expanded) {
 			window.scrollTo({ top: 0, behavior: 'instant' });
@@ -75,6 +78,10 @@
 				}
 			}, 0);
 		} else {
+			if (isFirstRender) {
+				isFirstRender = false;
+				return;
+			}
 			if (navPanelRef && navPanelRef.contains(document.activeElement)) {
 				document.activeElement.blur();
 			}
@@ -186,3 +193,4 @@
 </div>
 
 <BotFilterModal />
+<ToastContainer />

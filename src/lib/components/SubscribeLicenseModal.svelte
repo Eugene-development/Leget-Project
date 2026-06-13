@@ -89,7 +89,12 @@
 		successLicenseId = null;
 		try {
 			const data = await graphqlRequest(MY_LICENSES_QUERY);
-			licenses = data.myLicenses ?? [];
+			const rawLicenses = data.myLicenses ?? [];
+			licenses = [...rawLicenses].sort((a, b) => {
+				const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+				const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+				return timeB - timeA;
+			});
 		} catch (err) {
 			error = err.message || 'Не удалось загрузить список сайтов';
 		} finally {
@@ -106,8 +111,8 @@
 			const licenseId = data.createLicense.id;
 			successLicenseId = licenseId;
 			onSuccess(licenseId);
-			// Redirect to site settings so user can set their domain
-			goto(`/lk/sites/${licenseId}`);
+			// Redirect to site list
+			goto('/lk/sites');
 		} catch (err) {
 			error = err.message || 'Не удалось создать лицензию';
 		} finally {
@@ -221,9 +226,8 @@
 								>
 									<div class="min-w-0">
 										<p class="truncate font-medium text-neutral-950">
-											{license.name || license.domain}
+											{license.name || 'Новый сайт'}
 										</p>
-										<p class="truncate text-xs text-neutral-500">{license.domain}</p>
 										{#if license.createdAt}
 											<p class="mt-1 text-xs text-neutral-500">
 												Подписка активна с: {formatDate(license.createdAt)}

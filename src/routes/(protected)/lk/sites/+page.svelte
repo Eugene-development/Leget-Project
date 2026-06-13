@@ -7,6 +7,7 @@
 	import { browser } from '$app/environment';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
 	import { validateDomain } from '$lib/utils/domain-validator.js';
+	import { toastState } from '$lib/state/toast.svelte.js';
 
 	const MY_LICENSES_QUERY = `
 		query MyLicenses {
@@ -63,10 +64,15 @@
 
 		try {
 			const data = await graphqlRequest(MY_LICENSES_QUERY);
-			licenses = data.myLicenses ?? [];
-			// Инициализируем значения доменов
+			const rawLicenses = data.myLicenses ?? [];
+			licenses = [...rawLicenses].sort((a, b) => {
+				const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+				const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+				return timeB - timeA;
+			});
+			// Инициализируем значения доменов (исключая временные домены)
 			licenses.forEach((l) => {
-				domainValues[l.id] = l.domain || '';
+				domainValues[l.id] = (l.domain && !l.domain.includes('pending-')) ? l.domain : '';
 			});
 		} catch (err) {
 			console.error('Failed to fetch licenses:', err);
@@ -79,13 +85,10 @@
 	async function handleUpdateDomain(licenseId) {
 		const domain = domainValues[licenseId];
 
-		// Сброс ошибки
-		domainErrors[licenseId] = null;
-
 		// Валидация
 		const validation = validateDomain(domain);
 		if (!validation.valid) {
-			domainErrors[licenseId] = validation.error;
+			toastState.error(validation.error);
 			return;
 		}
 
@@ -105,9 +108,10 @@
 			if (index !== -1) {
 				licenses[index] = { ...licenses[index], domain: data.updateLicense.domain };
 			}
+			toastState.success('Доменное имя успешно обновлено');
 		} catch (err) {
 			console.error('Failed to update domain:', err);
-			alert(err.message || 'Не удалось обновить домен');
+			toastState.error(err.message || 'Не удалось обновить домен');
 		} finally {
 			isUpdating[licenseId] = false;
 		}
@@ -184,22 +188,19 @@
 			</FadeIn>
 		{:else}
 			<FadeIn>
-				<div class="flex max-w-3xl flex-col gap-6">
+				<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:max-w-5xl">
 					{#each licenses as license (license.id)}
 						<div
 							class="group rounded-3xl border border-neutral-100 bg-neutral-50 p-6 shadow-sm ring-1 ring-neutral-950/5 transition hover:bg-white hover:shadow-md"
 						>
 							<div class="flex flex-col gap-6">
 								<div class="flex items-start justify-between gap-4">
-									<a href="/lk/sites/{license.id}" class="min-w-0 flex-1">
+									<div class="min-w-0 flex-1">
 										<h3
-											class="font-display text-lg font-semibold text-neutral-950 hover:text-neutral-700"
+											class="font-display text-lg font-semibold text-neutral-950 break-words"
 										>
-											{license.name || license.domain}
+											{license.name || 'Новый сайт'}
 										</h3>
-										<p class="mt-1 truncate text-sm text-neutral-500">
-											{license.domain}
-										</p>
 										{#if getTemplateName(license.templateId)}
 											<p class="mt-1 text-xs text-neutral-400">
 												Шаблон:
@@ -228,8 +229,8 @@
 												{/if}
 											</div>
 										{/if}
-									</a>
-									<div class="flex shrink-0 items-center gap-3">
+									</div>
+									<div class="flex shrink-0 items-start">
 										{#if license.isActive && license.status === 'active'}
 											<span
 												class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
@@ -252,61 +253,41 @@
 												Приостановлен
 											</span>
 										{/if}
-										<a href="/lk/sites/{license.id}">
-											<svg
-												class="h-5 w-5 text-neutral-400 transition hover:text-neutral-600"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M9 5l7 7-7 7"
-												/>
-											</svg>
-										</a>
 									</div>
 								</div>
 
-								<!-- Поле назначения домена -->
-								<div class="flex flex-col gap-3 border-t border-neutral-100 pt-4">
-									<label for="domain-{license.id}" class="text-sm font-semibold text-neutral-950">
-										Назначить домен
-									</label>
-									<div class="flex gap-3">
-										<input
-											id="domain-{license.id}"
-											type="text"
-											placeholder="example.com"
-											bind:value={domainValues[license.id]}
-											onblur={() => {
-												const validation = validateDomain(domainValues[license.id]);
-												domainErrors[license.id] = validation.valid ? null : validation.error;
-												if (validation.valid) domainValues[license.id] = validation.normalized;
-											}}
-											oninput={() => {
-												if (domainErrors[license.id]) {
+								<!-- Поле назначения домена и Настройки -->
+								<div class="flex flex-col gap-4 border-t border-neutral-100 pt-4 sm:flex-row sm:items-end sm:justify-between">
+									<div class="flex flex-col gap-3 flex-1 min-w-0 w-full">
+										<label for="domain-{license.id}" class="text-sm font-semibold text-neutral-950">
+											Назначить домен
+										</label>
+										<div class="flex gap-3">
+											<input
+												id="domain-{license.id}"
+												type="text"
+												placeholder="example.com"
+												bind:value={domainValues[license.id]}
+												onblur={() => {
 													const validation = validateDomain(domainValues[license.id]);
-													if (validation.valid) domainErrors[license.id] = null;
-												}
-											}}
-											class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-2 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
-										/>
-										<Button
-											class="px-4 py-2"
-											onclick={() => handleUpdateDomain(license.id)}
-											disabled={isUpdating[license.id] ||
-												!domainValues[license.id] ||
-												domainValues[license.id] === license.domain}
-										>
-											{isUpdating[license.id] ? '...' : 'Ок'}
-										</Button>
+													if (validation.valid) domainValues[license.id] = validation.normalized;
+												}}
+												class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-2 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
+											/>
+											<Button
+												class="px-4 py-2"
+												onclick={() => handleUpdateDomain(license.id)}
+												disabled={isUpdating[license.id] ||
+													!domainValues[license.id] ||
+													domainValues[license.id] === license.domain}
+											>
+												{isUpdating[license.id] ? '...' : 'Ок'}
+											</Button>
+										</div>
 									</div>
-									{#if domainErrors[license.id]}
-										<p class="mt-2 text-sm text-red-600">{domainErrors[license.id]}</p>
-									{/if}
+									<Button href="/lk/sites/{license.id}" class="w-full sm:w-auto px-5 py-2 text-sm font-semibold shrink-0 justify-center">
+										Настройки
+									</Button>
 								</div>
 							</div>
 						</div>
