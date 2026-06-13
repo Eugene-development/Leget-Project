@@ -28,7 +28,8 @@
 		onToggle = () => {},
 		invert = false,
 		logoHovered = false,
-		onLogoHover = (hovered) => {}
+		onLogoHover = (hovered) => {},
+		buttonRef = $bindable(null)
 	} = $props();
 
 	// Compute toggle button classes based on invert prop
@@ -70,6 +71,7 @@
 
 			<!-- Menu toggle button -->
 			<button
+				bind:this={buttonRef}
 				type="button"
 				onclick={onToggle}
 				aria-expanded={expanded ? 'true' : 'false'}

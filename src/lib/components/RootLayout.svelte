@@ -64,18 +64,27 @@
 	// Toggle navigation panel
 	function toggleNavigation() {
 		expanded = !expanded;
+	}
+
+	$effect(() => {
 		if (expanded) {
 			window.scrollTo({ top: 0, behavior: 'instant' });
-		}
-		// Focus management after toggle
-		setTimeout(() => {
-			if (expanded && closeRef) {
-				closeRef.focus({ preventScroll: true });
-			} else if (!expanded && openRef) {
-				openRef.focus({ preventScroll: true });
+			setTimeout(() => {
+				if (closeRef) {
+					closeRef.focus({ preventScroll: true });
+				}
+			}, 0);
+		} else {
+			if (navPanelRef && navPanelRef.contains(document.activeElement)) {
+				document.activeElement.blur();
 			}
-		}, 0);
-	}
+			setTimeout(() => {
+				if (openRef) {
+					openRef.focus({ preventScroll: true });
+				}
+			}, 0);
+		}
+	});
 
 	// Handle logo hover state
 	function handleLogoHover(hovered) {
@@ -109,6 +118,7 @@
 					onToggle={toggleNavigation}
 					{logoHovered}
 					onLogoHover={handleLogoHover}
+					bind:buttonRef={openRef}
 				/>
 			</div>
 		{/if}
@@ -138,6 +148,7 @@
 								onToggle={toggleNavigation}
 								{logoHovered}
 								onLogoHover={handleLogoHover}
+								bind:buttonRef={closeRef}
 							/>
 						</div>
 

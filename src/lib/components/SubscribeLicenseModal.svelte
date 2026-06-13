@@ -147,19 +147,19 @@
 		aria-modal="true"
 		aria-label="Подписка на шаблон {templateName}"
 		tabindex="-1"
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/75 backdrop-blur-sm px-4"
 		onclick={handleBackdropClick}
 		onkeydown={handleKeydown}
 	>
-		<div class="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl">
+		<div class="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl max-h-[90vh] flex flex-col">
 			<!-- Header -->
-			<div class="mb-6 flex items-start justify-between gap-4">
+			<div class="mb-6 flex items-start justify-between gap-4 shrink-0">
 				<div>
 					<h2 class="font-display text-xl font-semibold text-neutral-950">
 						Шаблон «{templateName}» — {price} ₽/{period}
 					</h2>
 					<p class="mt-1 text-sm text-neutral-500">
-						Средства начнут списываться с баланса по истечении 3-дневного тестового периода
+						Средства начнут списываться с вашего баланса по истечении 3-дневного тестового периода
 					</p>
 				</div>
 				<button
@@ -178,69 +178,71 @@
 				</button>
 			</div>
 
-			<!-- Content -->
-			{#if isLoading}
-				<div class="flex items-center justify-center py-10">
-					<svg class="h-7 w-7 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
-						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
-						></circle>
-						<path
-							class="opacity-75"
-							fill="currentColor"
-							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-						></path>
-					</svg>
-					<span class="ml-3 text-sm text-neutral-500">Загрузка...</span>
-				</div>
-			{:else if error}
-				<div class="rounded-2xl border border-red-100 bg-red-50 p-4 text-sm text-red-600">
-					{error}
-				</div>
-			{:else}
-				{@const filteredLicenses = licenses.filter((l) => l.templateId === templateId)}
-				{#if filteredLicenses.length > 0}
-					<p class="mb-4 text-sm text-neutral-500">
-						Ваши сайты, которые уже используют этот шаблон:
-					</p>
-					<ul class="flex flex-col gap-3">
-						{#each filteredLicenses as license (license.id)}
-							<li
-								class="flex items-center justify-between gap-4 rounded-2xl border border-neutral-100 bg-neutral-50 px-5 py-4"
-							>
-								<div class="min-w-0">
-									<p class="truncate font-medium text-neutral-950">
-										{license.name || license.domain}
-									</p>
-									<p class="truncate text-xs text-neutral-500">{license.domain}</p>
-									{#if license.createdAt}
-										<p class="mt-1 text-xs text-neutral-500">
-											Подписка активна с: {formatDate(license.createdAt)}
-										</p>
-									{/if}
-								</div>
-							</li>
-						{/each}
-					</ul>
-				{:else}
-					<div class="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-center">
-						<p class="text-sm text-neutral-500">У вас пока нет сайтов, использующих этот шаблон.</p>
+			<!-- Content Area (Scrollable) -->
+			<div class="flex-1 overflow-y-auto pr-1 min-h-0">
+				{#if isLoading}
+					<div class="flex items-center justify-center py-10">
+						<svg class="h-7 w-7 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
+							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+							></circle>
+							<path
+								class="opacity-75"
+								fill="currentColor"
+								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+							></path>
+						</svg>
+						<span class="ml-3 text-sm text-neutral-500">Загрузка...</span>
 					</div>
-				{/if}
+				{:else if error}
+					<div class="rounded-2xl border border-red-100 bg-red-50 p-4 text-sm text-red-600">
+						{error}
+					</div>
+				{:else}
+					<!-- Option to create a new license -->
+					<div class="mb-6 border-b border-neutral-100 pb-6">
+						<button
+							onclick={createAndSubscribe}
+							disabled={isSaving}
+							class="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50 disabled:opacity-50"
+						>
+							{isSaving ? 'Создаём...' : '+ Создать новый сайт с этим шаблоном'}
+						</button>
+					</div>
 
-				<!-- Option to create a new license -->
-				<div class="mt-4 border-t border-neutral-100 pt-4">
-					<button
-						onclick={createAndSubscribe}
-						disabled={isSaving}
-						class="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50 disabled:opacity-50"
-					>
-						{isSaving ? 'Создаём...' : '+ Создать новый сайт с этим шаблоном'}
-					</button>
-				</div>
-			{/if}
+					{@const filteredLicenses = licenses.filter((l) => l.templateId === templateId)}
+					{#if filteredLicenses.length > 0}
+						<p class="mb-4 text-sm text-neutral-500">
+							Ваши сайты, которые уже используют этот шаблон:
+						</p>
+						<ul class="flex flex-col gap-3">
+							{#each filteredLicenses as license (license.id)}
+								<li
+									class="flex items-center justify-between gap-4 rounded-2xl border border-neutral-100 bg-neutral-50 px-5 py-4"
+								>
+									<div class="min-w-0">
+										<p class="truncate font-medium text-neutral-950">
+											{license.name || license.domain}
+										</p>
+										<p class="truncate text-xs text-neutral-500">{license.domain}</p>
+										{#if license.createdAt}
+											<p class="mt-1 text-xs text-neutral-500">
+												Подписка активна с: {formatDate(license.createdAt)}
+											</p>
+										{/if}
+									</div>
+								</li>
+							{/each}
+						</ul>
+					{:else}
+						<div class="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-center">
+							<p class="text-sm text-neutral-500">У вас пока нет сайтов, использующих этот шаблон.</p>
+						</div>
+					{/if}
+				{/if}
+			</div>
 
 			<!-- Footer -->
-			<div class="mt-6 flex justify-end">
+			<div class="mt-6 flex justify-end shrink-0">
 				<button
 					onclick={onClose}
 					class="rounded-lg border border-neutral-200 px-5 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"

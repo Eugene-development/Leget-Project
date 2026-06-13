@@ -78,17 +78,6 @@
 			</Button>
 		</div>
 
-		<SubscribeLicenseModal
-			open={modalOpen}
-			templateId={TEMPLATE_ID}
-			templateName="Promo-3"
-			price="250"
-			period="день"
-			onClose={() => (modalOpen = false)}
-			onSuccess={(id) => {
-				modalOpen = false;
-			}}
-		/>
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
@@ -152,3 +141,15 @@
 
 <!-- Contact Section -->
 <ContactSection />
+
+<SubscribeLicenseModal
+	open={modalOpen}
+	templateId={TEMPLATE_ID}
+	templateName="Promo-3"
+	price="250"
+	period="день"
+	onClose={() => (modalOpen = false)}
+	onSuccess={(id) => {
+		modalOpen = false;
+	}}
+/>
