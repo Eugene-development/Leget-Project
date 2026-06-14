@@ -274,6 +274,113 @@
 	}
 	// ── Logo and Auto Favicon Upload ─────────────────────────────
 	let isUploadingLogo = $state(false);
+	let showLogoPreview = $state(false);
+	let logoInfo = $state({ date: '', size: '', type: '' });
+	let showFaviconPreview = $state(false);
+	let faviconInfo = $state({ date: '', size: '', type: '' });
+	let showDeleteFaviconConfirm = $state(false);
+
+	function formatFileSize(bytes) {
+		if (bytes === 0) return '0 Bytes';
+		const k = 1024;
+		const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+	}
+
+	async function handleViewLogo() {
+		if (!formLogoUrl) return;
+
+		try {
+			const response = await fetch(formLogoUrl, { method: 'HEAD' });
+			const contentType = response.headers.get('content-type') || 'Неизвестно';
+			const contentLength = response.headers.get('content-length');
+			const lastModified = response.headers.get('last-modified');
+
+			logoInfo = {
+				date: lastModified ? new Date(lastModified).toLocaleDateString('ru-RU') : 'Неизвестно',
+				size: contentLength ? formatFileSize(parseInt(contentLength)) : 'Неизвестно',
+				type: contentType.split(';')[0] || 'Неизвестно'
+			};
+		} catch {
+			logoInfo = { date: 'Неизвестно', size: 'Неизвестно', type: 'Неизвестно' };
+		}
+
+		showLogoPreview = true;
+	}
+
+	function handleReplaceLogo() {
+		const input = document.getElementById('logo-upload-replace');
+		if (input) {
+			input.click();
+		}
+	}
+
+	async function handleDeleteLogo() {
+		formLogoUrl = '';
+		showDeleteLogoConfirm = false;
+
+		try {
+			const { headerData, footerData } = buildJsonData();
+			const data = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
+				id: licenseId,
+				name: formName,
+				headerData,
+				footerData,
+				faviconUrl: formFaviconUrl
+			});
+			license = { ...license, ...data.updateLicense };
+		} catch (err) {
+			console.error('Failed to delete logo:', err);
+		}
+	}
+
+	async function handleViewFavicon() {
+		if (!formFaviconUrl) return;
+
+		try {
+			const response = await fetch(formFaviconUrl, { method: 'HEAD' });
+			const contentType = response.headers.get('content-type') || 'Неизвестно';
+			const contentLength = response.headers.get('content-length');
+			const lastModified = response.headers.get('last-modified');
+
+			faviconInfo = {
+				date: lastModified ? new Date(lastModified).toLocaleDateString('ru-RU') : 'Неизвестно',
+				size: contentLength ? formatFileSize(parseInt(contentLength)) : 'Неизвестно',
+				type: contentType.split(';')[0] || 'Неизвестно'
+			};
+		} catch {
+			faviconInfo = { date: 'Неизвестно', size: 'Неизвестно', type: 'Неизвестно' };
+		}
+
+		showFaviconPreview = true;
+	}
+
+	function handleReplaceFavicon() {
+		const input = document.getElementById('favicon-upload-replace');
+		if (input) {
+			input.click();
+		}
+	}
+
+	async function handleDeleteFavicon() {
+		formFaviconUrl = '';
+		showDeleteFaviconConfirm = false;
+
+		try {
+			const { headerData, footerData } = buildJsonData();
+			const data = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
+				id: licenseId,
+				name: formName,
+				headerData,
+				footerData,
+				faviconUrl: formFaviconUrl
+			});
+			license = { ...license, ...data.updateLicense };
+		} catch (err) {
+			console.error('Failed to delete favicon:', err);
+		}
+	}
 
 	function compressLogoImage(file, maxDimension = 512) {
 		return new Promise((resolve, reject) => {
@@ -317,17 +424,21 @@
 							mimeType = 'image/png';
 						}
 
-						canvas.toBlob((blob) => {
-							if (blob) {
-								const compressedFile = new File([blob], file.name, {
-									type: mimeType,
-									lastModified: Date.now()
-								});
-								resolve(compressedFile);
-							} else {
-								reject(new Error('Не удалось сжать изображение'));
-							}
-						}, mimeType, quality);
+						canvas.toBlob(
+							(blob) => {
+								if (blob) {
+									const compressedFile = new File([blob], file.name, {
+										type: mimeType,
+										lastModified: Date.now()
+									});
+									resolve(compressedFile);
+								} else {
+									reject(new Error('Не удалось сжать изображение'));
+								}
+							},
+							mimeType,
+							quality
+						);
 					} catch (err) {
 						reject(err);
 					}
@@ -412,12 +523,15 @@
 			}
 
 			// 2. Upload Logo to S3
-			const { generateUploadUrl: logoUploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
-				filename: logoFile.name,
-				mimeType: logoFile.type,
-				folder: 'logos',
-				licenseId: licenseId
-			});
+			const { generateUploadUrl: logoUploadData } = await graphqlRequest(
+				GENERATE_UPLOAD_URL_MUTATION,
+				{
+					filename: logoFile.name,
+					mimeType: logoFile.type,
+					folder: 'logos',
+					licenseId: licenseId
+				}
+			);
 
 			const logoResponse = await fetch(logoUploadData.uploadUrl, {
 				method: 'PUT',
@@ -430,12 +544,15 @@
 
 			// 3. Upload Favicon to S3 if generated
 			if (faviconBlob) {
-				const { generateUploadUrl: faviconUploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
-					filename: 'favicon.png',
-					mimeType: 'image/png',
-					folder: 'favicons',
-					licenseId: licenseId
-				});
+				const { generateUploadUrl: faviconUploadData } = await graphqlRequest(
+					GENERATE_UPLOAD_URL_MUTATION,
+					{
+						filename: 'favicon.png',
+						mimeType: 'image/png',
+						folder: 'favicons',
+						licenseId: licenseId
+					}
+				);
 
 				const faviconResponse = await fetch(faviconUploadData.uploadUrl, {
 					method: 'PUT',
@@ -530,6 +647,7 @@
 	let showCancelConfirm = $state(false);
 	let isCancelling = $state(false);
 	let cancelError = $state('');
+	let showDeleteLogoConfirm = $state(false);
 
 	async function handleCancelLicense() {
 		isCancelling = true;
@@ -636,7 +754,6 @@
 						</div>
 					</div>
 
-
 					<!-- ── Settings form ── -->
 					<form onsubmit={handleSubmit} class="space-y-10">
 						{#if successMessage}
@@ -655,7 +772,9 @@
 						{/if}
 
 						<!-- ── Section: Основное ── -->
-						<section class="rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 sm:p-8 shadow-sm ring-1 ring-neutral-950/5 space-y-6">
+						<section
+							class="space-y-6 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8"
+						>
 							<h3 class="font-display text-lg font-semibold text-neutral-950">Основное</h3>
 
 							<div class="group relative">
@@ -704,16 +823,115 @@
 									</div>
 									<div class="flex flex-col gap-2">
 										{#if formLogoUrl}
-											<button
-												type="button"
-												onclick={() => (formLogoUrl = '')}
-												class="rounded-2xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 text-center"
-											>
-												Удалить логотип
-											</button>
+											<div class="flex items-center gap-2">
+												<!-- View Button -->
+												<div class="group/tooltip relative">
+													<button
+														type="button"
+														onclick={handleViewLogo}
+														class="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-900 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
+														aria-label="Просмотр логотипа"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															class="h-5 w-5"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke="currentColor"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+															/>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+															/>
+														</svg>
+													</button>
+													<div
+														class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-24 -translate-x-1/2 rounded-lg bg-neutral-900 px-2 py-1 text-center text-[10px] text-white shadow-lg group-hover/tooltip:block"
+													>
+														Просмотр
+														<div
+															class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+														></div>
+													</div>
+												</div>
+
+												<!-- Replace Button -->
+												<div class="group/tooltip relative">
+													<button
+														type="button"
+														onclick={handleReplaceLogo}
+														class="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-900 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
+														aria-label="Заменить логотип"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															class="h-5 w-5"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke="currentColor"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+															/>
+														</svg>
+													</button>
+													<div
+														class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-24 -translate-x-1/2 rounded-lg bg-neutral-900 px-2 py-1 text-center text-[10px] text-white shadow-lg group-hover/tooltip:block"
+													>
+														Замена
+														<div
+															class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+														></div>
+													</div>
+												</div>
+
+												<!-- Delete Button -->
+												<div class="group/tooltip relative">
+													<button
+														type="button"
+														onclick={() => (showDeleteLogoConfirm = true)}
+														class="flex h-10 w-10 items-center justify-center rounded-xl border border-red-200 bg-white text-red-600 transition hover:bg-red-50 hover:text-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+														aria-label="Удалить логотип"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															class="h-5 w-5"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke="currentColor"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+															/>
+														</svg>
+													</button>
+													<div
+														class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-24 -translate-x-1/2 rounded-lg bg-neutral-900 px-2 py-1 text-center text-[10px] text-white shadow-lg group-hover/tooltip:block"
+													>
+														Удаление
+														<div
+															class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+														></div>
+													</div>
+												</div>
+											</div>
 										{:else}
 											<label
-												class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 text-center"
+												class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-center text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
 											>
 												{isUploadingLogo ? 'Загрузка...' : 'Выбрать файл'}
 												<input
@@ -725,11 +943,23 @@
 													disabled={isUploadingLogo}
 												/>
 											</label>
-											<p class="text-[10px] text-neutral-400">PNG, JPG, WEBP или SVG, до 2 МБ. Фавиконка сгенерируется автоматически.</p>
+											<p class="text-[10px] text-neutral-400">
+												PNG, JPG, WEBP или SVG, до 2 МБ. Фавиконка сгенерируется автоматически.
+											</p>
 										{/if}
 									</div>
 								</div>
 							</div>
+
+							<!-- Hidden file input for logo replace -->
+							<input
+								type="file"
+								id="logo-upload-replace"
+								accept="image/*"
+								class="hidden"
+								onchange={handleLogoUpload}
+								disabled={isUploadingLogo}
+							/>
 
 							<div class="group relative">
 								<label for="favicon-upload" class="block text-sm font-semibold text-neutral-950"
@@ -760,16 +990,115 @@
 									</div>
 									<div class="flex flex-col gap-2">
 										{#if formFaviconUrl}
-											<button
-												type="button"
-												onclick={() => (formFaviconUrl = '')}
-												class="rounded-2xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 text-center"
-											>
-												Удалить фавиконку
-											</button>
+											<div class="flex items-center gap-2">
+												<!-- View Button -->
+												<div class="group/tooltip relative">
+													<button
+														type="button"
+														onclick={handleViewFavicon}
+														class="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-900 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
+														aria-label="Просмотр фавиконки"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															class="h-5 w-5"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke="currentColor"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+															/>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+															/>
+														</svg>
+													</button>
+													<div
+														class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-24 -translate-x-1/2 rounded-lg bg-neutral-900 px-2 py-1 text-center text-[10px] text-white shadow-lg group-hover/tooltip:block"
+													>
+														Просмотр
+														<div
+															class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+														></div>
+													</div>
+												</div>
+
+												<!-- Replace Button -->
+												<div class="group/tooltip relative">
+													<button
+														type="button"
+														onclick={handleReplaceFavicon}
+														class="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-900 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
+														aria-label="Заменить фавиконку"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															class="h-5 w-5"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke="currentColor"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+															/>
+														</svg>
+													</button>
+													<div
+														class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-24 -translate-x-1/2 rounded-lg bg-neutral-900 px-2 py-1 text-center text-[10px] text-white shadow-lg group-hover/tooltip:block"
+													>
+														Замена
+														<div
+															class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+														></div>
+													</div>
+												</div>
+
+												<!-- Delete Button -->
+												<div class="group/tooltip relative">
+													<button
+														type="button"
+														onclick={() => (showDeleteFaviconConfirm = true)}
+														class="flex h-10 w-10 items-center justify-center rounded-xl border border-red-200 bg-white text-red-600 transition hover:bg-red-50 hover:text-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+														aria-label="Удалить фавиконку"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															class="h-5 w-5"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke="currentColor"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																stroke-width="1.5"
+																d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+															/>
+														</svg>
+													</button>
+													<div
+														class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-24 -translate-x-1/2 rounded-lg bg-neutral-900 px-2 py-1 text-center text-[10px] text-white shadow-lg group-hover/tooltip:block"
+													>
+														Удаление
+														<div
+															class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+														></div>
+													</div>
+												</div>
+											</div>
 										{:else}
 											<label
-												class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 text-center"
+												class="cursor-pointer rounded-2xl border border-neutral-200 bg-white px-4 py-2 text-center text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
 											>
 												{isUploadingFavicon ? 'Загрузка...' : 'Выбрать файл'}
 												<input
@@ -786,6 +1115,16 @@
 									</div>
 								</div>
 							</div>
+
+							<!-- Hidden file input for favicon replace -->
+							<input
+								type="file"
+								id="favicon-upload-replace"
+								accept="image/*"
+								class="hidden"
+								onchange={handleFaviconUpload}
+								disabled={isUploadingFavicon}
+							/>
 
 							<div class="group relative">
 								<div class="flex items-center gap-2">
@@ -828,7 +1167,9 @@
 						</section>
 
 						<!-- ── Section: Аналитика ── -->
-						<section class="rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 sm:p-8 shadow-sm ring-1 ring-neutral-950/5 space-y-6">
+						<section
+							class="space-y-6 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8"
+						>
 							<h3 class="font-display text-lg font-semibold text-neutral-950">Аналитика</h3>
 							<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
 								<div class="group relative">
@@ -859,7 +1200,9 @@
 						</section>
 
 						<!-- ── Section: Каталог (Рубрики и категории) ── -->
-						<section class="rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 sm:p-8 shadow-sm ring-1 ring-neutral-950/5 space-y-6">
+						<section
+							class="space-y-6 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8"
+						>
 							<div>
 								<h3 class="font-display text-lg font-semibold text-neutral-950">
 									Рубрики и категории в каталоге
@@ -1026,6 +1369,186 @@
 	</FadeInStagger>
 </Container>
 
+<!-- ── Favicon preview modal ── -->
+{#if showFaviconPreview}
+	<!-- svelte-ignore -->
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/50 p-4 backdrop-blur-sm"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="favicon-preview-title"
+	>
+		<div class="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl">
+			<div class="mb-6 flex items-center justify-between">
+				<h2 id="favicon-preview-title" class="font-display text-xl font-semibold text-neutral-950">
+					Просмотр фавиконки
+				</h2>
+				<button
+					type="button"
+					onclick={() => (showFaviconPreview = false)}
+					class="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition hover:border-neutral-950 hover:text-neutral-950"
+					aria-label="Закрыть"
+				>
+					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M6 18L18 6M6 6l12 12"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			<div class="flex flex-col items-center gap-6">
+				<div
+					class="flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border border-neutral-100 bg-neutral-50"
+				>
+					<img
+						src={formFaviconUrl}
+						alt="Favicon preview"
+						class="max-h-full max-w-full object-contain"
+					/>
+				</div>
+
+				<div class="w-full space-y-3 rounded-2xl bg-neutral-50 p-4">
+					<div class="flex items-center justify-between">
+						<span class="text-sm text-neutral-500">Дата загрузки</span>
+						<span class="text-sm font-medium text-neutral-900">{faviconInfo.date}</span>
+					</div>
+					<div class="flex items-center justify-between">
+						<span class="text-sm text-neutral-500">Размер файла</span>
+						<span class="text-sm font-medium text-neutral-900">{faviconInfo.size}</span>
+					</div>
+					<div class="flex items-center justify-between">
+						<span class="text-sm text-neutral-500">Тип файла</span>
+						<span class="text-sm font-medium text-neutral-900">{faviconInfo.type}</span>
+					</div>
+				</div>
+
+				<button
+					type="button"
+					onclick={() => (showFaviconPreview = false)}
+					class="w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none"
+				>
+					Закрыть
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}
+
+<!-- ── Delete favicon confirmation dialog ── -->
+{#if showDeleteFaviconConfirm}
+	<!-- svelte-ignore -->
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/50 p-4 backdrop-blur-sm"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="delete-favicon-dialog-title"
+	>
+		<div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
+			<div class="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="size-6 text-red-600"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
+				</svg>
+			</div>
+
+			<h2
+				id="delete-favicon-dialog-title"
+				class="font-display text-xl font-semibold text-neutral-950"
+			>
+				Удалить фавиконку?
+			</h2>
+			<p class="mt-3 text-sm text-neutral-600">
+				Фавиконка будет удалена. Вы сможете загрузить новую позже.
+			</p>
+
+			<div class="mt-6 flex gap-3">
+				<button
+					type="button"
+					onclick={handleDeleteFavicon}
+					class="flex-1 rounded-2xl bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+				>
+					Да, удалить
+				</button>
+				<button
+					type="button"
+					onclick={() => (showDeleteFaviconConfirm = false)}
+					class="flex-1 rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none"
+				>
+					Отмена
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}
+
+<!-- ── Delete logo confirmation dialog ── -->
+{#if showDeleteLogoConfirm}
+	<!-- svelte-ignore -->
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/50 p-4 backdrop-blur-sm"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="delete-logo-dialog-title"
+	>
+		<div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
+			<div class="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="size-6 text-red-600"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
+				</svg>
+			</div>
+
+			<h2 id="delete-logo-dialog-title" class="font-display text-xl font-semibold text-neutral-950">
+				Удалить логотип?
+			</h2>
+			<p class="mt-3 text-sm text-neutral-600">
+				Логотип компании будет удалён. Вы сможете загрузить новый позже.
+			</p>
+
+			<div class="mt-6 flex gap-3">
+				<button
+					type="button"
+					onclick={handleDeleteLogo}
+					class="flex-1 rounded-2xl bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+				>
+					Да, удалить
+				</button>
+				<button
+					type="button"
+					onclick={() => (showDeleteLogoConfirm = false)}
+					class="flex-1 rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none"
+				>
+					Отмена
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}
+
 <!-- ── Cancel confirmation dialog ── -->
 {#if showCancelConfirm}
 	<!-- svelte-ignore -->
@@ -1089,6 +1612,71 @@
 					class="flex-1 rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none disabled:opacity-60"
 				>
 					Отмена
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}
+
+<!-- ── Logo preview modal ── -->
+{#if showLogoPreview}
+	<!-- svelte-ignore -->
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/50 p-4 backdrop-blur-sm"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="logo-preview-title"
+	>
+		<div class="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl">
+			<div class="mb-6 flex items-center justify-between">
+				<h2 id="logo-preview-title" class="font-display text-xl font-semibold text-neutral-950">
+					Просмотр логотипа
+				</h2>
+				<button
+					type="button"
+					onclick={() => (showLogoPreview = false)}
+					class="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition hover:border-neutral-950 hover:text-neutral-950"
+					aria-label="Закрыть"
+				>
+					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M6 18L18 6M6 6l12 12"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			<div class="flex flex-col items-center gap-6">
+				<div
+					class="flex h-48 w-48 items-center justify-center overflow-hidden rounded-2xl border border-neutral-100 bg-neutral-50"
+				>
+					<img src={formLogoUrl} alt="Logo preview" class="max-h-full max-w-full object-contain" />
+				</div>
+
+				<div class="w-full space-y-3 rounded-2xl bg-neutral-50 p-4">
+					<div class="flex items-center justify-between">
+						<span class="text-sm text-neutral-500">Дата загрузки</span>
+						<span class="text-sm font-medium text-neutral-900">{logoInfo.date}</span>
+					</div>
+					<div class="flex items-center justify-between">
+						<span class="text-sm text-neutral-500">Размер файла</span>
+						<span class="text-sm font-medium text-neutral-900">{logoInfo.size}</span>
+					</div>
+					<div class="flex items-center justify-between">
+						<span class="text-sm text-neutral-500">Тип файла</span>
+						<span class="text-sm font-medium text-neutral-900">{logoInfo.type}</span>
+					</div>
+				</div>
+
+				<button
+					type="button"
+					onclick={() => (showLogoPreview = false)}
+					class="w-full rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none"
+				>
+					Закрыть
 				</button>
 			</div>
 		</div>
