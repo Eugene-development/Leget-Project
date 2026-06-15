@@ -514,12 +514,14 @@
 				}
 			}
 
-			// 1. Generate Favicon
+			// 1. Generate Favicon (only if no existing favicon)
 			let faviconBlob;
-			try {
-				faviconBlob = await generateFaviconFromLogo(logoFile);
-			} catch (favErr) {
-				console.warn('Failed to generate favicon from logo, using fallback:', favErr);
+			if (!formFaviconUrl) {
+				try {
+					faviconBlob = await generateFaviconFromLogo(logoFile);
+				} catch (favErr) {
+					console.warn('Failed to generate favicon from logo, using fallback:', favErr);
+				}
 			}
 
 			// 2. Upload Logo to S3
@@ -795,9 +797,35 @@
 							</div>
 
 							<div class="group relative">
-								<label for="logo-upload" class="block text-sm font-semibold text-neutral-950"
-									>Логотип</label
-								>
+								<div class="flex items-center gap-2">
+									<label for="logo-upload" class="block text-sm font-semibold text-neutral-950"
+										>Логотип</label
+									>
+									<div class="group/tooltip relative">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="size-4 cursor-help text-neutral-400 hover:text-neutral-600"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+											/>
+										</svg>
+										<div
+											class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-40 -translate-x-1/2 rounded-xl bg-neutral-900 p-3 text-center text-[11px] leading-snug text-white shadow-2xl group-hover/tooltip:block"
+										>
+											Отобразится на сайте
+											<div
+												class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+											></div>
+										</div>
+									</div>
+								</div>
 								<div class="mt-2 flex items-center gap-6">
 									<div
 										class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50"
@@ -962,9 +990,35 @@
 							/>
 
 							<div class="group relative">
-								<label for="favicon-upload" class="block text-sm font-semibold text-neutral-950"
-									>Фавиконка</label
-								>
+								<div class="flex items-center gap-2">
+									<label for="favicon-upload" class="block text-sm font-semibold text-neutral-950"
+										>Фавиконка</label
+									>
+									<div class="group/tooltip relative">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="size-4 cursor-help text-neutral-400 hover:text-neutral-600"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+											/>
+										</svg>
+										<div
+											class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-48 -translate-x-1/2 rounded-xl bg-neutral-900 p-3 text-center text-[11px] leading-snug text-white shadow-2xl group-hover/tooltip:block"
+										>
+											Отобразится на вкладке браузера
+											<div
+												class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
+											></div>
+										</div>
+									</div>
+								</div>
 								<div class="mt-2 flex items-center gap-6">
 									<div
 										class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50"
@@ -1149,7 +1203,7 @@
 										<div
 											class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-52 -translate-x-1/2 rounded-xl bg-neutral-900 p-3 text-center text-[11px] leading-snug text-white shadow-2xl group-hover/tooltip:block"
 										>
-											На каждый город мы даём только одну подписку на сайт
+											Определяет региональность сайта
 											<div
 												class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-900"
 											></div>
