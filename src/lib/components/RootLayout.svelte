@@ -34,6 +34,15 @@
 	let panelId = $state('');
 	let prefersReducedMotion = $state(false);
 
+	// Close navigation on page change
+	let previousPathname = $state($page.url.pathname);
+	$effect(() => {
+		if ($page.url.pathname !== previousPathname) {
+			previousPathname = $page.url.pathname;
+			expanded = false;
+		}
+	});
+
 	// Refs for focus management
 	let openRef = $state(null);
 	let closeRef = $state(null);
