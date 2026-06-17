@@ -83,33 +83,19 @@
 <Container class="mt-24 font-light sm:mt-32 md:mt-56 ">
 	<FadeIn class="max-w-3xl">
 		<h1
-			class="font-display py-6 text-5xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
+			class="font-display py-6 text-4xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
 		>
 			Современный сайт для вашего бизнеса за <span class="font-medium text-neutral-900">170₽</span> в
 			день
 		</h1>
-		<!-- Десктоп: полный текст -->
-		<p class="mt-6 hidden text-xl text-neutral-600 sm:block">
+		<p class="mt-6 text-lg text-neutral-600 sm:text-xl">
 			Современные решения на технологиях <span class="font-bold text-neutral-900">YandexCloud</span> с
-			готовыми компонентами. Выберите подписку с тестовым периодом и наши специалисты запустят сайт для
-			вас в течение 72 часов на вашем домене.
+			готовыми компонентами.
 		</p>
-		<!-- <p class="mt-2 hidden text-xl text-neutral-600 sm:block">
-			Дружелюбная к SEO и рекламному продвижению архитектура выведет ваш бизнес на шаг вперёд
-			конкурентов <span class="text-neutral-900">всего за 170 рублей</span> в день.
-		</p> -->
-		<!-- Мобильные: короткий текст -->
-		<p class="mt-6 text-xl text-neutral-600 sm:hidden">
-			Выберите готовый вариант и мы настроим его для вас за 72 часа на вашем домене.
+		<p class="mt-2 text-lg text-neutral-600 sm:text-xl">
+			Выберите подписку с тестовым периодом и наши специалисты запустят сайт для вас в течение 72
+			часов на вашем домене.
 		</p>
-		<p class="mt-2 text-xl text-neutral-600 sm:hidden">
-			Всего <span class="text-neutral-900">170 ₽ в день</span> — и у вас есть свой IT-отдел, который занимается
-			сайтом.
-		</p>
-
-		<!-- <p class="mt-6 text-xl text-neutral-600">
-			Минимум усилий и максимум выгоды <span class="text-neutral-950"> за 5000 рублей в месяц</span>
-		</p> -->
 		<div class="mt-10 flex flex-wrap gap-4">
 			<Button href="/register" class="px-8 py-3 text-lg">Попробовать бесплатно</Button>
 			<Button href="/login" invert class="px-8 py-3 text-lg ring-1 ring-neutral-950"
