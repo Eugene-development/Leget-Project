@@ -18,10 +18,13 @@
 		<div class="mx-auto max-w-4xl">
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-medium text-balance text-white sm:text-4xl">
-					Расскажите нам о себе
+					Готовы начать работу?
 				</h2>
-				<div class="mt-6 flex">
-					<Button href="/contact" invert>Свяжитесь с нами</Button>
+				<div class="mt-6 flex flex-wrap gap-4">
+					<Button href="/register" invert>Регистрация</Button>
+					<Button href="/login" class="border border-white/20 text-white hover:bg-white/10 hover:border-white">
+						Личный кабинет
+					</Button>
 				</div>
 				<div class="mt-10 border-t border-white/10 pt-10">
 					<h3 class="font-display text-base font-semibold text-white">Наши контакты:</h3>
@@ -64,6 +67,7 @@
 									</a>
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>

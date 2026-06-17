@@ -213,7 +213,8 @@
 
 		const existingFooter = license?.footerData ?? {};
 		const footerData = {
-			...existingFooter
+			...existingFooter,
+			logoUrl: formLogoUrl || null
 		};
 
 		return { headerData, footerData };

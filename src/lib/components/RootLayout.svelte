@@ -169,7 +169,7 @@
 
 	<!-- Main content area with white background and rounded corners -->
 	<div
-		class="relative flex flex-auto overflow-hidden bg-white pt-10"
+		class="relative flex flex-auto overflow-x-clip bg-white pt-10"
 		style="border-top-left-radius: 20px; border-top-right-radius: 20px;"
 	>
 		<div class="relative isolate flex w-full flex-col pt-9">

@@ -45,10 +45,11 @@
 			]
 		},
 		{
-			title: 'Личный кабинет',
+			title: 'Документы',
 			links: [
-				{ title: 'Регистрация', href: '/register' },
-				{ title: 'Вход', href: '/login' }
+				{ title: 'Реквизиты', href: '/requisites' },
+				{ title: 'Политика', href: '/privacy' },
+				{ title: 'Оферта', href: '/offer' }
 			]
 		}
 		// {
