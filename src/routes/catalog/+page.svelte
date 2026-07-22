@@ -21,7 +21,7 @@
 				'Проект для мебельной компании. Позволяет создать профессиональное присутствие в интернете за считанные часы. Ознакомьтесь с проектом и оцените возможности готовых решений от LEGET.'
 			],
 			logo: '/images/clients/promo-1/logo-dark.svg',
-			href: '/projects/promo-1',
+			href: '/catalog/promo-1',
 			price: 170,
 			service: 'Подписка',
 			testimonial: {
@@ -38,7 +38,7 @@
 				'Промо-2 — это проект с акцентом на чистоту линий и удобство восприятия информации. Идеально подходит для медицинских центров и сервисных компаний.'
 			],
 			logo: '/images/clients/promo-2/logo-dark.svg',
-			href: '/projects/promo-2',
+			href: '/catalog/promo-2',
 			inDevelopment: true,
 			price: 170,
 			service: 'Подписка',
@@ -57,7 +57,7 @@
 				'Промо-3 предлагает расширенные возможности для демонстрации продуктов и взаимодействия с аудиторией. Современный стек технологий обеспечивает максимальную производительность.'
 			],
 			logo: '/images/clients/promo-3/logo-dark.svg',
-			href: '/projects/promo-3',
+			href: '/catalog/promo-3',
 			inDevelopment: true,
 			price: 170,
 			service: 'Подписка',

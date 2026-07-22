@@ -13,32 +13,32 @@
 	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 	import { formatDate } from '$lib/formatDate.js';
 
-	// templateId=2 corresponds to Promo-2
-	const TEMPLATE_ID = 2;
+	// templateId=3 corresponds to Promo-3
+	const TEMPLATE_ID = 3;
 	let modalOpen = $state(false);
 
 	const caseStudy = {
-		client: 'Promo-2',
-		title: 'Promo-2',
+		client: 'Promo-3',
+		title: 'Promo-3',
 		description:
-			'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки. Профессиональное решение для быстрого запуска вашего бизнеса.',
-		heroImage: '/images/projects/promo-2/hero.jpg',
-		date: '2025-04',
+			'Мощный инструмент для эффективных онлайн-продаж. Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
+		heroImage: '/images/projects/promo-3/hero.jpg',
+		date: '2025-05',
 		service: 'Подписка',
 		testimonial: {
 			author: { name: 'Евгений Че', role: 'Директор по маркетингу' },
-			image: '/images/projects/promo-2/emily-selman.jpg',
+			image: '/images/projects/promo-3/jenny-wilson.jpg',
 			content:
-				"Этот проект позволил нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы."
+				"Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать."
 		}
 	};
 </script>
 
 <svelte:head>
-	<title>Проект Промо-2 — Минималистичный сайт для вашего продукта | LEGET</title>
+	<title>Проект Промо-3 — Интерактивный сайт с продуманной структурой | LEGET</title>
 	<meta
 		name="description"
-		content="Минималистичный дизайн с акцентом на контент и высокую скорость загрузки. Профессиональное решение для быстрого запуска вашего бизнеса."
+		content="Интерактивный интерфейс с проработанной структурой для вовлечения пользователей. Современное решение для вашего технологичного бизнеса."
 	/>
 </svelte:head>
 
@@ -54,7 +54,7 @@
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
 				<a href="/" class="text-neutral-600 transition hover:text-neutral-950">Главная</a>
 				<span class="text-neutral-300">/</span>
-				<a href="/projects" class="text-neutral-600 transition hover:text-neutral-950">Проекты</a>
+				<a href="/catalog" class="text-neutral-600 transition hover:text-neutral-950">Каталог</a>
 				<span class="text-neutral-300">/</span>
 				<span class="font-semibold text-neutral-950">{caseStudy.client}</span>
 			</div>
@@ -81,7 +81,7 @@
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
-				alt="Promo-2 project hero"
+				alt="Promo-3 project hero"
 				class="w-full object-cover"
 				loading="lazy"
 			/>
@@ -95,13 +95,13 @@
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Описание проекта</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Шаблон Promo-2 — это идеальное решение для быстрого старта. Минималистичный дизайн не отвлекает от главного — вашего продукта или услуги.
+				Шаблон Promo-3 — это мощная платформа для создания полноценного интернет-магазина. Продуманный каталог, удобная корзина и интеграция с платежными системами делают этот шаблон лучшим выбором для e-commerce.
 			</p>
 			<p>
-				Благодаря оптимизированному коду и отсутствию лишних элементов, сайт на базе этого шаблона загружается мгновенно, что крайне важно для удержания мобильного трафика.
+				Интерактивные элементы интерфейса повышают вовлеченность пользователей и способствуют увеличению среднего чека. Современная архитектура гарантирует стабильную работу даже при высоких нагрузках.
 			</p>
 			<p>
-				Гибкие настройки позволяют легко изменить цветовую схему и типографику под ваш бренд, сохраняя при этом профессиональный вид и высокую конверсию.
+				Мы уделили особое внимание мобильной версии, чтобы ваши клиенты могли совершать покупки с любого устройства в один клик.
 			</p>
 		</div>
 	</FadeIn>
@@ -124,18 +124,18 @@
 	<Blockquote author={caseStudy.testimonial.author} image={caseStudy.testimonial.image}>
 		<p>{caseStudy.testimonial.content}</p>
 	</Blockquote>
-</Container>
- -->
+</Container> -->
+
 <!-- Statistics Section -->
 <!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Results</h2>
 	</FadeIn>
 	<StatList class="mt-10">
-		<StatListItem value="34%" label="Fewer transactions" />
-		<StatListItem value="10%" label="Slower transactions" />
-		<StatListItem value="1000ms" label="Transaction latency" />
-		<StatListItem value="3" label="Active nodes" />
+		<StatListItem value="20%" label="Churn rate" />
+		<StatListItem value="5x" label="Uninstalls" />
+		<StatListItem value="2.3" label="App store rating" />
+		<StatListItem value="8" label="Pending lawsuits" />
 	</StatList>
 </Container> -->
 
@@ -145,8 +145,8 @@
 <SubscribeLicenseModal
 	open={modalOpen}
 	templateId={TEMPLATE_ID}
-	templateName="Promo-2"
-	price="200"
+	templateName="Promo-3"
+	price="250"
 	period="день"
 	onClose={() => (modalOpen = false)}
 	onSuccess={(id) => {

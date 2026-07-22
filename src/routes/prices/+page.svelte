@@ -25,7 +25,7 @@
 			description: 'Полноценное представительство вашего бизнеса в интернете.',
 			featured: true,
 			status: 'active',
-			href: '/projects'
+			href: '/catalog'
 		},
 		{
 			name: 'Интернет-магазин',

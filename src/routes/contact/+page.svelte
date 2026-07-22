@@ -6,6 +6,8 @@
 	import Offices from '$lib/components/Offices.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import SocialMedia from '$lib/components/SocialMedia.svelte';
+	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
+	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 	import { regionState } from '$lib/state/region.svelte';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
 
@@ -30,6 +32,10 @@
 	let isSubmitting = $state(false);
 	let submitSuccess = $state(false);
 	let submitError = $state('');
+
+	// SmartCaptcha (защита от ботов)
+	let captchaToken = $state(null);
+	let captchaRef = $state();
 
 	// Generate unique IDs for form fields
 	let nameId = $state('');
@@ -86,6 +92,12 @@
 			return;
 		}
 
+		// Антибот: при включённой капче требуется токен
+		if (SITE_KEY && !captchaToken) {
+			submitError = 'Подтвердите, что вы не робот.';
+			return;
+		}
+
 		isSubmitting = true;
 		submitError = '';
 
@@ -98,7 +110,8 @@
 				phone: formData.phone.trim() || null,
 				company: formData.company.trim() || null,
 				message: formData.message.trim(),
-				source_url: sourceUrl
+				source_url: sourceUrl,
+				captcha_token: captchaToken
 			};
 
 			const authApiUrl = getAuthApiUrl();
@@ -114,6 +127,7 @@
 			const result = await response.json();
 
 			if (!response.ok || !result.success) {
+				if (result.errors?.captcha_token) submitError = result.errors.captcha_token[0];
 				throw new Error(result.message || 'Ошибка отправки');
 			}
 
@@ -130,8 +144,13 @@
 			};
 		} catch (err) {
 			console.error('Contact form submit error:', err);
-			submitError =
-				'Не удалось отправить заявку. Пожалуйста, попробуйте позже или напишите нам напрямую.';
+			// Токен одноразовый — сбрасываем капчу для повторной попытки
+			captchaRef?.reset();
+			captchaToken = null;
+			if (!submitError) {
+				submitError =
+					'Не удалось отправить заявку. Пожалуйста, попробуйте позже или напишите нам напрямую.';
+			}
 		} finally {
 			isSubmitting = false;
 		}
@@ -327,6 +346,16 @@
 							{/if}
 						</div>
 					</div>
+
+					{#if SITE_KEY}
+						<div class="mt-6">
+							<SmartCaptcha
+								bind:this={captchaRef}
+								onverify={(token) => (captchaToken = token)}
+								onerror={() => (captchaToken = null)}
+							/>
+						</div>
+					{/if}
 
 					{#if submitError}
 						<div class="mt-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700">

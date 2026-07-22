@@ -13,37 +13,49 @@
 	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 	import { formatDate } from '$lib/formatDate.js';
 
-	// templateId=3 corresponds to Promo-3
-	const TEMPLATE_ID = 3;
+	// templateId=1 corresponds to Promo-1
+	const TEMPLATE_ID = 1;
 	let modalOpen = $state(false);
 
+	/**
+	 * Promo-1 Case Study Page
+	 *
+	 * Requirements: 9.4, 13.5
+	 * - Detailed project description
+	 * - Project header with logo, client name, date, service
+	 * - Hero image
+	 * - Testimonial/quote from client
+	 * - StatList with project statistics
+	 * - ContactSection at the bottom
+	 */
+
 	const caseStudy = {
-		client: 'Promo-3',
-		title: 'Promo-3',
+		client: 'Promo-1',
+		title: 'Промо-1',
 		description:
-			'Мощный инструмент для эффективных онлайн-продаж. Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
-		heroImage: '/images/projects/promo-3/hero.jpg',
-		date: '2025-05',
-		service: 'Подписка',
+			'Многостраничный сайт с множеством настраиваемых функций и разделов. Отличная юзабельность и адаптивность под любые устройства вкупе с современным дизайном.',
+		heroImage: '/images/projects/promo-1/hero.png',
+		date: '2023-01',
+		service: 'Web development, SvelteKit',
 		testimonial: {
 			author: { name: 'Евгений Че', role: 'Директор по маркетингу' },
-			image: '/images/projects/promo-3/jenny-wilson.jpg',
+			image: '/images/projects/promo-1/debra-fiscal.jpg',
 			content:
-				"Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать."
+				'Данный сайт позволяет перейти компании на новый уровень в информационной сети интернет.'
 		}
 	};
 </script>
 
 <svelte:head>
-	<title>Проект Промо-3 — Интерактивный сайт с продуманной структурой | LEGET</title>
+	<title>Проект Promo-1 — Универсальный многостраничный сайт | LEGET</title>
 	<meta
 		name="description"
-		content="Интерактивный интерфейс с проработанной структурой для вовлечения пользователей. Современное решение для вашего технологичного бизнеса."
+		content="Описание шаблона Promo-1: современный многостраничный сайт с настраиваемыми функциями, созданный на стеке SvelteKit."
 	/>
 </svelte:head>
 
 <!-- Page Introduction with Project Header -->
-<PageIntro eyebrow="Проект" title={caseStudy.title}>
+<PageIntro eyebrow="Шаблон" title={caseStudy.title}>
 	<p>{caseStudy.description}</p>
 </PageIntro>
 
@@ -54,7 +66,7 @@
 			<div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
 				<a href="/" class="text-neutral-600 transition hover:text-neutral-950">Главная</a>
 				<span class="text-neutral-300">/</span>
-				<a href="/projects" class="text-neutral-600 transition hover:text-neutral-950">Проекты</a>
+				<a href="/catalog" class="text-neutral-600 transition hover:text-neutral-950">Каталог</a>
 				<span class="text-neutral-300">/</span>
 				<span class="font-semibold text-neutral-950">{caseStudy.client}</span>
 			</div>
@@ -66,11 +78,17 @@
 <Container class="mt-16">
 	<FadeIn>
 		<div class="mb-8 flex flex-wrap justify-center gap-4">
-			<Button href="/" aria-label="View demo: {caseStudy.client}">
+			<Button
+				href="https://novostroy.org"
+				target="_blank"
+				class="px-8 py-3 text-lg"
+				aria-label="View demo: {caseStudy.client}"
+			>
 				Посмотреть демо версию сайта
 			</Button>
 			<Button
-				invert={false}
+				invert
+				class="px-8 py-3 text-lg ring-1 ring-neutral-950"
 				onclick={() => (modalOpen = true)}
 				aria-label="Подписаться на лицензию {caseStudy.client}"
 			>
@@ -81,7 +99,7 @@
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
-				alt="Promo-3 project hero"
+				alt="Promo-1 project hero"
 				class="w-full object-cover"
 				loading="lazy"
 			/>
@@ -95,13 +113,23 @@
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Описание проекта</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Шаблон Promo-3 — это мощная платформа для создания полноценного интернет-магазина. Продуманный каталог, удобная корзина и интеграция с платежными системами делают этот шаблон лучшим выбором для e-commerce.
+				Шаблон Promo-1 — это современное решение для многостраничного корпоративного сайта или
+				интернет-витрины. Разработанный на базе SvelteKit, он обеспечивает молниеносную скорость
+				работы и отличные показатели SEO.
 			</p>
 			<p>
-				Интерактивные элементы интерфейса повышают вовлеченность пользователей и способствуют увеличению среднего чека. Современная архитектура гарантирует стабильную работу даже при высоких нагрузках.
+				Структура шаблона позволяет легко адаптировать его под различные виды бизнеса, будь то
+				производство мебели, строительные услуги или любое другое направление, требующее детального
+				представления товаров и услуг.
 			</p>
 			<p>
-				Мы уделили особое внимание мобильной версии, чтобы ваши клиенты могли совершать покупки с любого устройства в один клик.
+				В шаблоне реализованы все необходимые разделы: от функционального каталога до страниц с
+				описанием процесса работы и контактной информации. Внимание к деталям в дизайне и коде
+				гарантирует высокий уровень конверсии и доверие пользователей.
+			</p>
+			<p>
+				Полная адаптивность обеспечивает корректное отображение на всех типах устройств, что
+				позволяет клиентам с комфортом взаимодействовать с сайтом в любое время и из любого места.
 			</p>
 		</div>
 	</FadeIn>
@@ -132,10 +160,10 @@
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">Results</h2>
 	</FadeIn>
 	<StatList class="mt-10">
-		<StatListItem value="20%" label="Churn rate" />
-		<StatListItem value="5x" label="Uninstalls" />
-		<StatListItem value="2.3" label="App store rating" />
-		<StatListItem value="8" label="Pending lawsuits" />
+		<StatListItem value="25%" label="Less traffic" />
+		<StatListItem value="10x" label="Page load times" />
+		<StatListItem value="15%" label="Higher infra costs" />
+		<StatListItem value="$1.2M" label="Legal fees" />
 	</StatList>
 </Container> -->
 
@@ -145,8 +173,8 @@
 <SubscribeLicenseModal
 	open={modalOpen}
 	templateId={TEMPLATE_ID}
-	templateName="Promo-3"
-	price="250"
+	templateName="Promo-1"
+	price="170"
 	period="день"
 	onClose={() => (modalOpen = false)}
 	onSuccess={(id) => {

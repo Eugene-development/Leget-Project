@@ -25,7 +25,7 @@
 	// Navigation links data
 	const navigationLinks = [
 		{ href: '/prices', label: 'Цены' },
-		{ href: '/projects', label: 'Проекты' },
+		{ href: '/catalog', label: 'Каталог' },
 		{ href: '/about', label: 'О нас' },
 		{ href: '/process', label: 'Настройка' },
 		{ href: '/news', label: 'Новости' },

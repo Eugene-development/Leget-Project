@@ -182,7 +182,7 @@
 					<h3 class="font-display text-xl font-semibold text-neutral-950">У вас пока нет сайтов</h3>
 					<p class="mt-2 text-sm text-neutral-600">Выберите шаблон и создайте свой первый сайт.</p>
 					<div class="mt-6">
-						<Button href="/projects">Выбрать шаблон</Button>
+						<Button href="/catalog">Выбрать шаблон</Button>
 					</div>
 				</div>
 			</FadeIn>

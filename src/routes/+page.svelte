@@ -45,7 +45,7 @@
 			title: 'Мебель на заказ',
 			description:
 				'Представляет собой многостраничный сайт с множеством настраиваемых функций и разделов.',
-			href: '/projects/promo-1',
+			href: '/catalog/promo-1',
 			date: '01.04.26',
 			status: 'active'
 		},
@@ -55,7 +55,7 @@
 			title: 'Фабрика мебели',
 			description:
 				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки для вашего продукта.',
-			href: '/projects/promo-2',
+			href: '/catalog/promo-2',
 			date: '05.04.26',
 			status: 'draft'
 		},
@@ -64,7 +64,7 @@
 			name: 'Промо-3',
 			title: 'Мебельный магазин',
 			description: 'Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
-			href: '/projects/promo-3',
+			href: '/catalog/promo-3',
 			date: '11.04.26',
 			status: 'draft'
 		}
@@ -82,22 +82,46 @@
 <!-- Hero Section -->
 <Container class="mt-24 font-light sm:mt-32 md:mt-56 ">
 	<FadeIn class="max-w-3xl">
+		<!-- Trial period notification -->
+		<div
+			class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-medium text-neutral-700 ring-1 ring-neutral-950/10"
+		>
+			<svg
+				class="h-4 w-4 flex-none text-neutral-500"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="1.75"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+			>
+				<circle cx="12" cy="12" r="9" />
+				<path d="M12 7.5V12l3 1.8" />
+			</svg>
+			<span>
+				Тестовый период <span class="font-semibold text-neutral-950">72 часа</span>
+			</span>
+		</div>
 		<h1
 			class="font-display py-6 text-4xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
 		>
-			Современный сайт для вашего бизнеса за <span class="font-medium text-neutral-900">170₽</span> в
-			день
+			Сайты для бизнеса на инфраструктуре <span class="font-medium text-neutral-900"
+				>YandexCloud</span
+			>
 		</h1>
 		<p class="mt-6 text-lg text-neutral-600 sm:text-xl">
-			Современные решения на технологиях <span class="font-bold text-neutral-900">YandexCloud</span> с
-			готовыми компонентами.
+			Современные решения по подписке <span class="font-semibold text-neutral-900"
+				>всего за 170 руб/день</span
+			>.
 		</p>
 		<p class="mt-2 text-lg text-neutral-600 sm:text-xl">
-			Выберите подписку с тестовым периодом и наши специалисты запустят сайт для вас в течение 72
-			часов на вашем домене.
+			Вы получаете полностью готовый сайт со стартовой структурой, категориями и демо-контентом. Вы
+			сможете легко изменять любые тексты, добавлять товары и управлять разделами прямо на сайте
+			сразу после простой авторизации.
 		</p>
 		<div class="mt-10 flex flex-wrap gap-4">
-			<Button href="/register" class="px-8 py-3 text-lg">Попробовать бесплатно</Button>
+			<Button href="/register" class="px-8 py-3 text-lg">Попробовать</Button>
 			<Button href="/login" invert class="px-8 py-3 text-lg ring-1 ring-neutral-950"
 				>Войти в кабинет</Button
 			>

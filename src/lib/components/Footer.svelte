@@ -29,10 +29,10 @@
 		{
 			title: 'Шаблоны',
 			links: [
-				{ title: 'Promo 1', href: '/projects/promo-1' },
+				{ title: 'Promo 1', href: '/catalog/promo-1' },
 				{ title: 'Promo 2', disabled: true },
 				{ title: 'Promo 3', disabled: true },
-				{ title: 'Смотреть все', href: '/projects', hasArrow: true }
+				{ title: 'Смотреть все', href: '/catalog', hasArrow: true }
 			]
 		},
 		{

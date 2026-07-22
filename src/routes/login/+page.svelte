@@ -3,6 +3,8 @@
 	import Button from '$lib/components/Button.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
+	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
+	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
 
 	// Form state
@@ -21,6 +23,10 @@
 	let isSubmitting = $state(false);
 	let submitError = $state('');
 	let needsVerification = $state(false);
+
+	// SmartCaptcha (защита от ботов)
+	let captchaToken = $state(null);
+	let captchaRef = $state();
 
 	// Generate unique IDs for form fields
 	let emailId = $state('');
@@ -63,6 +69,12 @@
 
 		if (!validateForm()) return;
 
+		// Антибот: при включённой капче требуется токен
+		if (SITE_KEY && !captchaToken) {
+			submitError = 'Подтвердите, что вы не робот.';
+			return;
+		}
+
 		isSubmitting = true;
 		submitError = '';
 		needsVerification = false;
@@ -77,7 +89,8 @@
 				},
 				body: JSON.stringify({
 					email: formData.email.trim().toLowerCase(),
-					password: formData.password
+					password: formData.password,
+					captcha_token: captchaToken
 				})
 			});
 
@@ -85,6 +98,7 @@
 
 			if (!response.ok || !result.success) {
 				if (result.errors?.email) errors.email = result.errors.email[0];
+				if (result.errors?.captcha_token) submitError = result.errors.captcha_token[0];
 				throw new Error(result.message || 'Ошибка входа');
 			}
 
@@ -102,8 +116,12 @@
 			window.location.href = '/lk';
 		} catch (err) {
 			console.error('Login error:', err);
-			if (!errors.email) {
-				submitError = err.message || 'Не удалось войти в систему. Проверьте правильность введённых данных.';
+			// Токен одноразовый — сбрасываем капчу для повторной попытки
+			captchaRef?.reset();
+			captchaToken = null;
+			if (!errors.email && !submitError) {
+				submitError =
+					err.message || 'Не удалось войти в систему. Проверьте правильность введённых данных.';
 			}
 		} finally {
 			isSubmitting = false;
@@ -174,6 +192,16 @@
 						{/if}
 					</div>
 				</div>
+
+				{#if SITE_KEY}
+					<div class="mt-6">
+						<SmartCaptcha
+							bind:this={captchaRef}
+							onverify={(token) => (captchaToken = token)}
+							onerror={() => (captchaToken = null)}
+						/>
+					</div>
+				{/if}
 
 				{#if submitError}
 					<div class="mt-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700">
