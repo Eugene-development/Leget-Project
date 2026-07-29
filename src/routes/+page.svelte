@@ -100,7 +100,7 @@
 				<path d="M12 7.5V12l3 1.8" />
 			</svg>
 			<span>
-				Тестовый период <span class="font-semibold text-neutral-950">72 часа</span>
+				Всего за <span class="font-semibold text-neutral-950">200 руб/день</span>
 			</span>
 		</div>
 		<h1
@@ -110,15 +110,15 @@
 				>YandexCloud</span
 			>
 		</h1>
-		<p class="mt-6 text-lg text-neutral-600 sm:text-xl">
+		<!-- <p class="mt-6 text-lg text-neutral-600 sm:text-xl">
 			Современные решения по подписке <span class="font-semibold text-neutral-900"
 				>всего за 170 руб/день</span
 			>.
-		</p>
+		</p> -->
 		<p class="mt-2 text-lg text-neutral-600 sm:text-xl">
-			Вы получаете полностью готовый сайт со стартовой структурой, категориями и демо-контентом. Вы
-			сможете легко изменять любые тексты, добавлять товары и управлять разделами прямо на сайте
-			сразу после простой авторизации.
+			Вы получите готовый сайт с продуманной структурой и стартовым контентом. После простой
+			авторизации вы сможете прямо на сайте редактировать тексты, добавлять товары и управлять
+			категориями.
 		</p>
 		<div class="mt-10 flex flex-wrap gap-4">
 			<Button href="/register" class="px-8 py-3 text-lg">Попробовать</Button>
