@@ -6,6 +6,8 @@
 	import Button from '$lib/components/Button.svelte';
 	import TopUpModal from '$lib/components/TopUpModal.svelte';
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	import { replaceState } from '$app/navigation';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
 	import { openInvoice } from '$lib/utils/invoice.js';
 
@@ -28,6 +30,17 @@
 						hasMorePages
 					}
 				}
+			}
+		}
+	`;
+
+	const SYNC_ONLINE_PAYMENT_MUTATION = `
+		mutation SyncOnlinePayment($id: ID!) {
+			syncOnlinePayment(id: $id) {
+				id
+				amount
+				status
+				balance
 			}
 		}
 	`;
@@ -61,6 +74,10 @@
 	let error = $state(null);
 	let isModalOpen = $state(false);
 	let modalTab = $state('online'); // с какой вкладки открыть модалку: 'online' | 'bank'
+
+	// Результат возврата со страницы оплаты ЮKassa
+	let paymentNotice = $state(null); // { type: 'success' | 'pending' | 'error', text: string }
+	let isSyncingPayment = $state(false);
 	let filterType = $state('all');
 	let dateFrom = $state('');
 	let dateTo = $state('');
@@ -177,13 +194,60 @@
 		}
 	});
 
-	function handleTopUpSuccess(newBalance) {
-		if (wallet) {
-			wallet.balance = newBalance;
-			// Re-fetch to get the new transaction in history
-			fetchWallet();
+	// Не $state: флаг не должен перезапускать эффект синхронизации
+	let paymentSyncHandled = false;
+
+	/**
+	 * Пользователь вернулся со страницы оплаты ЮKassa на /lk/balance?payment=<id>.
+	 *
+	 * Сам факт возврата ничего не гарантирует, поэтому статус подтверждает
+	 * сервер: он опрашивает ЮKassa и при успехе зачисляет деньги. Повторный
+	 * вызов безопасен — зачисление идемпотентно.
+	 */
+	async function syncPaymentFromUrl() {
+		const paymentId = $page.url.searchParams.get('payment');
+		if (!paymentId || paymentSyncHandled) return;
+		paymentSyncHandled = true;
+
+		// Чистим URL, чтобы обновление страницы не выглядело как новая оплата
+		replaceState($page.url.pathname, {});
+
+		isSyncingPayment = true;
+		try {
+			const data = await graphqlRequest(SYNC_ONLINE_PAYMENT_MUTATION, { id: paymentId });
+			const payment = data.syncOnlinePayment;
+
+			if (payment.status === 'succeeded') {
+				paymentNotice = {
+					type: 'success',
+					text: `Баланс пополнен на ${parseFloat(payment.amount).toLocaleString('ru-RU')} ₽`
+				};
+				await fetchWallet(1, false);
+			} else if (payment.status === 'canceled') {
+				paymentNotice = {
+					type: 'error',
+					text: 'Платёж не прошёл. Деньги не списаны — попробуйте оплатить ещё раз.'
+				};
+			} else {
+				paymentNotice = {
+					type: 'pending',
+					text: 'Платёж обрабатывается. Баланс обновится автоматически, как только оплата подтвердится.'
+				};
+			}
+		} catch (err) {
+			console.error('Payment sync error:', err);
+			paymentNotice = {
+				type: 'error',
+				text: err.message || 'Не удалось проверить статус платежа.'
+			};
+		} finally {
+			isSyncingPayment = false;
 		}
 	}
+
+	$effect(() => {
+		if (browser) syncPaymentFromUrl();
+	});
 
 	async function fetchInvoices(page = 1, append = false) {
 		if (append) {
@@ -291,6 +355,46 @@
 
 <Container class="mt-12 mb-24 sm:mt-20 lg:mt-24">
 	<FadeInStagger class="flex flex-col gap-12">
+		{#if isSyncingPayment}
+			<FadeIn>
+				<div
+					class="flex items-center gap-3 rounded-3xl border border-neutral-100 bg-neutral-50 p-5 text-sm text-neutral-600"
+					role="status"
+				>
+					<svg class="h-4 w-4 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+						></circle>
+						<path
+							class="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+						></path>
+					</svg>
+					Проверяем статус платежа...
+				</div>
+			</FadeIn>
+		{:else if paymentNotice}
+			<FadeIn>
+				<div
+					role="status"
+					class="flex items-start justify-between gap-4 rounded-3xl border p-5
+						{paymentNotice.type === 'success'
+						? 'border-green-100 bg-green-50 text-green-800'
+						: paymentNotice.type === 'error'
+							? 'border-red-100 bg-red-50 text-red-700'
+							: 'border-amber-100 bg-amber-50 text-amber-800'}"
+				>
+					<p class="text-sm font-medium">{paymentNotice.text}</p>
+					<button
+						onclick={() => (paymentNotice = null)}
+						class="shrink-0 text-xs font-semibold opacity-60 transition hover:opacity-100"
+					>
+						Закрыть
+					</button>
+				</div>
+			</FadeIn>
+		{/if}
+
 		{#if isLoading && !wallet}
 			<FadeIn>
 				<div class="flex items-center justify-center py-16">
@@ -784,6 +888,5 @@
 	open={isModalOpen}
 	initialTab={modalTab}
 	onClose={() => (isModalOpen = false)}
-	onSuccess={handleTopUpSuccess}
 	onInvoiceCreated={handleInvoiceCreated}
 />

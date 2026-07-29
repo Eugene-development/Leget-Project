@@ -5,7 +5,6 @@
 	 * Props:
 	 *   open      - whether the modal is visible
 	 *   onClose   - callback when modal is closed
-	 *   onSuccess - callback(newBalance) after successful online top-up
 	 *   onInvoiceCreated - callback(invoice) after bank invoice is created
 	 *   initialTab - which tab to show when the modal opens ('online' | 'bank')
 	 */
@@ -15,7 +14,6 @@
 	let {
 		open = false,
 		onClose = () => {},
-		onSuccess = () => {},
 		onInvoiceCreated = () => {},
 		initialTab = 'online'
 	} = $props();
@@ -43,11 +41,12 @@
 	let bankError = $state('');
 	let createdInvoice = $state(null); // Invoice после успешного создания
 
-	const TOP_UP_MUTATION = `
-		mutation TopUpBalance($amount: String!) {
-			topUpBalance(amount: $amount) {
-				success
-				newBalance
+	const CREATE_ONLINE_PAYMENT_MUTATION = `
+		mutation CreateOnlinePayment($amount: String!) {
+			createOnlinePayment(amount: $amount) {
+				id
+				status
+				confirmationUrl
 			}
 		}
 	`;
@@ -80,15 +79,18 @@
 		isSubmittingOnline = true;
 		onlineError = '';
 		try {
-			const data = await graphqlRequest(TOP_UP_MUTATION, { amount: onlineAmount.toString() });
-			if (data.topUpBalance.success) {
-				onSuccess(data.topUpBalance.newBalance);
-				handleClose();
+			const data = await graphqlRequest(CREATE_ONLINE_PAYMENT_MUTATION, {
+				amount: onlineAmount.toString()
+			});
+			const url = data.createOnlinePayment?.confirmationUrl;
+			if (url) {
+				// Уходим на страницу оплаты ЮKassa; после оплаты вернёмся на /lk/balance?payment=<id>
+				window.location.href = url;
 			} else {
-				onlineError = 'Не удалось пополнить баланс';
+				onlineError = 'Платёжный сервис не вернул ссылку на оплату';
 			}
 		} catch (err) {
-			onlineError = err.message || 'Ошибка при пополнении баланса';
+			onlineError = err.message || 'Ошибка при создании платежа';
 		} finally {
 			isSubmittingOnline = false;
 		}
@@ -207,6 +209,11 @@
 			<!-- ── Вкладка: Онлайн ─────────────────────────────────────────────── -->
 			{#if activeTab === 'online'}
 				<form onsubmit={handleOnlineSubmit} class="space-y-4">
+					<p class="-mt-1 text-sm leading-relaxed text-neutral-500">
+						Оплата картой или через ЮMoney на защищённой странице ЮKassa. Баланс пополнится
+						сразу после успешной оплаты.
+					</p>
+
 					<div>
 						<label for="online-amount" class="block text-sm font-medium text-neutral-700 mb-1">
 							Сумма пополнения (₽)
@@ -235,7 +242,7 @@
 							disabled={isSubmittingOnline || !onlineAmount}
 							class="w-full rounded-2xl bg-neutral-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50"
 						>
-							{isSubmittingOnline ? 'Обработка...' : 'Пополнить баланс'}
+							{isSubmittingOnline ? 'Переходим к оплате...' : 'Перейти к оплате'}
 						</button>
 					</div>
 				</form>
