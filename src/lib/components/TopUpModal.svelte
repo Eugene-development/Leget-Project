@@ -7,19 +7,28 @@
 	 *   onClose   - callback when modal is closed
 	 *   onSuccess - callback(newBalance) after successful online top-up
 	 *   onInvoiceCreated - callback(invoice) after bank invoice is created
+	 *   initialTab - which tab to show when the modal opens ('online' | 'bank')
 	 */
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
-	import { getApiUrl } from '$lib/utils/config.js';
+	import { openInvoice } from '$lib/utils/invoice.js';
 
 	let {
 		open = false,
 		onClose = () => {},
 		onSuccess = () => {},
-		onInvoiceCreated = () => {}
+		onInvoiceCreated = () => {},
+		initialTab = 'online'
 	} = $props();
 
 	// Активная вкладка: 'online' | 'bank'
-	let activeTab = $state('online');
+	let activeTab = $state(initialTab);
+
+	// При каждом открытии показываем ту вкладку, с которой пришёл пользователь
+	$effect(() => {
+		if (open) {
+			activeTab = initialTab;
+		}
+	});
 
 	// ── Онлайн-пополнение ────────────────────────────────────────────────────
 	let onlineAmount = $state('');
@@ -117,20 +126,9 @@
 	}
 
 	async function downloadInvoice(invoiceId) {
-		const base = getApiUrl().replace(/\/api\/?$/, '');
-		const token = localStorage.getItem('auth_token');
+		bankError = '';
 		try {
-			const response = await fetch(`${base}/invoices/${invoiceId}/download`, {
-				headers: token ? { Authorization: `Bearer ${token}` } : {}
-			});
-			if (!response.ok) throw new Error('Ошибка загрузки счёта');
-			const html = await response.text();
-			const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-			const url = URL.createObjectURL(blob);
-			const win = window.open(url, '_blank');
-			// Освобождаем URL через секунду после открытия
-			setTimeout(() => URL.revokeObjectURL(url), 1000);
-			if (!win) alert('Разрешите всплывающие окна для скачивания счёта');
+			await openInvoice(invoiceId);
 		} catch (err) {
 			bankError = err.message || 'Не удалось открыть счёт';
 		}
@@ -140,7 +138,7 @@
 		onClose();
 		// Сбрасываем состояние с небольшой задержкой (чтобы анимация закрытия прошла)
 		setTimeout(() => {
-			activeTab = 'online';
+			activeTab = initialTab;
 			onlineAmount = '';
 			onlineError = '';
 			bankAmount = '';
@@ -262,6 +260,11 @@
 							Откройте счёт и распечатайте его или сохраните как PDF.<br>
 							После оплаты баланс будет зачислен в течение 1–3 рабочих дней.
 						</p>
+						{#if bankError}
+							<p class="w-full rounded-xl border border-red-100 bg-red-50 p-3 text-sm text-red-600">
+								{bankError}
+							</p>
+						{/if}
 						<button
 							onclick={() => downloadInvoice(createdInvoice.id)}
 							class="flex w-full items-center justify-center gap-2 rounded-2xl bg-neutral-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800"

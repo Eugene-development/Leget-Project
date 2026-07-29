@@ -7,7 +7,7 @@
 	import TopUpModal from '$lib/components/TopUpModal.svelte';
 	import { browser } from '$app/environment';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
-	import { getApiUrl } from '$lib/utils/config.js';
+	import { openInvoice } from '$lib/utils/invoice.js';
 
 	const MY_WALLET_QUERY = `
 		query MyWallet($first: Int!, $page: Int) {
@@ -32,16 +32,24 @@
 		}
 	`;
 
+	const INVOICES_PER_PAGE = 10;
+
 	const MY_INVOICES_QUERY = `
-		query MyInvoices {
-			myInvoices {
-				id
-				number
-				amount
-				status
-				companyName
-				inn
-				createdAt
+		query MyInvoices($first: Int!, $page: Int) {
+			myInvoices(first: $first, page: $page) {
+				data {
+					id
+					number
+					amount
+					status
+					companyName
+					inn
+					createdAt
+				}
+				paginatorInfo {
+					currentPage
+					hasMorePages
+				}
 			}
 		}
 	`;
@@ -52,6 +60,7 @@
 	let isLoadingMore = $state(false);
 	let error = $state(null);
 	let isModalOpen = $state(false);
+	let modalTab = $state('online'); // с какой вкладки открыть модалку: 'online' | 'bank'
 	let filterType = $state('all');
 	let dateFrom = $state('');
 	let dateTo = $state('');
@@ -65,6 +74,9 @@
 	// Счета на оплату (расчётный счёт)
 	let invoices = $state([]);
 	let isLoadingInvoices = $state(false);
+	let isLoadingMoreInvoices = $state(false);
+	let invoicesPage = $state(1);
+	let hasMoreInvoices = $state(false);
 	let downloadingId = $state(null); // ID счёта, который сейчас скачивается
 
 	function changeMonth(delta) {
@@ -173,15 +185,32 @@
 		}
 	}
 
-	async function fetchInvoices() {
-		isLoadingInvoices = true;
+	async function fetchInvoices(page = 1, append = false) {
+		if (append) {
+			isLoadingMoreInvoices = true;
+		} else {
+			isLoadingInvoices = true;
+		}
 		try {
-			const data = await graphqlRequest(MY_INVOICES_QUERY);
-			invoices = data.myInvoices ?? [];
+			const data = await graphqlRequest(MY_INVOICES_QUERY, {
+				first: INVOICES_PER_PAGE,
+				page
+			});
+			const loaded = data.myInvoices?.data ?? [];
+			invoices = append ? [...invoices, ...loaded] : loaded;
+			invoicesPage = data.myInvoices?.paginatorInfo?.currentPage ?? page;
+			hasMoreInvoices = data.myInvoices?.paginatorInfo?.hasMorePages ?? false;
 		} catch (err) {
 			console.error('Failed to fetch invoices:', err);
 		} finally {
 			isLoadingInvoices = false;
+			isLoadingMoreInvoices = false;
+		}
+	}
+
+	function loadMoreInvoices() {
+		if (hasMoreInvoices && !isLoadingMoreInvoices) {
+			fetchInvoices(invoicesPage + 1, true);
 		}
 	}
 
@@ -190,31 +219,26 @@
 		invoices = [invoice, ...invoices];
 	}
 
+	/** Открывает модалку пополнения на нужной вкладке: 'online' | 'bank'. */
+	function openTopUp(tab) {
+		modalTab = tab;
+		isModalOpen = true;
+	}
+
 	async function downloadInvoice(invoiceId) {
-		const base = getApiUrl().replace(/\/api\/?$/, '');
-		const token = localStorage.getItem('auth_token');
 		downloadingId = invoiceId;
 		try {
-			const response = await fetch(`${base}/invoices/${invoiceId}/download`, {
-				headers: token ? { Authorization: `Bearer ${token}` } : {}
-			});
-			if (!response.ok) throw new Error('Ошибка загрузки');
-			const html = await response.text();
-			const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-			const url = URL.createObjectURL(blob);
-			const win = window.open(url, '_blank');
-			setTimeout(() => URL.revokeObjectURL(url), 1000);
-			if (!win) alert('Разрешите всплывающие окна для открытия счёта');
+			await openInvoice(invoiceId);
 		} catch (err) {
 			console.error('Invoice download error:', err);
-			alert('Не удалось открыть счёт. Попробуйте позже.');
+			alert(err.message || 'Не удалось открыть счёт. Попробуйте позже.');
 		} finally {
 			downloadingId = null;
 		}
 	}
 
 	$effect(() => {
-		if (browser) fetchInvoices();
+		if (browser) fetchInvoices(1, false);
 	});
 
 	function groupTransactionsByDay(transactions) {
@@ -287,7 +311,7 @@
 				<div class="rounded-3xl border border-red-100 bg-red-50 p-8 text-center">
 					<p class="text-sm text-red-600">{error}</p>
 					<button
-						onclick={fetchWallet}
+						onclick={() => fetchWallet(1, false)}
 						class="mt-4 text-sm font-semibold text-red-700 underline hover:text-red-900"
 					>
 						Попробовать снова
@@ -308,7 +332,7 @@
 							</p>
 						</div>
 						<div class="flex gap-4">
-							<Button onclick={() => (isModalOpen = true)}>Пополнить баланс</Button>
+							<Button onclick={() => openTopUp('online')}>Пополнить баланс</Button>
 						</div>
 					</div>
 				</div>
@@ -644,7 +668,7 @@
 						<div class="flex items-center justify-between">
 							<h2 class="font-display text-2xl font-semibold text-neutral-950">Счета на оплату</h2>
 							<button
-								onclick={() => (isModalOpen = true)}
+								onclick={() => openTopUp('bank')}
 								class="flex items-center gap-1.5 text-sm font-semibold text-neutral-500 transition hover:text-neutral-950"
 							>
 								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -670,7 +694,12 @@
 									</svg>
 								</div>
 								<p class="text-sm text-neutral-500">Счета ещё не выставлялись</p>
-								<p class="mt-1 text-xs text-neutral-400">Нажмите «Пополнить баланс» и выберите вкладку «Расчётный счёт»</p>
+								<button
+									onclick={() => openTopUp('bank')}
+									class="mt-1 text-xs font-semibold text-neutral-500 underline decoration-neutral-300 transition hover:text-neutral-950"
+								>
+									Выставить счёт на оплату
+								</button>
 							</div>
 						{:else}
 							<div class="overflow-hidden rounded-3xl border border-neutral-100 bg-white shadow-sm ring-1 ring-neutral-950/5">
@@ -732,6 +761,18 @@
 									{/each}
 								</ul>
 							</div>
+
+							{#if hasMoreInvoices}
+								<div class="flex justify-center">
+									<button
+										onclick={loadMoreInvoices}
+										disabled={isLoadingMoreInvoices}
+										class="rounded-2xl border border-neutral-200 px-6 py-2.5 text-sm font-semibold text-neutral-600 transition hover:border-neutral-950 hover:text-neutral-950 disabled:opacity-40"
+									>
+										{isLoadingMoreInvoices ? 'Загрузка...' : 'Показать ещё счета'}
+									</button>
+								</div>
+							{/if}
 						{/if}
 					</div>
 				</FadeIn>
@@ -741,6 +782,7 @@
 
 <TopUpModal
 	open={isModalOpen}
+	initialTab={modalTab}
 	onClose={() => (isModalOpen = false)}
 	onSuccess={handleTopUpSuccess}
 	onInvoiceCreated={handleInvoiceCreated}

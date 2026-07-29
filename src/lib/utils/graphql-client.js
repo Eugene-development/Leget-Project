@@ -34,7 +34,11 @@ export async function graphqlRequest(query, variables) {
 	} catch (error) {
 		// graphql-request wraps GraphQL errors in a ClientError with a response property
 		if (error.response?.errors?.length) {
-			const messages = error.response.errors.map((e) => e.message);
+			// Ошибки валидации (@rules) приходят в extensions.validation как { поле: [сообщения] }
+			const messages = error.response.errors.flatMap((e) => {
+				const validation = e.extensions?.validation;
+				return validation ? Object.values(validation).flat() : [e.message];
+			});
 			const gqlError = new Error(messages.join(', '));
 			gqlError.graphqlErrors = error.response.errors;
 			throw gqlError;
