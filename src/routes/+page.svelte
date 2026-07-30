@@ -81,7 +81,7 @@
 
 <!-- Hero Section -->
 <Container class="mt-24 font-light sm:mt-32 md:mt-56 ">
-	<FadeIn class="max-w-3xl">
+	<FadeIn class="max-w-4xl">
 		<!-- Trial period notification -->
 		<div
 			class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-medium text-neutral-700 ring-1 ring-neutral-950/10"
@@ -104,9 +104,9 @@
 			</span>
 		</div>
 		<h1
-			class="font-display py-6 text-4xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
+			class="font-display py-6 text-3xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
 		>
-			Сайты для бизнеса на инфраструктуре <span class="font-medium text-neutral-900"
+			Ваш сайт для бизнеса на инфраструктуре <span class="font-medium text-neutral-900"
 				>YandexCloud</span
 			>
 		</h1>
@@ -115,13 +115,13 @@
 				>всего за 170 руб/день</span
 			>.
 		</p> -->
-		<p class="mt-2 text-lg text-neutral-600 sm:text-xl">
+		<p class="mt-2 text-sm text-neutral-600 sm:text-xl">
 			Вы получите готовый сайт с продуманной структурой и стартовым контентом. После простой
 			авторизации вы сможете прямо на сайте редактировать тексты, добавлять товары и управлять
 			категориями.
 		</p>
 		<div class="mt-10 flex flex-wrap gap-4">
-			<Button href="/register" class="px-8 py-3 text-lg">Попробовать</Button>
+			<Button href="/register" class="px-8 py-3 text-lg">Попробовать бесплатно</Button>
 			<Button href="/login" invert class="px-8 py-3 text-lg ring-1 ring-neutral-950"
 				>Войти в кабинет</Button
 			>
