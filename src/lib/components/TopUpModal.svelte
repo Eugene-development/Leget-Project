@@ -225,7 +225,7 @@
 							min="1"
 							bind:value={onlineAmount}
 							placeholder="Например, 1000"
-							class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
+							class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 							required
 						/>
 					</div>
@@ -306,7 +306,7 @@
 								min="1"
 								bind:value={bankAmount}
 								placeholder="Например, 5000"
-								class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
+								class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 								required
 							/>
 						</div>
@@ -320,7 +320,7 @@
 								type="text"
 								bind:value={companyName}
 								placeholder="ООО «Ромашка» или Иванов Иван Иванович"
-								class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
+								class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 								required
 							/>
 						</div>
@@ -335,7 +335,7 @@
 								bind:value={inn}
 								placeholder="000000000000"
 								maxlength="12"
-								class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
+								class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 							/>
 						</div>
 

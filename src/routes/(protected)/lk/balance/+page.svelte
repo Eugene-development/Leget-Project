@@ -481,7 +481,7 @@
 								<select
 									id="filter-type"
 									bind:value={filterType}
-									class="w-full rounded-2xl border-neutral-200 bg-white pl-4 pr-8 py-2 text-sm transition focus:border-neutral-950 focus:ring-neutral-950/5 sm:w-48"
+									class="w-full rounded-2xl border-neutral-200 bg-white pl-4 pr-8 py-2 text-sm transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 sm:w-48"
 								>
 									<option value="all">Все операции</option>
 									<option value="deposit">Только пополнения</option>
@@ -496,7 +496,7 @@
 									type="date"
 									id="date-from"
 									bind:value={dateFrom}
-									class="w-full rounded-2xl border-neutral-200 bg-white pl-4 pr-3 py-2 text-sm transition focus:border-neutral-950 focus:ring-neutral-950/5 sm:w-40"
+									class="w-full rounded-2xl border-neutral-200 bg-white pl-4 pr-3 py-2 text-sm transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 sm:w-40"
 								/>
 							</div>
 							<div class="flex flex-col gap-1.5">
@@ -505,7 +505,7 @@
 									type="date"
 									id="date-to"
 									bind:value={dateTo}
-									class="w-full rounded-2xl border-neutral-200 bg-white pl-4 pr-3 py-2 text-sm transition focus:border-neutral-950 focus:ring-neutral-950/5 sm:w-40"
+									class="w-full rounded-2xl border-neutral-200 bg-white pl-4 pr-3 py-2 text-sm transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 sm:w-40"
 								/>
 							</div>
 							{#if filterType !== 'all' || dateFrom || dateTo}

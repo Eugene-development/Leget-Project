@@ -272,7 +272,7 @@
 													const validation = validateDomain(domainValues[license.id]);
 													if (validation.valid) domainValues[license.id] = validation.normalized;
 												}}
-												class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-2 text-sm text-neutral-950 transition focus:border-neutral-950 focus:outline-none"
+												class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-2 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 											/>
 											<Button
 												class="px-4 py-2"

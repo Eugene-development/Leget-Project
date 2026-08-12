@@ -790,7 +790,7 @@
 									bind:value={formName}
 									maxlength="40"
 									placeholder="Введите название проекта"
-									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
+									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 								/>
 								{#if fieldErrors.name}
 									<p class="mt-2 text-sm text-red-600">{fieldErrors.name}</p>
@@ -1216,7 +1216,7 @@
 									id="site-city"
 									bind:value={formCity}
 									placeholder="Напр. Москва"
-									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
+									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 								/>
 							</div>
 						</section>
@@ -1236,7 +1236,7 @@
 										id="yandex-metrica"
 										bind:value={formYandexMetrica}
 										placeholder="ID счётчика (напр. 12345678)"
-										class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
+										class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 									/>
 								</div>
 								<div class="group relative">
@@ -1248,7 +1248,7 @@
 										id="google-analytics"
 										bind:value={formGoogleAnalytics}
 										placeholder="ID отслеживания (напр. G-XXXXXXXXXX)"
-										class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:outline-none"
+										class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 									/>
 								</div>
 							</div>

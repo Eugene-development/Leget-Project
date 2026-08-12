@@ -249,7 +249,7 @@
 								autocomplete="name"
 								placeholder=" "
 								bind:value={formData.name}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.name}
 							/>
 							<label
@@ -272,7 +272,7 @@
 								autocomplete="email"
 								placeholder=" "
 								bind:value={formData.email}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.email}
 							/>
 							<label
@@ -295,7 +295,7 @@
 								autocomplete="organization"
 								placeholder=" "
 								bind:value={formData.company}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 							/>
 							<label
 								for={companyId}
@@ -314,7 +314,7 @@
 								autocomplete="tel"
 								placeholder=" "
 								bind:value={formData.phone}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 							/>
 							<label
 								for={phoneId}
@@ -332,7 +332,7 @@
 								name="message"
 								placeholder=" "
 								bind:value={formData.message}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.message}
 							/>
 							<label

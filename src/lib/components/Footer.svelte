@@ -121,7 +121,7 @@
 							placeholder="Ваша почта"
 							autocomplete="email"
 							aria-label="Email address"
-							class="block w-full rounded-2xl border border-neutral-300 bg-transparent py-4 pr-20 pl-6 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-none"
+							class="block w-full rounded-2xl border border-neutral-300 bg-transparent py-4 pr-20 pl-6 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-none"
 						/>
 						<div class="absolute inset-y-1 right-1 flex justify-end">
 							<button

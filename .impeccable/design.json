@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-11T18:00:00.000Z",
+  "title": "Design System: LEGET — сайт платформы и личный кабинет",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Краска",
+        "canonical": "#0a0a0a",
+        "tonalRamp": ["#0a0a0a", "#171717", "#262626", "#404040", "#737373", "#d4d4d4", "#f5f5f5", "#fafafa"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Бумага",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#404040", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa", "#ffffff"]
+      },
+      "ink-50": {
+        "role": "neutral",
+        "displayName": "Подложка карточки",
+        "canonical": "#fafafa",
+        "tonalRamp": ["#0a0a0a", "#262626", "#525252", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa"]
+      },
+      "ink-600": {
+        "role": "neutral",
+        "displayName": "Текст второго плана",
+        "canonical": "#525252",
+        "tonalRamp": ["#0a0a0a", "#171717", "#262626", "#404040", "#525252", "#737373", "#a3a3a3", "#d4d4d4"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Волосяная линия",
+        "canonical": "rgb(10 10 10 / 0.1)",
+        "tonalRamp": ["rgb(10 10 10 / 0.6)", "rgb(10 10 10 / 0.45)", "rgb(10 10 10 / 0.3)", "rgb(10 10 10 / 0.2)", "rgb(10 10 10 / 0.1)", "rgb(10 10 10 / 0.07)", "rgb(10 10 10 / 0.05)", "rgb(10 10 10 / 0.03)"]
+      },
+      "success-text": {
+        "role": "tertiary",
+        "displayName": "Успех",
+        "canonical": "#166534",
+        "tonalRamp": ["#14532d", "#166534", "#15803d", "#16a34a", "#4ade80", "#bbf7d0", "#dcfce7", "#f0fdf4"]
+      },
+      "danger-text": {
+        "role": "tertiary",
+        "displayName": "Ошибка",
+        "canonical": "#b91c1c",
+        "tonalRamp": ["#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#f87171", "#fecaca", "#fee2e2", "#fef2f2"]
+      },
+      "warning-text": {
+        "role": "tertiary",
+        "displayName": "Ожидание",
+        "canonical": "#92400e",
+        "tonalRamp": ["#78350f", "#92400e", "#b45309", "#d97706", "#fbbf24", "#fde68a", "#fef3c7", "#fffbeb"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display · Mona Sans wdth 125",
+        "purpose": "Единственный h1 страницы, всегда через PageIntro. Растянутая ось ширины, tracking-tight, text-balance, не шире max-w-5xl."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Заголовок раздела внутри страницы. Та же ось ширины, semibold."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Заголовок карточки, пункта списка, модального окна."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Абзац под титулом в цвете ink-600, мера max-w-3xl."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Основной текст. В статьях — класс .typography с ритмом 1.5rem между потомками и 4rem перед h2."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Метка поля формы и подпись действия: 14px semibold краской."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Метаданные карточки — шаблон, цена в сутки, дата. 12px в ink-400."
+      }
+    },
+    "shadows": [
+      { "name": "shadow-sm", "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)", "purpose": "Карточка в покое. Основная тень продукта." },
+      { "name": "shadow-md", "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)", "purpose": "Карточка при наведении, вместе с осветлением заливки." },
+      { "name": "shadow-2xl", "value": "0 25px 50px -12px rgb(0 0 0 / 0.25)", "purpose": "Только модальное окно — единственное место, где интерфейс отрывается от страницы." },
+      { "name": "ring-hairline", "value": "0 0 0 1px rgb(10 10 10 / 0.05)", "purpose": "Кольцо поверх границы: даёт край без веса рамки." }
+    ],
+    "motion": [
+      { "name": "fade-in-up", "value": "opacity 0.5s ease, transform 0.5s ease (translateY 24px → 0)", "purpose": "Единственное движение продукта. IntersectionObserver с rootMargin 0px 0px -200px, срабатывает один раз." },
+      { "name": "stagger", "value": "index × delay", "purpose": "FadeInStagger раздаёт потомкам нарастающую задержку." },
+      { "name": "modal-backdrop", "value": "fade 300ms", "purpose": "Затемнение ink/60 с backdrop-blur-sm." },
+      { "name": "modal-enter", "value": "fly y:50 400ms backOut", "purpose": "Единственная пружинящая кривая во всём продукте." },
+      { "name": "reduced-motion", "value": "transition: none; opacity: 1", "purpose": "При prefers-reduced-motion анимация не замедляется, а исчезает — содержимое сразу видимо." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Главное действие. Компактная посадка — часть почерка, а не недосмотр.",
+      "html": "<button class=\"ds-btn\" type=\"button\"><span class=\"ds-btn-inner\">Сохранить изменения</span></button>",
+      "css": ".ds-btn { display: inline-flex; background: #0a0a0a; color: #ffffff; font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); font-size: 14px; line-height: 1.5rem; font-weight: 500; letter-spacing: 0.05em; padding: 6px 24px; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.15s ease; } .ds-btn-inner { position: relative; top: 1px; } .ds-btn:hover { background: #262626; } .ds-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #0a0a0a; }"
+    },
+    {
+      "name": "Invert Button",
+      "kind": "button",
+      "refersTo": "button-invert",
+      "description": "Второстепенное действие рядом с главным: светлая плашка вместо чёрной.",
+      "html": "<button class=\"ds-btn-invert\" type=\"button\"><span class=\"ds-btn-inner\">Баланс и платежи</span></button>",
+      "css": ".ds-btn-invert { display: inline-flex; background: #f5f5f5; color: #0a0a0a; font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); font-size: 14px; line-height: 1.5rem; font-weight: 500; letter-spacing: 0.05em; padding: 6px 24px; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.15s ease; } .ds-btn-invert .ds-btn-inner { position: relative; top: 1px; } .ds-btn-invert:hover { background: #e5e5e5; } .ds-btn-invert:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #0a0a0a; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Поле формы кабинета. Фокус — граница краской плюс серое кольцо в 60%: цветом здесь говорит только статус, поэтому фокус читается плотностью, а не хью.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Имя владельца</span><input class=\"ds-field-input\" type=\"text\" placeholder=\"Как к вам обращаться\" /></label>",
+      "css": ".ds-field { display: block; font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); } .ds-field-label { display: block; font-size: 14px; line-height: 1.5rem; font-weight: 600; color: #0a0a0a; } .ds-field-input { display: block; width: 100%; margin-top: 8px; background: transparent; color: #0a0a0a; font-size: 16px; line-height: 1.75rem; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-field-input::placeholder { color: #a3a3a3; } .ds-field-input:focus-visible { outline: none; border-color: #0a0a0a; box-shadow: 0 0 0 2px rgb(10 10 10 / 0.6); }"
+    },
+    {
+      "name": "Data Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Карточка сайта или баланса. При наведении светлеет, а не поднимается.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">Мебельная студия «Верста»</h3><p class=\"ds-card-meta\">Шаблон: <span class=\"ds-card-meta-strong\">Promo-1</span></p><p class=\"ds-card-meta\">Стоимость: <span class=\"ds-card-price\">170₽/день</span></p></article>",
+      "css": ".ds-card { max-width: 340px; background: #fafafa; border: 1px solid #f5f5f5; border-radius: 12px; padding: 24px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 0 0 1px rgb(10 10 10 / 0.05); font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); transition: background-color 0.15s ease, box-shadow 0.15s ease; } .ds-card:hover { background: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 0 0 1px rgb(10 10 10 / 0.05); } .ds-card-title { font-size: 18px; line-height: 1.75rem; font-weight: 600; font-variation-settings: 'wdth' 125; color: #0a0a0a; margin: 0; } .ds-card-meta { font-size: 12px; line-height: 1rem; color: #a3a3a3; margin: 12px 0 0; } .ds-card-meta-strong { font-weight: 500; color: #525252; } .ds-card-price { font-weight: 600; color: #0a0a0a; }"
+    },
+    {
+      "name": "Page Title",
+      "kind": "custom",
+      "refersTo": "typography.display",
+      "description": "Титул страницы из PageIntro: ось ширины 125%, плотный трекинг, крошки над заголовком.",
+      "html": "<div class=\"ds-intro\"><nav class=\"ds-crumbs\"><a href=\"#\">Личный кабинет</a><span>/</span><span class=\"ds-crumb-now\">Баланс</span></nav><h1 class=\"ds-title\">Баланс и платежи</h1><p class=\"ds-lead\">Пополнение и история списаний за аренду сайтов.</p></div>",
+      "css": ".ds-intro { font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); max-width: 48rem; } .ds-crumbs { display: flex; gap: 8px; font-size: 14px; line-height: 1.5rem; color: #737373; margin-bottom: 24px; } .ds-crumbs a { color: #0a0a0a; font-weight: 600; text-decoration: none; } .ds-crumbs a:hover { text-decoration: underline; } .ds-crumb-now { color: #737373; } .ds-title { font-size: 40px; line-height: 3rem; font-weight: 500; letter-spacing: -0.025em; font-variation-settings: 'wdth' 125; text-wrap: balance; color: #0a0a0a; margin: 0; } .ds-lead { margin: 24px 0 0; font-size: 20px; line-height: 2rem; color: #525252; }"
+    },
+    {
+      "name": "Status Notice",
+      "kind": "custom",
+      "refersTo": "notice-success",
+      "description": "Плашка состояния — единственное место, где в интерфейсе появляется цвет.",
+      "html": "<div class=\"ds-notice ds-notice-success\" role=\"status\"><p class=\"ds-notice-text\">Платёж зачислен, баланс обновлён.</p><button class=\"ds-notice-close\" type=\"button\">Закрыть</button></div>",
+      "css": ".ds-notice { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px; border-radius: 12px; border: 1px solid; font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); } .ds-notice-success { background: #f0fdf4; border-color: #dcfce7; color: #166534; } .ds-notice-text { margin: 0; font-size: 14px; line-height: 1.5rem; font-weight: 500; } .ds-notice-close { flex-shrink: 0; background: none; border: none; font-size: 12px; font-weight: 600; color: inherit; opacity: 0.6; cursor: pointer; transition: opacity 0.15s ease; } .ds-notice-close:hover { opacity: 1; } .ds-notice-close:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }"
+    },
+    {
+      "name": "Empty State",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Единственный сценарий, где интерфейс центрируется: кружок с иконкой, заголовок, строка объяснения, одно действие.",
+      "html": "<div class=\"ds-empty\"><div class=\"ds-empty-badge\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582\"/></svg></div><h3 class=\"ds-empty-title\">У вас пока нет сайтов</h3><p class=\"ds-empty-text\">Выберите шаблон и создайте свой первый сайт.</p><button class=\"ds-btn ds-empty-action\" type=\"button\"><span class=\"ds-btn-inner\">Выбрать шаблон</span></button></div>",
+      "css": ".ds-empty { text-align: center; background: #fafafa; border: 1px solid #f5f5f5; border-radius: 12px; padding: 48px; font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); } .ds-empty-badge { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin: 0 auto 24px; border-radius: 9999px; background: #f5f5f5; color: #a3a3a3; } .ds-empty-badge svg { width: 32px; height: 32px; } .ds-empty-title { font-size: 20px; line-height: 2rem; font-weight: 600; font-variation-settings: 'wdth' 125; color: #0a0a0a; margin: 0; } .ds-empty-text { margin: 8px 0 0; font-size: 14px; line-height: 1.5rem; color: #525252; } .ds-empty-action { margin-top: 24px; }"
+    },
+    {
+      "name": "Modal Dialog",
+      "kind": "custom",
+      "refersTo": "modal",
+      "description": "Единственное место, где интерфейс отрывается от страницы: затемнение с размытием, белое окно, кружок закрытия.",
+      "html": "<div class=\"ds-modal-stage\"><div class=\"ds-modal\"><button class=\"ds-modal-close\" type=\"button\" aria-label=\"Закрыть\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M6 18L18 6M6 6l12 12\"/></svg></button><h3 class=\"ds-modal-title\">Пополнение баланса</h3><p class=\"ds-modal-text\">Выберите способ оплаты: онлайн-платёж или безналичный счёт.</p></div></div>",
+      "css": ".ds-modal-stage { background: rgb(10 10 10 / 0.6); padding: 32px; border-radius: 12px; display: flex; justify-content: center; } .ds-modal { position: relative; width: 100%; max-width: 380px; background: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); } .ds-modal-close { position: absolute; top: 16px; right: 16px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 9999px; border: 1px solid #e5e5e5; background: none; color: #a3a3a3; cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease; } .ds-modal-close svg { width: 16px; height: 16px; } .ds-modal-close:hover { border-color: #0a0a0a; color: #0a0a0a; } .ds-modal-close:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; } .ds-modal-title { font-size: 24px; line-height: 2.25rem; font-weight: 600; letter-spacing: -0.025em; font-variation-settings: 'wdth' 125; color: #0a0a0a; margin: 0 0 24px; } .ds-modal-text { margin: 0; font-size: 16px; line-height: 1.75rem; color: #525252; }"
+    },
+    {
+      "name": "Loading Row",
+      "kind": "custom",
+      "refersTo": "notice-success",
+      "description": "Состояние ожидания: спиннер в нейтрали и строка объяснения, в той же плашке 12px.",
+      "html": "<div class=\"ds-loading\" role=\"status\"><svg class=\"ds-spinner\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\" stroke-width=\"4\" opacity=\"0.25\"/><path fill=\"currentColor\" opacity=\"0.75\" d=\"M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z\"/></svg>Проверяем статус платежа…</div>",
+      "css": ".ds-loading { display: flex; align-items: center; gap: 12px; padding: 20px; border-radius: 12px; border: 1px solid #f5f5f5; background: #fafafa; color: #525252; font-family: var(--font-sans, 'Mona Sans', ui-sans-serif, system-ui, sans-serif); font-size: 14px; line-height: 1.5rem; } .ds-spinner { width: 16px; height: 16px; color: #a3a3a3; animation: ds-spin 1s linear infinite; } @keyframes ds-spin { to { transform: rotate(360deg); } } @media (prefers-reduced-motion: reduce) { .ds-spinner { animation-duration: 2s; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Студийный разворот",
+    "overview": "Мир печатного разворота дизайн-студии: чёрная краска на белой бумаге, огромные поля, крупный титул на растянутой по ширине гарнитуре, тонкие волосяные линейки вместо рамок и полное отсутствие цвета везде, кроме статусов. Ничего не «оформлено» — вещи расставлены. Плотность низкая сознательно: между смысловыми блоками 8rem, страница начинается на 6–10rem от шапки, карточка дышит 2rem внутреннего поля.\n\nЕдинственная гарнитура — Mona Sans, вариативная по двум осям. Характер даёт не вторая гарнитура, а ось ширины: заголовки и eyebrow идут с 'wdth' 125, то есть той же Mona Sans, растянутой на 125%. Текст остаётся нормальной ширины. Отсюда узнаваемая пара «широкий титул — обычный текст», сделанная одним файлом шрифта.\n\nЦвета как слоя здесь нет — и это факт, а не пробел в описании. Палитра — нейтральная шкала Tailwind от #0a0a0a до #fafafa плюс три статусных семейства прямо из палитры фреймворка. Ни одной кастомной цветовой переменной. Акцент делается не цветом, а плотностью краски: почти-чёрная плашка на белом — самый громкий элемент интерфейса.\n\nМир унаследован от шаблона Tailwind Studio и сохраняет его словарь: Container, FadeIn/FadeInStagger, PageIntro, SectionIntro, GridPattern, StylizedImage, GrayscaleTransitionImage, Blockquote, StatList, TagList, Testimonial. Вместе со словарём в репозитории остался и демо-контент шаблона — фотографии команды с англоязычными именами, логотипы вымышленных клиентов, статьи блога. Это не контент LEGET.\n\nОткрытое напряжение, а не правило: кабинет наследует ритм маркетингового разворота. На витрине это работает; на экране, где сравнивают транзакции и списания, тот же ритм заставляет скроллить там, где нужен обзор. Решение продуктовое — либо кабинет получает более плотный режим той же системы, либо принимается как есть. Пока как есть, и новые экраны делаются в этом ритме, чтобы не расслоить мир.",
+    "keyCharacteristics": [
+      "Одна гарнитура, характер — на оси ширины ('wdth' 125 только у заголовков)",
+      "Цвета нет: нейтраль плюс статусы; акцент — плотность краски, а не хью",
+      "Издательские поля: 8rem между блоками, 6–10rem до титула",
+      "Мелкий радиус как приём: контейнер 12px, поле 8px, кнопка 8px",
+      "Граница — волосяная (10% чёрного) и кольцо в 5%, а не сплошная линия",
+      "Движение одно: подъём на 24px с прозрачностью, 0.5s, по одному разу, лесенкой"
+    ],
+    "rules": [
+      {
+        "name": "Правило единственного цвета",
+        "body": "Цветом здесь говорит только статус. Всё остальное — краска и бумага. Хочется выделить блок — меняйте плотность (ink-50 → paper), плотность шрифта или воздух вокруг, но не хью.",
+        "section": "colors"
+      },
+      {
+        "name": "Правило края без веса",
+        "body": "Контейнер получает край сочетанием border в ink-100/200 и ring-1 в 5% краски, а не рамкой в один плотный цвет. Тень при этом почти всегда shadow-sm: глубина здесь измеряется краем, а не тенью.",
+        "section": "colors"
+      },
+      {
+        "name": "Правило оси ширины",
+        "body": "font-display — это не другой шрифт, а 'wdth' 125. Ставьте его на заголовки, eyebrow и числа-акценты; на абзац — никогда: растянутая ширина на длинной строке теряет ритм и замедляет чтение.",
+        "section": "typography"
+      },
+      {
+        "name": "Правило одного титула",
+        "body": "На странице ровно один h1, и он приходит из PageIntro вместе с хлебными крошками или eyebrow. Собственный крупный заголовок в теле страницы — это headline, а не второй титул.",
+        "section": "typography"
+      },
+      {
+        "name": "Правило подъёма наведением",
+        "body": "Карточка при наведении не растёт и не сдвигается — она светлеет (ink-50 → paper) и получает чуть большую тень. Никаких translateY на карточках; подъём здесь оптический.",
+        "section": "elevation"
+      },
+      {
+        "name": "Правило переопределённой шкалы",
+        "body": "rounded-xl здесь меньше rounded-lg (6px против 8px) — шкала переопределена в app.css и не совпадает с дефолтами Tailwind. Не переносите радиусы из чужого кода по имени утилиты и не считайте rounded-3xl крупным скруглением: это 12px, а не 24.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do оборачивать содержимое страницы в Container и начинать её с PageIntro — горизонтальный каркас и титул в продукте ровно одни.",
+      "Do ставить FadeIn на блок и FadeInStagger на список: prefers-reduced-motion там уже обработан, своё движение писать не нужно.",
+      "Do брать font-display (ось 'wdth' 125) только на заголовки, eyebrow и числа-акценты.",
+      "Do обозначать состояние тройкой «заливка 50 / граница 100 / текст 700–800» и ставить role=\"status\" на плашку.",
+      "Do давать карточке край сочетанием border-neutral-100 и ring-1 ring-neutral-950/5, а не одной плотной рамкой.",
+      "Do проверять радиус по таблице в разделе Shapes, а не по имени утилиты.",
+      "Do давать фокусу видимое кольцо: focus:ring-2 focus:ring-neutral-950/60 на полях, focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 на кнопках."
+    ],
+    "donts": [
+      "Don't вводить цвет вне статусов. Первый брендовый хью здесь — решение о бренде (у LEGET зафиксированы только имя и тон), а не выбор утилиты.",
+      "Don't считать rounded-3xl крупным скруглением: в этом приложении это 12px, а rounded-xl (6px) меньше rounded-lg (8px).",
+      "Don't переносить сюда токены --ds-* из leget-main и обратно. Совпадение имён (ink там и здесь) — ложный друг: там это шкала slate в oklch, здесь — нейтраль Tailwind в hex.",
+      "Don't ставить focus:outline-none, не добавив кольцо той же утилитой. Гашение контура без замены — потеря клавиатурной навигации, а не деталь оформления.",
+      "Don't отправлять в прод демо-контент шаблона Studio: фотографии команды с англоязычными именами, логотипы bright-path / green-life / north-adventures, статьи блога про переезд в офис.",
+      "Don't добавлять вторую гарнитуру. Характер этой системы — ось ширины одного семейства; вторая гарнитура его разрушает.",
+      "Don't поднимать карточку translateY при наведении: подъём здесь делается осветлением заливки.",
+      "Don't заводить трёхколоночные сетки и плотные таблицы «на глаз»: сегодня весь продукт живёт на одна-две колонки, и третья потребует решения о ритме кабинета."
+    ]
+  }
+}

@@ -73,7 +73,7 @@
 			<!-- Close Button -->
 			{#if dismissible}
 				<button
-					class="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-colors hover:border-neutral-950 hover:text-neutral-950 focus:outline-none"
+					class="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-400 transition-colors hover:border-neutral-950 hover:text-neutral-950 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
 					onclick={close}
 					aria-label="Закрыть"
 				>

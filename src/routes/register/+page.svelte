@@ -292,7 +292,7 @@
 								placeholder=" "
 								required
 								bind:value={formData.name}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.name}
 							/>
 							<label
@@ -316,7 +316,7 @@
 								placeholder=" "
 								required
 								bind:value={formData.email}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.email}
 							/>
 							<label
@@ -339,7 +339,7 @@
 								autocomplete="tel"
 								placeholder=" "
 								bind:value={formData.phone}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.phone}
 							/>
 							<label
@@ -364,7 +364,7 @@
 								required
 								bind:value={formData.password}
 								onfocus={() => (showPasswordHints = true)}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pr-32 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pr-32 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.password}
 							/>
 							<label
@@ -380,7 +380,7 @@
 									type="button"
 									onclick={() => (showPassword = !showPassword)}
 									title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
-									class="rounded p-1.5 text-neutral-400 transition hover:text-neutral-700 focus:outline-none"
+									class="rounded p-1.5 text-neutral-400 transition hover:text-neutral-700 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
 								>
 									{#if showPassword}
 										<svg
@@ -423,7 +423,7 @@
 										type="button"
 										onclick={copyPassword}
 										title={copySuccess ? 'Скопировано!' : 'Скопировать пароль'}
-										class="rounded p-1.5 transition focus:outline-none"
+										class="rounded p-1.5 transition focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
 										style="color: {copySuccess
 											? '#16a34a'
 											: '#a3a3a3'}; transition: color 0.25s ease;"
@@ -460,7 +460,7 @@
 									type="button"
 									onclick={generatePassword}
 									title="Сгенерировать пароль"
-									class="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-neutral-400 transition hover:text-neutral-700 focus:outline-none"
+									class="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-neutral-400 transition hover:text-neutral-700 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none"
 								>
 									<svg
 										class="h-3.5 w-3.5 shrink-0"
@@ -545,7 +545,7 @@
 								placeholder=" "
 								required
 								bind:value={formData.password_confirmation}
-								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/5 focus:outline-hidden"
+								class="peer block w-full border border-neutral-300 bg-transparent px-6 pt-12 pb-4 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-hidden"
 								class:border-red-500={errors.password_confirmation}
 							/>
 							<label

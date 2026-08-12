@@ -394,7 +394,7 @@
 								type="text"
 								bind:value={formSlug}
 								placeholder="Например: / или /about"
-								class="block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
+								class="block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60"
 							/>
 							<Button disabled={isSavingSlug}>
 								{isSavingSlug ? 'Сохранение...' : 'Сохранить'}
@@ -495,7 +495,7 @@
 										id="component-json"
 										bind:value={editingJson}
 										rows="10"
-										class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 font-mono text-sm text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
+										class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 font-mono text-sm text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60"
 									></textarea>
 									{#if editingJsonError}
 										<p class="mt-1 text-sm text-red-600">{editingJsonError}</p>

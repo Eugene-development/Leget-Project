@@ -140,7 +140,7 @@
 								id="page-slug"
 								bind:value={formSlug}
 								placeholder="Например: / или /about"
-								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
+								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60"
 							/>
 							{#if fieldErrors.slug}
 								<p class="mt-2 text-sm text-red-600">{fieldErrors.slug}</p>
@@ -159,7 +159,7 @@
 								bind:value={formComponentsData}
 								placeholder={'[\n  { "type": "Hero", "data": { "title": "Заголовок" } },\n  { "type": "Text", "data": { "content": "<p>Текст</p>" } }\n]'}
 								rows="12"
-								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 font-mono text-sm text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-neutral-950/5"
+								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 font-mono text-sm text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60"
 							></textarea>
 							{#if fieldErrors.componentsData || fieldErrors.components_data}
 								<p class="mt-2 text-sm text-red-600">

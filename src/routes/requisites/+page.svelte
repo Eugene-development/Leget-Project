@@ -68,7 +68,7 @@
 				<button
 					type="button"
 					onclick={copyAll}
-					class="inline-flex items-center gap-2 rounded-2xl bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 focus:outline-hidden focus:ring-2 focus:ring-neutral-950/20"
+					class="inline-flex items-center gap-2 rounded-2xl bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 focus:outline-hidden focus:ring-2 focus:ring-neutral-950/60"
 				>
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
