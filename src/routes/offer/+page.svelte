@@ -7,6 +7,41 @@
 
 	let activeSection = $state('general');
 
+	// Ссылки внутри текста договора. Текст пунктов остаётся обычной строкой:
+	// разметка в него не подмешивается, совпадения ищутся по литералу и
+	// выносятся в <a> при рендере. Порядок важен — длинные вхождения раньше
+	// коротких, иначе `leget.ru` съест префикс у `leget.ru/prices` и у почты.
+	const inlineLinks = [
+		{ match: 'leget.ru/prices', href: '/prices' },
+		{ match: 'info@leget.ru', href: 'mailto:info@leget.ru' },
+		{ match: 'leget.ru', href: '/' }
+	];
+
+	/**
+	 * Разбить абзац на части: обычный текст и ссылки.
+	 * @param {string} text
+	 * @returns {{ text: string, href?: string }[]}
+	 */
+	function splitLinks(text) {
+		let parts = [{ text }];
+
+		for (const link of inlineLinks) {
+			parts = parts.flatMap((part) => {
+				// Уже выделенную ссылку второй раз не разбираем.
+				if (part.href) return [part];
+
+				const chunks = part.text.split(link.match);
+				if (chunks.length === 1) return [part];
+
+				return chunks.flatMap((chunk, index) =>
+					index === 0 ? [{ text: chunk }] : [{ text: link.match, href: link.href }, { text: chunk }]
+				);
+			});
+		}
+
+		return parts.filter((part) => part.text !== '');
+	}
+
 	const sections = [
 		{ id: 'general', title: '1. Общие положения' },
 		{ id: 'definitions', title: '2. Термины и определения' },
@@ -64,7 +99,7 @@
 			title: '5. Тарифы и условия оплаты',
 			content: [
 				'5.1. Стоимость услуг Исполнителя определяется утвержденными Тарифами, размещенными на сайте в разделе «Цены» (leget.ru/prices).',
-				'5.2. Стоимость аренды сайта (Фирменный сайт) составляет от 100 рублей в день в зависимости от выбранной конфигурации и расчетного периода.',
+				'5.2. Стоимость аренды сайта (Фирменный сайт) определяется в расчете за один день, зависит от выбранной конфигурации и расчетного периода и указывается в разделе «Цены» (leget.ru/prices).',
 				'5.3. Оплата производится в форме 100% предоплаты за расчетный период через интегрированные платежные шлюзы.',
 				'5.4. В случае отсутствия оплаты на очередной расчетный период Исполнитель оставляет за собой право приостановить технический доступ к Готовому сайту до момента погашения задолженности.',
 				'5.5. Исполнитель вправе в одностороннем порядке изменять тарифы с уведомлением Заказчика за 10 календарных дней до даты вступления изменений в силу.'
@@ -200,7 +235,8 @@
 						<div class="space-y-4 text-base/7 text-neutral-700">
 							{#each section.content as paragraph}
 								<p>
-									{paragraph}
+									<!-- prettier-ignore -->
+									{#each splitLinks(paragraph) as part}{#if part.href}<a href={part.href} class="text-neutral-950 underline decoration-neutral-950/30 underline-offset-4 transition hover:decoration-neutral-950 focus-visible:rounded-xs focus-visible:ring-2 focus-visible:ring-neutral-950/60 focus-visible:outline-hidden">{part.text}</a>{:else}{part.text}{/if}{/each}
 								</p>
 							{/each}
 						</div>

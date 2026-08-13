@@ -33,7 +33,11 @@
 	} = $props();
 
 	// Compute toggle button classes based on invert prop
-	const toggleButtonClasses = $derived(invert ? 'hover:bg-white/10' : 'hover:bg-neutral-950/10');
+	const toggleButtonClasses = $derived(
+		invert
+			? 'hover:bg-white/10 focus-visible:ring-white focus-visible:ring-offset-neutral-950'
+			: 'hover:bg-neutral-950/10 focus-visible:ring-neutral-950 focus-visible:ring-offset-white'
+	);
 
 	const iconClasses = $derived(
 		invert
@@ -57,7 +61,7 @@
 			<!-- Full Logo for larger screens -->
 			<Logo class="hidden h-9 sm:block" {invert} filled={logoHovered} />
 			<span
-				class="ml-1 text-4xl leading-none font-semibold tracking-normal sm:text-3xl sm:-ml-4 {invert
+				class="ml-1 text-4xl leading-none font-semibold tracking-normal sm:-ml-4 sm:text-3xl {invert
 					? 'text-white'
 					: 'text-neutral-950'}">Léget</span
 			>
@@ -76,7 +80,7 @@
 				onclick={onToggle}
 				aria-expanded={expanded ? 'true' : 'false'}
 				aria-controls={panelId}
-				class="group -m-2.5 w-[120px] rounded-full px-6 py-2.5 transition {toggleButtonClasses}"
+				class="group -m-2.5 w-[120px] rounded-full px-6 py-2.5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 {toggleButtonClasses}"
 				aria-label="Toggle navigation"
 			>
 				<div class="flex items-center justify-center gap-x-2.5">
