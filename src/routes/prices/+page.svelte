@@ -10,29 +10,25 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 
-	const pricingTiers = [
+	// Единственный формат, который можно купить сегодня.
+	const plan = {
+		name: 'Фирменный сайт',
+		price: '100',
+		period: 'день',
+		description: 'Полноценное представительство вашего бизнеса в интернете.',
+		status: 'active',
+		href: '/catalog'
+	};
+
+	// Форматы, которых ещё нет. Они не тарифы: цены у них нет и купить их нельзя.
+	const upcoming = [
 		{
 			name: 'Лендинг',
-			price: '170',
-			period: 'день',
-			description: 'Идеальное решение для старта. Быстрый запуск продукта или услуги.',
-			status: 'dev' // В разработке
-		},
-		{
-			name: 'Фирменный сайт',
-			price: '170',
-			period: 'день',
-			description: 'Полноценное представительство вашего бизнеса в интернете.',
-			featured: true,
-			status: 'active',
-			href: '/catalog'
+			description: 'Идеальное решение для старта. Быстрый запуск продукта или услуги.'
 		},
 		{
 			name: 'Интернет-магазин',
-			price: '170',
-			period: 'день',
-			description: 'Мощный инструмент для эффективных онлайн-продаж.',
-			status: 'dev' // В разработке
+			description: 'Мощный инструмент для эффективных онлайн-продаж.'
 		}
 	];
 
@@ -67,15 +63,15 @@
 		}
 	];
 
-	function handleSubscribe(tier) {
-		if (tier.status !== 'active') return;
+	function handleSubscribe() {
+		if (plan.status !== 'active') return;
 		if (browser) {
 			const token = localStorage.getItem('auth_token');
 			if (!token) {
 				const returnUrl = encodeURIComponent('/prices');
 				goto(`/login?redirect=${returnUrl}`);
 			} else {
-				goto(tier.href);
+				goto(plan.href);
 			}
 		}
 	}
@@ -85,7 +81,7 @@
 	<title>Цены и тарифы — LEGET</title>
 	<meta
 		name="description"
-		content="Тарифы на готовые сайты по подписке. Лендинг, фирменный сайт или интернет-магазин."
+		content="Готовый сайт по подписке за 100 ₽ в день. Одна цена на любой шаблон из каталога, поддержка и развитие включены."
 	/>
 </svelte:head>
 
@@ -94,66 +90,69 @@
 		<h1
 			class="font-display text-5xl font-medium tracking-tight text-balance text-neutral-950 sm:text-7xl"
 		>
-			Прозрачные тарифы без скрытых платежей
+			Одна цена без скрытых платежей
 		</h1>
 		<p class="mt-6 text-xl text-neutral-600">
-			Выберите подходящий формат для вашего бизнеса. Все заботы по поддержке, безопасности и
-			развитию мы берем на себя.
+			Цена одна для любого шаблона из каталога. Все заботы по поддержке, безопасности и развитию мы
+			берем на себя.
 		</p>
 	</FadeIn>
 </Container>
 
+<!-- Тариф один, поэтому он не карточка в ряду, а разворот во всю полосу:
+     слева — что покупают, справа — сколько это стоит и как начать. -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
-	<FadeInStagger class="align-items-center grid grid-cols-1 gap-8 lg:grid-cols-3">
-		{#each pricingTiers as tier}
-			<FadeIn class="flex h-full">
+	<FadeIn>
+		<div class="rounded-3xl bg-neutral-50 p-8 ring-1 ring-neutral-950/5 sm:p-12">
+			<div class="lg:flex lg:items-end lg:justify-between lg:gap-16">
+				<div class="lg:max-w-md">
+					<h2 class="font-display text-3xl font-semibold text-neutral-950">
+						{plan.name}
+					</h2>
+					<p class="mt-4 text-base text-neutral-600">
+						{plan.description}
+					</p>
+				</div>
 				<div
-					class="flex w-full flex-col justify-between rounded-3xl p-8 ring-1 transition-all duration-300 sm:p-10
-					{tier.featured
-						? 'z-10 scale-100 bg-neutral-950 text-white shadow-xl ring-neutral-950 lg:scale-105'
-						: 'bg-white text-neutral-950 ring-neutral-950/10 hover:bg-neutral-50/50'}"
+					class="mt-10 border-t border-neutral-950/10 pt-10 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-16"
 				>
-					<div>
-						<h3 id={tier.name} class="font-display text-2xl font-semibold">
-							{tier.name}
-						</h3>
-						<p
-							class="mt-4 text-sm leading-6 {tier.featured
-								? 'text-neutral-300'
-								: 'text-neutral-600'}"
+					<div class="flex items-baseline gap-x-3">
+						<span
+							class="font-display text-6xl font-semibold tracking-tight text-neutral-950 tabular-nums sm:text-7xl"
+							>{plan.price}</span
 						>
-							{tier.description}
-						</p>
-						<div class="mt-8 flex items-baseline gap-x-2">
-							<span class="text-5xl font-bold tracking-tight"
-								>{tier.price} <span class="text-3xl font-medium">₽</span></span
-							>
-							<span
-								class="text-sm leading-6 font-semibold {tier.featured
-									? 'text-neutral-300'
-									: 'text-neutral-500'}">/ {tier.period}</span
-							>
-						</div>
+						<span class="font-display text-3xl font-medium text-neutral-950">₽</span>
+						<span class="text-base text-neutral-500">/ {plan.period}</span>
 					</div>
-					<div class="mt-10">
-						{#if tier.status === 'active'}
-							<Button
-								onclick={() => handleSubscribe(tier)}
-								invert={!tier.featured}
-								class="w-full justify-center"
-							>
-								Выбрать шаблон
-							</Button>
-						{:else}
-							<button
-								disabled
-								class="w-full cursor-not-allowed rounded-full px-6 py-3 text-sm font-semibold opacity-50
-								{tier.featured ? 'bg-white text-neutral-950' : 'bg-neutral-950 text-white'}"
-							>
-								В разработке
-							</button>
-						{/if}
+					<Button onclick={handleSubscribe} class="mt-8 w-full justify-center sm:w-auto">
+						Выбрать шаблон
+					</Button>
+				</div>
+			</div>
+		</div>
+	</FadeIn>
+</Container>
+
+<!-- Форматы без цены и без кнопки: они ещё не товар, и колонка прайса им не полагается. -->
+<Container class="mt-16 sm:mt-20">
+	<FadeIn>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Форматы в разработке</h2>
+	</FadeIn>
+	<FadeInStagger class="mt-8 border-t border-neutral-950/10">
+		{#each upcoming as item}
+			<FadeIn>
+				<div
+					class="flex flex-col gap-3 border-b border-neutral-950/10 py-6 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+				>
+					<div class="sm:max-w-xl">
+						<h3 class="text-lg font-semibold text-neutral-950">{item.name}</h3>
+						<p class="mt-1 text-base text-neutral-600">{item.description}</p>
 					</div>
+					<span
+						class="shrink-0 self-start rounded-3xl bg-neutral-100 px-3 py-1 text-xs font-semibold text-neutral-600"
+					>
+						В разработке
+					</span>
 				</div>
 			</FadeIn>
 		{/each}
@@ -162,8 +161,8 @@
 
 <SectionIntro title="Что входит в базовую настройку" class="mt-24 sm:mt-32 lg:mt-40">
 	<p>
-		Каждый тарифный план включает в себя необходимые услуги для успешного старта. Вы получаете
-		полностью готовый к работе инструмент за 72 часа.
+		Тариф включает в себя необходимые услуги для успешного старта. Вы получаете полностью готовый к
+		работе инструмент за 72 часа.
 	</p>
 </SectionIntro>
 

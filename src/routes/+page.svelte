@@ -83,25 +83,14 @@
 <Container class="mt-24 font-light sm:mt-32 md:mt-56 ">
 	<FadeIn class="max-w-4xl">
 		<!-- Trial period notification -->
-		<div
-			class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-medium text-neutral-700 ring-1 ring-neutral-950/10"
-		>
-			<svg
-				class="h-4 w-4 flex-none text-neutral-500"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-				stroke-width="1.75"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				aria-hidden="true"
+		<!-- Пилюля снята: цену держит типографика, а не контейнер.
+		     Акцент — ось ширины Mona Sans и плотность краски. -->
+		<div class="text-sm leading-normal font-normal text-neutral-600">
+			Всего за
+			<span
+				class="font-display border-b border-neutral-950/25 pb-0.5 text-[1.25em] font-semibold tracking-[-0.01em] text-neutral-950"
+				>100 руб/день</span
 			>
-				<circle cx="12" cy="12" r="9" />
-				<path d="M12 7.5V12l3 1.8" />
-			</svg>
-			<span>
-				Всего за <span class="font-semibold text-neutral-950">200 руб/день</span>
-			</span>
 		</div>
 		<h1
 			class="font-display py-6 text-3xl font-medium tracking-normal text-balance text-neutral-950 sm:text-7xl"
@@ -112,7 +101,7 @@
 		</h1>
 		<!-- <p class="mt-6 text-lg text-neutral-600 sm:text-xl">
 			Современные решения по подписке <span class="font-semibold text-neutral-900"
-				>всего за 170 руб/день</span
+				>всего за 100 руб/день</span
 			>.
 		</p> -->
 		<p class="mt-2 text-sm text-neutral-600 sm:text-xl">
