@@ -22,7 +22,7 @@
 			],
 			logo: '/images/clients/promo-1/logo-dark.svg',
 			href: '/catalog/promo-1',
-			price: 100,
+			price: 150,
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Debra Fiscal', role: 'CEO of Promo-1' },
@@ -40,7 +40,7 @@
 			logo: '/images/clients/promo-2/logo-dark.svg',
 			href: '/catalog/promo-2',
 			inDevelopment: true,
-			price: 100,
+			price: 150,
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
@@ -59,7 +59,7 @@
 			logo: '/images/clients/promo-3/logo-dark.svg',
 			href: '/catalog/promo-3',
 			inDevelopment: true,
-			price: 100,
+			price: 150,
 			service: 'Подписка',
 			testimonial: {
 				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
@@ -86,7 +86,7 @@
 	<title>Готовые проекты сайтов для бизнеса — Студия LEGET</title>
 	<meta
 		name="description"
-		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 100 ₽/день."
+		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 150 ₽/день."
 	/>
 </svelte:head>
 

@@ -24,7 +24,7 @@
 		open = false,
 		templateId,
 		templateName = 'шаблон',
-		price = '100',
+		price = '150',
 		period = 'день',
 		onClose = () => {},
 		onSuccess = () => {}

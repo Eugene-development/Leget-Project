@@ -89,7 +89,7 @@
 			Всего за
 			<span
 				class="font-display border-b border-neutral-950/25 pb-0.5 text-[1.25em] font-semibold tracking-[-0.01em] text-neutral-950"
-				>100 руб/день</span
+				>150 руб/день</span
 			>
 		</div>
 		<h1
@@ -101,7 +101,7 @@
 		</h1>
 		<!-- <p class="mt-6 text-lg text-neutral-600 sm:text-xl">
 			Современные решения по подписке <span class="font-semibold text-neutral-900"
-				>всего за 100 руб/день</span
+				>всего за 150 руб/день</span
 			>.
 		</p> -->
 		<p class="mt-2 text-sm text-neutral-600 sm:text-xl">
