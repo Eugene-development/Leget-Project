@@ -115,7 +115,7 @@
 				captcha_token: captchaToken
 			};
 
-			await sendForm(requestData, 'contact');
+			await sendForm(requestData, 'contact', event);
 
 			submitSuccess = true;
 

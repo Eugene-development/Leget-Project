@@ -12,7 +12,11 @@
 		error = '';
 		sent = false;
 		try {
-			await sendForm({ service_type: 'subscription', email: email.trim() });
+			await sendForm(
+				{ service_type: 'subscription', email: email.trim() },
+				'service-request',
+				event
+			);
 			sent = true;
 			email = '';
 		} catch (e) {
