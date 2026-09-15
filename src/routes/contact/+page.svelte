@@ -1,4 +1,6 @@
 <script>
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('platform-contact');
 	import Border from '$lib/components/Border.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Container from '$lib/components/Container.svelte';
@@ -9,7 +11,6 @@
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 	import { regionState } from '$lib/state/region.svelte';
-	import { getAuthApiUrl } from '$lib/utils/config.js';
 
 	// Form state
 	let formData = $state({
@@ -88,7 +89,7 @@
 	async function handleSubmit(event) {
 		event.preventDefault();
 
-		if (!validateForm()) {
+		if (isSubmitting || !validateForm()) {
 			return;
 		}
 
@@ -114,22 +115,7 @@
 				captcha_token: captchaToken
 			};
 
-			const authApiUrl = getAuthApiUrl();
-			const response = await fetch(`${authApiUrl}/notify/contact`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				},
-				body: JSON.stringify(requestData)
-			});
-
-			const result = await response.json();
-
-			if (!response.ok || !result.success) {
-				if (result.errors?.captcha_token) submitError = result.errors.captcha_token[0];
-				throw new Error(result.message || 'Ошибка отправки');
-			}
+			await sendForm(requestData, 'contact');
 
 			submitSuccess = true;
 

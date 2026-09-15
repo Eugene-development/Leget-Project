@@ -1,4 +1,27 @@
 <script>
+	import { createFormSender } from '$lib/utils/form-submission';
+	const sendForm = createFormSender('platform-footer-subscription');
+	let email = $state('');
+	let sending = $state(false);
+	let sent = $state(false);
+	let error = $state('');
+	async function subscribe(event) {
+		event.preventDefault();
+		if (sending) return;
+		sending = true;
+		error = '';
+		sent = false;
+		try {
+			await sendForm({ service_type: 'subscription', email: email.trim() });
+			sent = true;
+			email = '';
+		} catch (e) {
+			error = e instanceof Error ? e.message : 'Не удалось отправить заявку.';
+		} finally {
+			sending = false;
+		}
+	}
+
 	/**
 	 * Footer component - Site footer with navigation, newsletter form, and copyright
 	 * @component
@@ -88,16 +111,18 @@
 							<ul role="list" class="mt-4 text-sm text-neutral-700">
 								{#each section.links as link, linkIndex}
 									<li class="mt-4">
-									{#if link.disabled}
-										<span class="cursor-not-allowed text-neutral-400" title="В разработке">{link.title}</span>
-									{:else}
-										<a href={link.href} class="transition hover:text-neutral-950">
-											{link.title}
-											{#if link.hasArrow}
-												<span aria-hidden="true">→</span>
-											{/if}
-										</a>
-									{/if}
+										{#if link.disabled}
+											<span class="cursor-not-allowed text-neutral-400" title="В разработке"
+												>{link.title}</span
+											>
+										{:else}
+											<a href={link.href} class="transition hover:text-neutral-950">
+												{link.title}
+												{#if link.hasArrow}
+													<span aria-hidden="true">→</span>
+												{/if}
+											</a>
+										{/if}
 									</li>
 								{/each}
 							</ul>
@@ -108,7 +133,7 @@
 
 			<!-- Newsletter Form -->
 			<div class="flex lg:justify-end">
-				<form class="max-w-sm">
+				<form class="max-w-sm" onsubmit={subscribe} aria-busy={sending}>
 					<h2 class="font-display text-sm font-semibold tracking-wider text-neutral-950">
 						Будь в курсе событий
 					</h2>
@@ -118,6 +143,8 @@
 					<div class="relative mt-6">
 						<input
 							type="email"
+							required
+							bind:value={email}
 							placeholder="Ваша почта"
 							autocomplete="email"
 							aria-label="Email address"
@@ -126,6 +153,7 @@
 						<div class="absolute inset-y-1 right-1 flex justify-end">
 							<button
 								type="submit"
+								disabled={sending}
 								aria-label="Submit"
 								class="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800"
 							>
@@ -140,6 +168,8 @@
 							</button>
 						</div>
 					</div>
+					{#if sent}<p role="status">Заявка на подписку принята.</p>{/if}
+					{#if error}<p role="alert">{error}</p>{/if}
 				</form>
 			</div>
 		</div>
