@@ -5,6 +5,7 @@
 	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import TopUpModal from '$lib/components/TopUpModal.svelte';
+	import { untrack } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { replaceState } from '$app/navigation';
@@ -12,17 +13,18 @@
 	import { openInvoice } from '$lib/utils/invoice.js';
 
 	const MY_WALLET_QUERY = `
-		query MyWallet($first: Int!, $page: Int) {
+		query MyWallet($first: Int!, $page: Int, $type: String, $dateFrom: String, $dateTo: String) {
 			myWallet {
 				balance
-				transactions(first: $first, page: $page, orderBy: [{ column: "created_at", order: DESC }]) {
+				transactions(first: $first, page: $page, type: $type, dateFrom: $dateFrom, dateTo: $dateTo) {
 					data {
 						id
+						billingDate
 						licenseId
 						amount
 						type
 						description
-						createdAt
+						createdAt: occurredAt
 					}
 					paginatorInfo {
 						currentPage
@@ -117,11 +119,17 @@
 		for (let d = 1; d <= lastDay.getDate(); d++) {
 			const dayTransactions = transactions
 				? transactions.filter((tx) => {
-						const txDate = new Date(tx.createdAt);
+						const parts = new Intl.DateTimeFormat('en-CA', {
+							timeZone: 'Europe/Moscow',
+							year: 'numeric',
+							month: '2-digit',
+							day: '2-digit'
+						}).formatToParts(new Date(tx.createdAt));
+						const value = (type) => Number(parts.find((part) => part.type === type)?.value);
 						return (
-							txDate.getFullYear() === calendarYear &&
-							txDate.getMonth() === calendarMonth &&
-							txDate.getDate() === d
+							value('year') === calendarYear &&
+							value('month') === calendarMonth + 1 &&
+							value('day') === d
 						);
 					})
 				: [];
@@ -151,102 +159,133 @@
 		return raw.charAt(0).toUpperCase() + raw.slice(1);
 	});
 
-	async function fetchWallet(page = 1, append = false) {
-		if (append) {
-			isLoadingMore = true;
-		} else {
-			isLoading = true;
+	let walletRequest = 0;
+	let walletFilters = {};
+	function selectedFilters() {
+		if (viewMode === 'calendar') {
+			const month = String(calendarMonth + 1).padStart(2, '0');
+			return {
+				dateFrom: `${calendarYear}-${month}-01`,
+				dateTo: `${calendarYear}-${month}-${new Date(calendarYear, calendarMonth + 1, 0).getDate()}`
+			};
 		}
+		return {
+			type: filterType === 'all' ? null : filterType,
+			dateFrom: dateFrom || null,
+			dateTo: dateTo || null
+		};
+	}
+	async function fetchWallet(requestedPage = 1, append = false, filters = walletFilters) {
+		const request = ++walletRequest;
+		const calendar = viewMode === 'calendar';
+		walletFilters = filters;
+		isLoadingMore = append;
+		isLoading = !append;
 		error = null;
+		if (!append) transactions = [];
 		try {
-			// For calendar we fetch more, for list we fetch standard page
-			const first = viewMode === 'calendar' ? 200 : 20;
-			const data = await graphqlRequest(MY_WALLET_QUERY, { first, page });
-			wallet = data.myWallet;
-			
-			const newTransactions = data.myWallet.transactions.data;
-			if (append) {
-				transactions = [...transactions, ...newTransactions];
-			} else {
-				transactions = newTransactions;
-			}
-			
-			currentPage = data.myWallet.transactions.paginatorInfo.currentPage;
-			hasMorePages = data.myWallet.transactions.paginatorInfo.hasMorePages;
+			let nextPage = requestedPage;
+			let loaded = [];
+			let result;
+			do {
+				result = await graphqlRequest(MY_WALLET_QUERY, {
+					first: calendar ? 200 : 20,
+					page: nextPage,
+					...filters
+				});
+				if (request !== walletRequest) return;
+				loaded.push(...result.myWallet.transactions.data);
+				nextPage++;
+			} while (calendar && result.myWallet.transactions.paginatorInfo.hasMorePages);
+			wallet = result.myWallet;
+			transactions = append
+				? [...new Map([...transactions, ...loaded].map((tx) => [tx.id, tx])).values()]
+				: loaded;
+			currentPage = result.myWallet.transactions.paginatorInfo.currentPage;
+			hasMorePages = result.myWallet.transactions.paginatorInfo.hasMorePages;
 		} catch (err) {
-			console.error('Failed to fetch wallet:', err);
-			error = err.message || 'Не удалось загрузить данные кошелька';
+			if (request === walletRequest) error = err.message || 'Не удалось загрузить историю';
 		} finally {
-			isLoading = false;
-			isLoadingMore = false;
+			if (request === walletRequest) {
+				isLoading = false;
+				isLoadingMore = false;
+			}
 		}
 	}
-
 	function loadMore() {
-		if (hasMorePages && !isLoadingMore) {
-			fetchWallet(currentPage + 1, true);
-		}
+		if (hasMorePages && !isLoadingMore && !isLoading) fetchWallet(currentPage + 1, true);
 	}
-
 	$effect(() => {
-		if (browser && viewMode) {
-			fetchWallet(1, false);
-		}
+		const filters = selectedFilters();
+		if (browser) untrack(() => fetchWallet(1, false, filters));
 	});
 
-	// Не $state: флаг не должен перезапускать эффект синхронизации
-	let paymentSyncHandled = false;
-
-	/**
-	 * Пользователь вернулся со страницы оплаты ЮKassa на /lk/balance?payment=<id>.
-	 *
-	 * Сам факт возврата ничего не гарантирует, поэтому статус подтверждает
-	 * сервер: он опрашивает ЮKassa и при успехе зачисляет деньги. Повторный
-	 * вызов безопасен — зачисление идемпотентно.
-	 */
-	async function syncPaymentFromUrl() {
-		const paymentId = $page.url.searchParams.get('payment');
-		if (!paymentId || paymentSyncHandled) return;
-		paymentSyncHandled = true;
-
-		// Чистим URL, чтобы обновление страницы не выглядело как новая оплата
-		replaceState($page.url.pathname, {});
-
-		isSyncingPayment = true;
-		try {
-			const data = await graphqlRequest(SYNC_ONLINE_PAYMENT_MUTATION, { id: paymentId });
-			const payment = data.syncOnlinePayment;
-
-			if (payment.status === 'succeeded') {
-				paymentNotice = {
-					type: 'success',
-					text: `Баланс пополнен на ${parseFloat(payment.amount).toLocaleString('ru-RU')} ₽`
-				};
-				await fetchWallet(1, false);
-			} else if (payment.status === 'canceled') {
-				paymentNotice = {
-					type: 'error',
-					text: 'Платёж не прошёл. Деньги не списаны — попробуйте оплатить ещё раз.'
-				};
-			} else {
-				paymentNotice = {
-					type: 'pending',
-					text: 'Платёж обрабатывается. Баланс обновится автоматически, как только оплата подтвердится.'
-				};
-			}
-		} catch (err) {
-			console.error('Payment sync error:', err);
-			paymentNotice = {
-				type: 'error',
-				text: err.message || 'Не удалось проверить статус платежа.'
-			};
-		} finally {
-			isSyncingPayment = false;
-		}
-	}
-
+	let completedPaymentId = null;
+	let paymentRetry = $state(0);
+	let paymentRetryAvailable = $state(false);
 	$effect(() => {
-		if (browser) syncPaymentFromUrl();
+		const paymentId = $page.url.searchParams.get('payment');
+		paymentRetry;
+		if (!browser || !paymentId || completedPaymentId === paymentId) return;
+		let stopped = false;
+		let timer;
+		let attempts = 0;
+		untrack(() => {
+			paymentRetryAvailable = false;
+		});
+		async function poll() {
+			if (stopped) return;
+			isSyncingPayment = true;
+			let done = false;
+			try {
+				const data = await graphqlRequest(SYNC_ONLINE_PAYMENT_MUTATION, { id: paymentId });
+				if (stopped) return;
+				const payment = data.syncOnlinePayment;
+				done = ['succeeded', 'canceled', 'test'].includes(payment.status);
+				paymentNotice =
+					payment.status === 'succeeded'
+						? {
+								type: 'success',
+								text: `Баланс пополнен на ${Number(payment.amount).toLocaleString('ru-RU')} ₽`
+							}
+						: payment.status === 'canceled'
+							? { type: 'error', text: 'Платёж отменён. Баланс не изменился.' }
+							: payment.status === 'test'
+								? { type: 'error', text: 'Это тестовый платёж. Рабочий баланс не пополнен.' }
+								: {
+										type: 'pending',
+										text: 'Платёж обрабатывается. Проверяем подтверждение оплаты…'
+									};
+				if (done) {
+					completedPaymentId = paymentId;
+					await fetchWallet(1, false);
+					if (stopped) return;
+					const url = new URL($page.url);
+					url.searchParams.delete('payment');
+					isSyncingPayment = false;
+					replaceState(url, $page.state);
+				}
+			} catch (err) {
+				if (!stopped)
+					paymentNotice = {
+						type: 'error',
+						text: err.message || 'Не удалось проверить платёж. Повторяем проверку…'
+					};
+			} finally {
+				if (!stopped) {
+					isSyncingPayment = false;
+					if (!done && ++attempts < 20) timer = setTimeout(poll, 3000);
+					else if (!done) paymentRetryAvailable = true;
+				}
+			}
+		}
+		untrack(() => {
+			void poll();
+		});
+		return () => {
+			stopped = true;
+			clearTimeout(timer);
+		};
 	});
 
 	async function fetchInvoices(page = 1, append = false) {
@@ -310,6 +349,7 @@
 		const groups = {};
 		transactions.forEach((tx) => {
 			const date = new Date(tx.createdAt).toLocaleDateString('ru-RU', {
+				timeZone: 'Europe/Moscow',
 				year: 'numeric',
 				month: 'long',
 				day: 'numeric'
@@ -320,20 +360,7 @@
 		return Object.entries(groups).map(([date, items]) => ({ date, items }));
 	}
 
-	const filteredTransactions = $derived(
-		transactions
-			? transactions.filter((tx) => {
-					const typeMatch = filterType === 'all' || tx.type === filterType;
-					const d = new Date(tx.createdAt);
-					const txDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-					const dateFromMatch = !dateFrom || txDate >= dateFrom;
-					const dateToMatch = !dateTo || txDate <= dateTo;
-					return typeMatch && dateFromMatch && dateToMatch;
-				})
-			: []
-	);
-
-	const groupedTransactions = $derived(groupTransactionsByDay(filteredTransactions));
+	const groupedTransactions = $derived(groupTransactionsByDay(transactions));
 
 	function getLicenseId(description) {
 		const match = description.match(/ID:\s*([0-9A-Z]{26})/i);
@@ -384,7 +411,12 @@
 							? 'border-red-100 bg-red-50 text-red-700'
 							: 'border-amber-100 bg-amber-50 text-amber-800'}"
 				>
-					<p class="text-sm font-medium">{paymentNotice.text}</p>
+					<div>
+                        <p class="text-sm font-medium">{paymentNotice.text}</p>
+                        {#if paymentRetryAvailable}
+                            <button data-goal-ignore="Повтор проверки статуса платежа" onclick={() => paymentRetry++} class="mt-2 underline">Проверить ещё раз</button>
+                        {/if}
+                    </div>
 					<button
 						onclick={() => (paymentNotice = null)}
 						class="shrink-0 text-xs font-semibold opacity-60 transition hover:opacity-100"

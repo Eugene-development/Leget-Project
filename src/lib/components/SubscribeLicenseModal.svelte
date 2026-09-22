@@ -45,8 +45,8 @@
 	`;
 
 	const CREATE_LICENSE_MUTATION = `
-		mutation CreateLicense($templateId: Int!) {
-			createLicense(templateId: $templateId) {
+		mutation CreateLicense($templateId: Int!, $creationKey: String!) {
+			createLicense(templateId: $templateId, creationKey: $creationKey) {
 				id
 				domain
 				templateId
@@ -104,10 +104,15 @@
 
 	/** Create a brand-new license with this template and go to LK */
 	async function createAndSubscribe() {
+		if (isSaving) return;
 		isSaving = true;
 		error = null;
 		try {
-			const data = await graphqlRequest(CREATE_LICENSE_MUTATION, { templateId });
+			const storageKey = `license-create:${templateId}`;
+			const creationKey = sessionStorage.getItem(storageKey) || crypto.randomUUID();
+			sessionStorage.setItem(storageKey, creationKey);
+			const data = await graphqlRequest(CREATE_LICENSE_MUTATION, { templateId, creationKey });
+			sessionStorage.removeItem(storageKey);
 			const licenseId = data.createLicense.id;
 			successLicenseId = licenseId;
 			onSuccess(licenseId);
@@ -214,7 +219,7 @@
 						</button>
 					</div>
 
-					{@const filteredLicenses = licenses.filter((l) => l.templateId === templateId)}
+					{@const filteredLicenses = licenses.filter((l) => l.templateId === templateId && l.isActive && l.status === 'active')}
 					{#if filteredLicenses.length > 0}
 						<p class="mb-4 text-sm text-neutral-500">
 							Ваши сайты, которые уже используют этот шаблон:
