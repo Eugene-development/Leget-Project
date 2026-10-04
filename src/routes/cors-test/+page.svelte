@@ -1,4 +1,5 @@
 <script>
+	import { getAuthToken } from '$lib/utils/auth-session.js';
 	import { browser } from '$app/environment';
 	import { getGraphQLUrl, getAuthApiUrl } from '$lib/utils/config.js';
 
@@ -21,7 +22,7 @@
 	});
 
 	async function doRequest() {
-		const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+		const token = getAuthToken();
 		const url = getGraphQLUrl();
 		const now = new Date().toLocaleTimeString('ru-RU');
 
@@ -104,7 +105,7 @@
 			<p>Auth URL: <span class="text-indigo-600">{configInfo.authUrl}</span></p>
 			<p>Token: <span class="text-indigo-600">
 				{#if browser}
-					{localStorage.getItem('auth_token') ? '✅ present' : '❌ not found'}
+					{getAuthToken() ? '✅ present' : '❌ not found'}
 				{/if}
 			</span></p>
 			<p class="mt-2 text-xs text-neutral-500">

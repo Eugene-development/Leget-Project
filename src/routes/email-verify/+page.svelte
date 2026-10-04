@@ -1,4 +1,5 @@
 <script>
+	import { setEmailVerified } from '$lib/utils/auth-session.js';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
@@ -44,7 +45,7 @@
 			} else {
 				status = 'success';
 				// Update local verification status
-				localStorage.setItem('email_verified', '1');
+				setEmailVerified(true);
 			}
 		} catch (err) {
 			console.error('Email verification error:', err);

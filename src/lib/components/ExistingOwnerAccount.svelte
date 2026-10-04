@@ -1,4 +1,5 @@
 <script>
+	import { saveAuthSession } from '$lib/utils/auth-session.js';
 	import { goto } from '$app/navigation';
 	import SmartCaptcha from './SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
@@ -54,7 +55,7 @@
 			const result = await response.json();
 			if (!response.ok) throw new Error(result.message || 'Не удалось подключить роль.');
 			// This is the owner frontend's session, never the university cookie.
-			localStorage.setItem('auth_token', result.token);
+			saveAuthSession(result);
 			token = '';
 			await goto('/lk');
 		} catch (e) {

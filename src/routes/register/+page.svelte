@@ -1,4 +1,5 @@
 <script>
+	import { saveAuthSession } from '$lib/utils/auth-session.js';
 	import ExistingOwnerAccount from '$lib/components/ExistingOwnerAccount.svelte';
 	import Border from '$lib/components/Border.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -219,7 +220,7 @@
 
 			// Store token
 			if (result.token) {
-				localStorage.setItem('auth_token', result.token);
+				saveAuthSession(result);
 			}
 
 			registeredEmail = formData.email.trim().toLowerCase();

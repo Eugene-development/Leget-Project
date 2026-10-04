@@ -1,14 +1,15 @@
+import { getAuthToken } from './auth-session.js';
 import { GraphQLClient } from 'graphql-request';
 import { getGraphQLUrl } from './config.js';
 
 /**
  * Creates a GraphQLClient instance configured with the leget-api
- * /graphql endpoint and JWT Authorization header from localStorage.
+ * /graphql endpoint and JWT Authorization header from the current browser session.
  *
  * @returns {GraphQLClient}
  */
 export function getGraphQLClient() {
-	const token = localStorage.getItem('auth_token');
+	const token = getAuthToken();
 
 	return new GraphQLClient(getGraphQLUrl(), {
 		headers: {

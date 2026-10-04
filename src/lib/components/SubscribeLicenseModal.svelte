@@ -1,4 +1,5 @@
 <script>
+	import { getAuthToken } from '$lib/utils/auth-session.js';
 	/**
 	 * Modal for subscribing to a license with a chosen template.
 	 *
@@ -72,7 +73,7 @@
 	// Fetch licenses when modal opens
 	$effect(() => {
 		if (open && browser) {
-			const token = localStorage.getItem('auth_token');
+			const token = getAuthToken();
 			if (!token) {
 				const returnUrl = encodeURIComponent(window.location.pathname);
 				goto(`/login?redirect=${returnUrl}`);

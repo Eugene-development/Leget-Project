@@ -1,4 +1,5 @@
 <script>
+	import { getAuthToken } from '$lib/utils/auth-session.js';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
 	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
@@ -66,7 +67,7 @@
 	function handleSubscribe() {
 		if (plan.status !== 'active') return;
 		if (browser) {
-			const token = localStorage.getItem('auth_token');
+			const token = getAuthToken();
 			if (!token) {
 				const returnUrl = encodeURIComponent('/prices');
 				goto(`/login?redirect=${returnUrl}`);

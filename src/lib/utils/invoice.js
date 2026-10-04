@@ -1,3 +1,4 @@
+import { getAuthToken } from './auth-session.js';
 /**
  * Открытие печатной формы счёта на оплату.
  *
@@ -29,7 +30,7 @@ export async function openInvoice(invoiceId) {
 
 	try {
 		const base = getApiUrl().replace(/\/api\/?$/, '');
-		const token = localStorage.getItem('auth_token');
+		const token = getAuthToken();
 
 		const response = await fetch(`${base}/invoices/${invoiceId}/download`, {
 			headers: {

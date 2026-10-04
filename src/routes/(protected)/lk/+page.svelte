@@ -1,4 +1,5 @@
 <script>
+	import { clearAuthSession } from '$lib/utils/auth-session.js';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
@@ -32,8 +33,7 @@
 	});
 
 	function handleLogout() {
-		localStorage.removeItem('auth_token');
-		localStorage.removeItem('email_verified');
+		clearAuthSession();
 		goto('/login');
 	}
 </script>

@@ -1,4 +1,5 @@
 <script>
+	import { getAuthToken, getEmailVerified, clearAuthSession } from '$lib/utils/auth-session.js';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -25,7 +26,7 @@
 	async function checkAuth() {
 		isChecking = true;
 
-		const token = localStorage.getItem('auth_token');
+		const token = getAuthToken();
 
 		if (!token) {
 			goto('/login');
@@ -44,8 +45,7 @@
 
 			if (!response.ok) {
 				// Token is invalid or expired
-				localStorage.removeItem('auth_token');
-				localStorage.removeItem('email_verified');
+				clearAuthSession();
 				goto('/login');
 				return;
 			}
@@ -53,7 +53,7 @@
 			const result = await response.json();
 
 			if (!result.success) {
-				localStorage.removeItem('auth_token');
+				clearAuthSession();
 				goto('/login');
 				return;
 			}
@@ -66,7 +66,7 @@
 			console.error('Auth check error:', err);
 			// Network error — allow access if token exists (offline-friendly)
 			isAuthenticated = !!token;
-			isEmailVerified = localStorage.getItem('email_verified') === '1';
+			isEmailVerified = getEmailVerified();
 		} finally {
 			isChecking = false;
 		}

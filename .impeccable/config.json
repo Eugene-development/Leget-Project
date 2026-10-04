@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "0.875rem",
+        "files": [
+          "src/lib/components/SmsLogin.svelte"
+        ],
+        "createdAt": "2026-10-03T03:59:43.499Z",
+        "reason": "DESIGN.md typography.label explicitly defines fontSize 0.875rem; this is the documented label size."
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 <script>
+	import SmsLogin from '$lib/components/SmsLogin.svelte';
 	import Border from '$lib/components/Border.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Container from '$lib/components/Container.svelte';
@@ -6,6 +7,7 @@
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 	import { getAuthApiUrl } from '$lib/utils/config.js';
+	import { saveAuthSession } from '$lib/utils/auth-session.js';
 
 	// Form state
 	let formData = $state({
@@ -23,6 +25,7 @@
 	let isSubmitting = $state(false);
 	let submitError = $state('');
 	let needsVerification = $state(false);
+	let remember = $state(false);
 
 	// SmartCaptcha (защита от ботов)
 	let captchaToken = $state(null);
@@ -66,6 +69,7 @@
 
 	async function handleSubmit(event) {
 		event.preventDefault();
+		if (isSubmitting) return;
 
 		if (!validateForm()) return;
 
@@ -90,6 +94,7 @@
 				body: JSON.stringify({
 					email: formData.email.trim().toLowerCase(),
 					password: formData.password,
+					remember,
 					captcha_token: captchaToken
 				})
 			});
@@ -102,15 +107,7 @@
 				throw new Error(result.message || 'Ошибка входа');
 			}
 
-			// Store JWT token
-			if (result.token) {
-				localStorage.setItem('auth_token', result.token);
-			}
-
-			// Store email verification status
-			if (result.email_verified !== undefined) {
-				localStorage.setItem('email_verified', result.email_verified ? '1' : '0');
-			}
+			saveAuthSession(result);
 
 			// Redirect to personal cabinet
 			window.location.href = '/lk';
@@ -193,6 +190,25 @@
 					</div>
 				</div>
 
+				<label class="mt-6 flex items-center gap-2 text-sm text-neutral-700">
+					<input
+						type="checkbox"
+						name="remember"
+						bind:checked={remember}
+						disabled={isSubmitting}
+						class="h-4 w-4 rounded border-neutral-300 text-neutral-950 focus:ring-neutral-950"
+					/>
+					Запомнить меня
+				</label>
+
+				<p class="mt-6 text-sm">
+					<a
+						href="/forgot-password"
+						class="font-semibold text-neutral-950 underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950"
+						>Забыли пароль?</a
+					>
+				</p>
+
 				{#if SITE_KEY}
 					<div class="mt-6">
 						<SmartCaptcha
@@ -225,6 +241,14 @@
 				</p>
 			</form>
 
+			<SmsLogin
+				endpoint={`${getAuthApiUrl()}/sms`}
+				context="owner"
+				onlogin={(result) => {
+					saveAuthSession(result);
+					window.location.href = '/lk';
+				}}
+			/>
 			<Border class="mt-16 pt-16">
 				<h2 class="font-display text-base font-semibold text-neutral-950">Нужна помощь?</h2>
 				<p class="mt-4 text-base text-neutral-600">

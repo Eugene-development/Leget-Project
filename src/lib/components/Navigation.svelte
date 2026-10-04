@@ -1,4 +1,5 @@
 <script>
+	import { getAuthToken } from '$lib/utils/auth-session.js';
 	/**
 	 * Navigation component - Full-screen navigation overlay
 	 * @component
@@ -20,7 +21,7 @@
 	import { regionState } from '$lib/state/region.svelte';
 
 	// Determine cabinet link based on auth state
-	const cabinetHref = $derived(browser && localStorage.getItem('auth_token') ? '/lk' : '/login');
+	const cabinetHref = $derived(browser && getAuthToken() ? '/lk' : '/login');
 
 	// Navigation links data
 	const navigationLinks = [
