@@ -29,7 +29,7 @@
 		{ href: '/catalog', label: 'Каталог' },
 		{ href: '/about', label: 'О нас' },
 		{ href: '/process', label: 'Настройка' },
-		{ href: '/news', label: 'Новости' },
+		{ href: '/news', label: 'Материалы' },
 		{ href: '/contact', label: 'Контакты' }
 	];
 </script>

@@ -26,7 +26,7 @@
 		class="absolute inset-x-0 top-0 -z-10 h-[884px] overflow-hidden rounded-t-4xl bg-linear-to-b from-neutral-50"
 	>
 		<GridPattern
-			class="absolute inset-0 h-full w-full fill-neutral-100 stroke-neutral-950/5 mask-[linear-gradient(to_bottom_left,white_40%,transparent_50%)]"
+			class="absolute inset-0 h-full w-full mask-[linear-gradient(to_bottom_left,white_40%,transparent_50%)] fill-neutral-100 stroke-neutral-950/5"
 			yOffset={-270}
 		/>
 	</div>
@@ -53,15 +53,11 @@
 							<a
 								href={page.href}
 								class="mt-6 flex gap-x-3 text-base font-semibold text-neutral-950 transition hover:text-neutral-700"
-								aria-label="Read more: {page.title}"
+								aria-label="Читать далее: {page.title}"
 							>
 								Читать далее
 								<svg viewBox="0 0 24 6" aria-hidden="true" class="w-6 flex-none fill-current">
-									<path
-										fill-rule="evenodd"
-										clip-rule="evenodd"
-										d="M24 3 18 .5v2H0v1h18v2L24 3Z"
-									/>
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M24 3 18 .5v2H0v1h18v2L24 3Z" />
 								</svg>
 								<span class="absolute inset-0"></span>
 							</a>

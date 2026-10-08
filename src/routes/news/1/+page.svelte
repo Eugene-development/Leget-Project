@@ -7,95 +7,66 @@
 	import PageLinks from '$lib/components/PageLinks.svelte';
 	import { formatDate } from '$lib/formatDate.js';
 
-	/**
-	 * Новости Article: Старт проекта LEGET
-	 */
-
-	const article = {
-		date: '2025-08-01',
-		title: 'Как мы придумали LEGET: история создания платформы',
-		description:
-			'Рассказываем, почему мы решили делать готовые сайты для бизнеса по подписке и от каких проблем хотели избавить предпринимателей.',
-		author: {
-			name: 'Евгений Че',
-			role: 'CEO LEGET',
-			image: '/images/team/andrey.jpg'
-		}
-	};
-
-	const moreArticles = [
-		{
-			href: '/news/5',
-			date: '2026-06-13',
-			title: 'LEGET выходит на международный рынок',
-			description:
-				'Платформа готовых сайтов для бизнеса теперь доступна предпринимателям в шести странах.'
-		},
-		{
-			href: '/news/4',
-			date: '2026-05-18',
-			title: 'Скорость — главный фактор юзабилити',
-			description:
-				'Как мы провели масштабную оптимизацию сервисов LEGET.'
-		}
-	];
+	import { articles } from '$lib/content/articles.js';
+	const article = articles.find((item) => item.id === 1);
+	const moreArticles = articles.filter((item) => item.id !== 1).slice(0, 2);
 </script>
 
 <svelte:head>
-	<title>{article.title} — Новости LEGET</title>
-	<meta
-		name="description"
-		content="Как создавался LEGET: история запуска платформы готовых решений для бизнеса. Рассказываем о начале нашего пути и о том, как мы избавляем клиентов от рутины."
-	/>
+	<title>{article.title} — Материалы LEGET</title>
+	<meta name="description" content={article.description} />
 </svelte:head>
 
 <Container as="article" class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
 		<header class="mx-auto flex max-w-5xl flex-col text-center">
 			<h1
-				class="mt-6 font-display text-5xl font-medium tracking-tight text-neutral-950 [text-wrap:balance] sm:text-6xl"
+				class="font-display mt-6 text-5xl font-medium tracking-tight [text-wrap:balance] text-neutral-950 sm:text-6xl"
 			>
 				{article.title}
 			</h1>
 			<time datetime={article.date} class="order-first text-sm text-neutral-950">
-				{formatDate(article.date)}
+				Обновлено {formatDate(article.date)}
 			</time>
 			<p class="mt-6 text-sm font-semibold text-neutral-950">
-				Автор: {article.author.name}, {article.author.role}
+				{article.author.name}
 			</p>
 		</header>
 	</FadeIn>
 
 	<FadeIn>
 		<div
-			class="[&>*]:mx-auto [&>*]:max-w-3xl [&>:first-child]:!mt-0 [&>:last-child]:!mb-0 mt-24 sm:mt-32 lg:mt-40"
+			class="mt-24 sm:mt-32 lg:mt-40 [&>*]:mx-auto [&>*]:max-w-3xl [&>:first-child]:!mt-0 [&>:last-child]:!mb-0"
 		>
 			<div class="typography">
-				<h2>Почему конструкторы и веб-студии не всегда работают</h2>
+				<h2>Сайт начинается с отраслевого шаблона</h2>
 				<p>
-					Идея LEGET появилась из простого наблюдения: малому бизнесу очень сложно запустить нормальный сайт. С одной стороны — дорогие студии, которые просят сотни тысяч рублей и делают проект месяцами. С другой — конструкторы, где приходится всё собирать самому, а на выходе часто получается медленный и шаблонный сайт.
+					LEGET предоставляет сайты по посуточной подписке. Шаблон определяет страницы, разделы и
+					стартовый контент. Для подключения сейчас доступен Promo-1 — сайт для компаний, которые
+					работают с мебелью на заказ.
 				</p>
 				<p>
-					Мы хотели дать альтернативу: готовый, технически совершенный сайт с премиальным дизайном, который можно арендовать и запустить за пару дней.
+					Перед работой с клиентами замените примеры на сведения о своей компании: тексты,
+					фотографии, контакты и условия услуг. Проверьте, какие разделы действительно нужны вашему
+					бизнесу.
 				</p>
-				<figure class="my-10">
-					<img src="/images/projects/promo-1/hero.jpg" alt="Команда LEGET" class="rounded-2xl" />
-				</figure>
-
-				<h2>Три вещи, на которые мы сделали упор</h2>
+				<h2>Личный кабинет и ваш сайт</h2>
 				<p>
-					<strong>Скорость.</strong> Мы выбрали Svelte — один из самых быстрых современных фреймворков. Благодаря этому сайты на LEGET буквально летают.
-				</p>
-				<p>
-					<strong>Дизайн.</strong> Никаких перегруженных интерфейсов из 2010-х. Только чистый, минималистичный дизайн с приятной анимацией.
+					В личном кабинете находятся ваши сайты, настройки и баланс. Здесь можно указать домен,
+					загрузить логотип, выбрать город и управлять видимостью разделов каталога.
 				</p>
 				<p>
-					<strong>Инфраструктура.</strong> Все сайты работают в облаке Yandex Cloud, с настроенным SSL, резервным копированием и защитой от сбоев.
+					Для изменения текстов и изображений откройте сам сайт и войдите в режим редактирования. В
+					Promo-1 также доступны версии блоков — варианты их композиции.
 				</p>
-
-				<h2>Что дальше?</h2>
+				<h2>Подписка и поддержка</h2>
 				<p>
-					Старт LEGET — это только начало. Мы постоянно добавляем новые готовые проекты для разных ниш, интегрируем сервисы аналитики и платежей, чтобы запуск бизнеса в онлайне стал ещё проще. Присоединяйтесь к нам в этом путешествии!
+					После создания сайта начинаются 72 часа тестового периода без списаний. Затем каждый
+					активный сайт оплачивается с баланса аккаунта по 150 ₽ в сутки.
+				</p>
+				<p>
+					Вы можете настроить сайт самостоятельно или обратиться в LEGET за помощью. Напишите, какой
+					у вас бизнес и на каком этапе возник вопрос.
 				</p>
 			</div>
 		</div>
@@ -104,8 +75,8 @@
 
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
-	title="Другие новости"
-\tintro="Читайте другие новости и события компании LEGET."
+	title="Другие материалы"
+	intro="Инструкции по настройке сайта и работе с подпиской."
 	pages={moreArticles}
 />
 

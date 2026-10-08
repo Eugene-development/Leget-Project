@@ -7,7 +7,7 @@
 	import { regionState } from '$lib/state/region.svelte';
 
 	const emailContacts = [
-		{ label: 'Сотрудничество', email: 'info@leget.ru' },
+		{ label: 'Сайты и поддержка', email: 'info@leget.ru' },
 		{ label: 'Работа в компании', email: 'hr@leget.ru' }
 	];
 </script>
@@ -18,11 +18,14 @@
 		<div class="mx-auto max-w-4xl">
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-medium text-balance text-white sm:text-4xl">
-					Готовы начать работу?
+					Создайте аккаунт для работы с сайтом
 				</h2>
 				<div class="mt-6 flex flex-wrap gap-4">
 					<Button href="/register" invert>Регистрация</Button>
-					<Button href="/login" class="border border-white/20 text-white hover:bg-white/10 hover:border-white">
+					<Button
+						href="/login"
+						class="border border-white/20 text-white hover:border-white hover:bg-white/10"
+					>
 						Личный кабинет
 					</Button>
 				</div>
@@ -67,7 +70,6 @@
 									</a>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>

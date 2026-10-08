@@ -1,4 +1,5 @@
 <script>
+	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import { getAuthToken, getEmailVerified, clearAuthSession } from '$lib/utils/auth-session.js';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
@@ -74,16 +75,7 @@
 </script>
 
 {#if isChecking}
-	<!-- Auth check loading -->
-	<div class="flex min-h-screen items-center justify-center">
-		<div class="text-center">
-			<svg class="mx-auto h-10 w-10 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
-				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-			</svg>
-			<p class="mt-4 text-sm text-neutral-500">Проверяем доступ...</p>
-		</div>
-	</div>
+	<ContentLoading fullPage label="Проверяем доступ…" />
 
 {:else if isAuthenticated && !isEmailVerified}
 	<!-- Email not verified — show verification reminder -->

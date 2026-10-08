@@ -1,4 +1,5 @@
 <script>
+	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
@@ -428,20 +429,7 @@
 		{/if}
 
 		{#if isLoading && !wallet}
-			<FadeIn>
-				<div class="flex items-center justify-center py-16">
-					<svg class="h-8 w-8 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
-						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
-						></circle>
-						<path
-							class="opacity-75"
-							fill="currentColor"
-							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-						></path>
-					</svg>
-					<span class="ml-3 text-sm text-neutral-500">Загрузка данных...</span>
-				</div>
-			</FadeIn>
+			<ContentLoading />
 		{:else if error}
 			<FadeIn>
 				<div class="rounded-3xl border border-red-100 bg-red-50 p-8 text-center">

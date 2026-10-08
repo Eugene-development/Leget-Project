@@ -1,9 +1,6 @@
 <script>
-	import Border from '$lib/components/Border.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import Container from '$lib/components/Container.svelte';
-	import FadeIn from '$lib/components/FadeIn.svelte';
-	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import GridList from '$lib/components/GridList.svelte';
 	import GridListItem from '$lib/components/GridListItem.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
@@ -12,129 +9,33 @@
 	import StatList from '$lib/components/StatList.svelte';
 	import StatListItem from '$lib/components/StatListItem.svelte';
 
-	/**
-	 * About page - displays company information, culture, team, and statistics
-	 *
-	 * Requirements: 6.1, 6.2, 6.3, 6.4, 13.2
-	 */
-
-	// Team data structure matching the original Next.js implementation
-	const team = [
-		{
-			title: 'Руководство',
-			people: [
-				{
-					name: 'Евгений Че',
-					role: 'Основатель / CEO',
-					image: '/images/team/andrey.jpg'
-				},
-				{
-					name: 'Михаил Фостер',
-					role: 'Технический директор / CTO',
-					image: '/images/team/michael-foster.jpg'
-				},
-				{
-					name: 'Дрис Винсент',
-					role: 'Партнер / Бизнес-отношения',
-					image: '/images/team/dries-vincent.jpg'
-				}
-			]
-		},
-		{
-			title: 'Команда',
-			people: [
-				{
-					name: 'Челси Хагон',
-					role: 'Ведущий разработчик',
-					image: '/images/team/chelsea-hagon.jpg'
-				},
-				{
-					name: 'Эмма Дорси',
-					role: 'Ведущий дизайнер',
-					image: '/images/team/emma-dorsey.jpg'
-				},
-				{
-					name: 'Леонард Краснер',
-					role: 'UX-директор',
-					image: '/images/team/leonard-krasner.jpg'
-				},
-				{
-					name: 'Блейк Рейд',
-					role: 'Копирайтер',
-					image: '/images/team/blake-reid.jpg'
-				},
-				{
-					name: 'Кэтрин Мерфи',
-					role: 'HR-директор',
-					image: '/images/team/kathryn-murphy.jpg'
-				},
-				{
-					name: 'Уитни Фрэнсис',
-					role: 'Контент-менеджер',
-					image: '/images/team/whitney-francis.jpg'
-				},
-				{
-					name: 'Джеффри Уэбб',
-					role: 'Аккаунт-менеджер',
-					image: '/images/team/jeffrey-webb.jpg'
-				},
-				{
-					name: 'Бенджамин Рассел',
-					role: 'Ведущий разработчик',
-					image: '/images/team/benjamin-russel.jpg'
-				},
-				{
-					name: 'Анжела Фишер',
-					role: 'Front-end разработчик',
-					image: '/images/team/angela-fisher.jpg'
-				}
-			]
-		}
-	];
-
-	// Blog articles for PageLinks section (static data since we're not using MDX)
-	const newsArticles = [
-		{
-			href: '/news/2',
-			title: 'Запуск сайта за 72 часа: преимущества аренды готовых решений',
-			date: '2026-04-03',
-			description:
-				'Почему современному бизнесу выгоднее арендовать готовое технологичное решение, чем вкладываться в длительную и дорогостоящую разработку.'
-		},
-		{
-			href: '/news/3',
-			title: 'Как выбрать идеальный проект для вашего бизнеса',
-			date: '2025-12-01',
-			description:
-				'Разбираемся, на что обратить внимание при выборе структуры сайта, чтобы он максимально эффективно решал задачи вашего направления.'
-		}
-	];
+	import { articles } from '$lib/content/articles.js';
+	const newsArticles = articles.slice(0, 2);
 </script>
 
 <svelte:head>
-	<title>О компании LEGET — Команда профессионалов и экспертов</title>
+	<title>О платформе LEGET — сайты по подписке</title>
 	<meta
 		name="description"
-		content="Узнайте больше о студии LEGET. Мы объединяем отраслевую экспертизу и передовые технологии для создания эффективных сайтов для мебельного бизнеса."
+		content="Как устроен LEGET: отраслевые шаблоны, редактирование контента на сайте и посуточная оплата с баланса."
 	/>
 </svelte:head>
 
 <!-- PageIntro with company description -->
-<PageIntro eyebrow="О нас" title="Наша сила в технологиях">
+<PageIntro eyebrow="О нас" title="Готовая основа для сайта вашей компании">
 	<p>
-		Мы убеждены: успех проекта кроется в синергии глубокой отраслевой экспертизы и передовых
-		технологий. Наша цель — трансформировать ваш бизнес в цифровую эпоху.
+		LEGET — платформа сайтов по подписке для мебельного бизнеса и сферы обустройства дома. Вы
+		выбираете отраслевой шаблон и наполняете его материалами своей компании.
 	</p>
 	<div class="mt-10 max-w-2xl space-y-6 text-base">
 		<p>
-			Компания LEGET возникла как ответ на вызовы современного мебельного рынка. Мы объединили опыт
-			ведущих разработчиков и глубокое понимание бизнес-процессов мебельных фабрик, чтобы создавать
-			по-настоящему эффективные инструменты.
+			Шаблон задаёт страницы, разделы и стартовые тексты. После создания сайта вы заменяете
+			контакты, описания и изображения. В Promo-1 можно выбирать доступные версии блоков прямо на
+			странице.
 		</p>
 		<p>
-			Для нас каждый проект — это не просто код и дизайн, а возможность помочь вашему бренду стать
-			лидером. Мы выстраиваем долгосрочные партнерские отношения, основанные на прозрачности и
-			достижении конкретных бизнес-результатов.
+			Сайт можно настроить самостоятельно или с помощью команды LEGET. В личном кабинете находятся
+			настройки, сайты и баланс; тексты и изображения вы редактируете на самом сайте после входа.
 		</p>
 	</div>
 </PageIntro>
@@ -142,92 +43,45 @@
 <!-- StatList with company statistics -->
 <Container class="mt-16">
 	<StatList>
-		<StatListItem value=">35" label="Современных технологий" />
-		<StatListItem value="200+" label="Компонентов в разработке" />
-		<StatListItem value="280%" label="Рост клиентской базы в месяц" />
+		<StatListItem value="150 ₽" label="В сутки за сайт" />
+		<StatListItem value="72 часа" label="Тестовый период после создания сайта" />
+		<StatListItem value="1 аккаунт" label="Для управления сайтами и балансом" />
 	</StatList>
 </Container>
 
 <!-- Culture section with dark background -->
 <div class="mt-24 rounded-4xl bg-neutral-950 py-24 sm:mt-32 lg:mt-40 lg:py-32">
-	<SectionIntro eyebrow="Культура компании" title="Баланс прогресса и безопасности" invert>
+	<SectionIntro eyebrow="Принципы работы" title="Понятные задачи на каждом этапе" invert>
 		<p>
-			Мы — команда профессионалов, разделяющих общие ценности и стремление к совершенству в каждой
-			детали.
+			LEGET отвечает за платформу, а владелец сайта — за актуальность предложения, материалов и
+			контактов своей компании.
 		</p>
 	</SectionIntro>
 	<Container class="mt-16">
 		<GridList>
-			<GridListItem title="Экспертиза" invert>
-				Глубокое понимание мебельной отрасли позволяет нам предлагать решения, которые учитывают
-				специфику вашего продукта и потребности покупателей.
+			<GridListItem title="Отраслевая структура" invert>
+				Каталог, проекты, услуги и формы обращений помогают представить работу мебельной компании.
+				Состав страниц зависит от шаблона.
 			</GridListItem>
-			<GridListItem title="Надежность" invert>
-				Мы строим доверительные отношения с партнерами, обеспечивая стабильную работу систем и
-				оперативную поддержку на всех этапах.
+			<GridListItem title="Управление контентом" invert>
+				Обновляйте доступные для редактирования тексты и изображения на сайте. Настройки домена,
+				логотипа и каталога находятся в личном кабинете.
 			</GridListItem>
-			<GridListItem title="Инновации" invert>
-				Мы не просто следим за трендами, мы адаптируем их под реалии вашего бизнеса, создавая
-				уникальный клиентский опыт.
+			<GridListItem title="Посуточная оплата" invert>
+				После тестового периода стоимость активного сайта списывается с баланса ежедневно.
+				Пополнения и списания видны в истории операций.
 			</GridListItem>
 		</GridList>
 	</Container>
 </div>
 
 <!-- Team section with photos -->
-<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
-	<div class="space-y-24">
-		{#each team as group (group.title)}
-			<FadeInStagger>
-				<Border>
-					<div class="grid grid-cols-1 gap-6 pt-12 sm:pt-16 lg:grid-cols-4 xl:gap-8">
-						<FadeIn>
-							<h2 class="font-display text-2xl font-semibold text-neutral-950">
-								{group.title}
-							</h2>
-						</FadeIn>
-						<div class="lg:col-span-3">
-							<ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
-								{#each group.people as person (person.name)}
-									<li>
-										<FadeIn>
-											<div class="group relative overflow-hidden rounded-3xl bg-neutral-100">
-												<img
-													alt=""
-													src={person.image}
-													loading="lazy"
-													class="h-96 w-full object-cover grayscale transition duration-500 motion-safe:group-hover:scale-105"
-												/>
-												<div
-													class="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black to-transparent to-40% p-6"
-												>
-													<p
-														class="font-display text-base/6 font-semibold tracking-wide text-white"
-													>
-														{person.name}
-													</p>
-													<p class="mt-2 text-sm text-white">
-														{person.role}
-													</p>
-												</div>
-											</div>
-										</FadeIn>
-									</li>
-								{/each}
-							</ul>
-						</div>
-					</div>
-				</Border>
-			</FadeInStagger>
-		{/each}
-	</div>
-</Container> -->
 
 <!-- PageLinks for blog articles -->
 <PageLinks
 	class="mt-24 sm:mt-32 lg:mt-40"
-	title="Новости компании"
-	intro="Наши эксперты следят за развитием технологий и изменениями рынка, чтобы вы получали только актуальные инсайты и лучшие практики для развития вашего бизнеса."
+	title="Материалы о платформе"
+	intro="Порядок настройки сайта, выбор шаблона и работа с посуточной подпиской."
 	pages={newsArticles}
 />
 

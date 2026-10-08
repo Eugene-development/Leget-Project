@@ -1,4 +1,5 @@
 <script>
+	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
@@ -169,7 +170,7 @@
 	async function handleSaveSlug(e) {
 		e.preventDefault();
 		if (!formSlug.trim()) {
-			slugError = 'Slug обязателен';
+			slugError = 'Укажите адрес страницы';
 			return;
 		}
 		isSavingSlug = true;
@@ -182,10 +183,10 @@
 				licenseId,
 				slug: formSlug.trim()
 			});
-			slugSuccess = 'Slug сохранён';
+			slugSuccess = 'Адрес страницы сохранён';
 			setTimeout(() => (slugSuccess = ''), 3000);
 		} catch (err) {
-			slugError = err.message || 'Не удалось сохранить slug';
+			slugError = err.message || 'Не удалось сохранить адрес страницы';
 		} finally {
 			isSavingSlug = false;
 		}
@@ -356,15 +357,7 @@
 	<FadeInStagger class="flex flex-col gap-y-12">
 
 		{#if isLoading}
-			<FadeIn>
-				<div class="flex items-center justify-center py-16">
-					<svg class="h-8 w-8 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
-						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-					</svg>
-					<span class="ml-3 text-sm text-neutral-500">Загрузка страницы...</span>
-				</div>
-			</FadeIn>
+			<ContentLoading />
 
 		{:else if loadError}
 			<FadeIn>
@@ -382,7 +375,7 @@
 
 					<!-- Slug -->
 					<form onsubmit={handleSaveSlug} class="space-y-4">
-						<h2 class="font-display text-xl font-semibold text-neutral-950">Slug страницы</h2>
+						<h2 class="font-display text-xl font-semibold text-neutral-950">Адрес страницы</h2>
 						{#if slugSuccess}
 							<div class="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">{slugSuccess}</div>
 						{/if}

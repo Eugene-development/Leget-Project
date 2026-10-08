@@ -15,7 +15,7 @@
 	// Баланс — только для отображения, берём из API
 	let balance = $derived(parseFloat(userData.balance) || 0);
 
-	// Поля формы — редактируемые, инициализируются из данных пользователя
+	// Данные профиля доступны только для чтения: сохранение пока не подключено.
 	let formName = $state('');
 	let formEmail = $state('');
 	let formPhone = $state('');
@@ -67,8 +67,6 @@
 				</div>
 
 				<div class="space-y-12">
-
-
 					<!-- Form Fields Grid -->
 					<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<div class="group relative">
@@ -76,6 +74,7 @@
 								>Имя владельца</label
 							>
 							<input
+								readonly
 								type="text"
 								id="owner-name"
 								bind:value={formName}
@@ -88,6 +87,7 @@
 								>Почта</label
 							>
 							<input
+								readonly
 								type="email"
 								id="owner-email"
 								bind:value={formEmail}
@@ -100,6 +100,7 @@
 								>Телефон</label
 							>
 							<input
+								readonly
 								type="tel"
 								id="owner-phone"
 								bind:value={formPhone}
@@ -112,8 +113,10 @@
 								>Мессенджер</label
 							>
 							<input
+								readonly
 								type="text"
 								id="owner-messenger"
+								placeholder="Не подключён"
 								bind:value={formMessenger}
 								class="mt-2 block w-full rounded-2xl border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60"
 							/>
@@ -122,7 +125,13 @@
 				</div>
 
 				<div class="border-t border-neutral-100 pt-12">
-					<Button class="w-full sm:w-auto">Сохранить изменения</Button>
+					<p class="text-sm text-neutral-600">
+						Здесь показаны данные аккаунта. Изменение профиля в кабинете пока недоступно. По
+						вопросам данных аккаунта <a
+							href="/contact"
+							class="font-semibold text-neutral-950 underline">напишите в LEGET</a
+						>.
+					</p>
 				</div>
 			</div>
 		</FadeIn>

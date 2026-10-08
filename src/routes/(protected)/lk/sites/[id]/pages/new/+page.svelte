@@ -47,7 +47,7 @@
 
 		// Validate slug
 		if (!formSlug.trim()) {
-			fieldErrors = { slug: 'Slug обязателен для заполнения' };
+			fieldErrors = { slug: 'Укажите адрес страницы' };
 			isSaving = false;
 			return;
 		}
@@ -123,9 +123,7 @@
 			<div class="flex max-w-3xl flex-col gap-12">
 				<form onsubmit={handleSubmit} class="space-y-8">
 					{#if fieldErrors._general}
-						<div
-							class="rounded-2xl border border-red-200 bg-red-50 px-6 py-4 text-sm text-red-600"
-						>
+						<div class="rounded-2xl border border-red-200 bg-red-50 px-6 py-4 text-sm text-red-600">
 							{fieldErrors._general}
 						</div>
 					{/if}
@@ -133,7 +131,7 @@
 					<div class="space-y-8">
 						<div class="group relative">
 							<label for="page-slug" class="block text-sm font-semibold text-neutral-950">
-								Slug страницы
+								Адрес страницы
 							</label>
 							<input
 								type="text"

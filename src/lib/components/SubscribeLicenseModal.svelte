@@ -158,19 +158,21 @@
 		aria-modal="true"
 		aria-label="Подписка на шаблон {templateName}"
 		tabindex="-1"
-		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/75 backdrop-blur-sm px-4"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/75 px-4 backdrop-blur-sm"
 		onclick={handleBackdropClick}
 		onkeydown={handleKeydown}
 	>
-		<div class="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl max-h-[90vh] flex flex-col">
+		<div class="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl bg-white p-8 shadow-2xl">
 			<!-- Header -->
-			<div class="mb-6 flex items-start justify-between gap-4 shrink-0">
+			<div class="mb-6 flex shrink-0 items-start justify-between gap-4">
 				<div>
 					<h2 class="font-display text-xl font-semibold text-neutral-950">
 						Шаблон «{templateName}» — {price} ₽/{period}
 					</h2>
 					<p class="mt-1 text-sm text-neutral-500">
-						Средства начнут списываться с вашего баланса по истечении 3-дневного тестового периода
+						При создании нового сайта начинаются 72 часа без списаний. Первое списание запланировано
+						на ближайшие 06:30 по Москве после завершения тестового периода, далее — ежедневно.
+						Чтобы остановить будущие списания, отмените лицензию в настройках сайта.
 					</p>
 				</div>
 				<button
@@ -190,11 +192,17 @@
 			</div>
 
 			<!-- Content Area (Scrollable) -->
-			<div class="flex-1 overflow-y-auto pr-1 min-h-0">
+			<div class="min-h-0 flex-1 overflow-y-auto pr-1">
 				{#if isLoading}
 					<div class="flex items-center justify-center py-10">
 						<svg class="h-7 w-7 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
-							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+							<circle
+								class="opacity-25"
+								cx="12"
+								cy="12"
+								r="10"
+								stroke="currentColor"
+								stroke-width="4"
 							></circle>
 							<path
 								class="opacity-75"
@@ -220,7 +228,9 @@
 						</button>
 					</div>
 
-					{@const filteredLicenses = licenses.filter((l) => l.templateId === templateId && l.isActive && l.status === 'active')}
+					{@const filteredLicenses = licenses.filter(
+						(l) => l.templateId === templateId && l.isActive && l.status === 'active'
+					)}
 					{#if filteredLicenses.length > 0}
 						<p class="mb-4 text-sm text-neutral-500">
 							Ваши сайты, которые уже используют этот шаблон:
@@ -245,14 +255,16 @@
 						</ul>
 					{:else}
 						<div class="rounded-2xl border border-neutral-100 bg-neutral-50 p-6 text-center">
-							<p class="text-sm text-neutral-500">У вас пока нет сайтов, использующих этот шаблон.</p>
+							<p class="text-sm text-neutral-500">
+								У вас пока нет сайтов, использующих этот шаблон.
+							</p>
 						</div>
 					{/if}
 				{/if}
 			</div>
 
 			<!-- Footer -->
-			<div class="mt-6 flex justify-end shrink-0">
+			<div class="mt-6 flex shrink-0 justify-end">
 				<button
 					onclick={onClose}
 					class="rounded-lg border border-neutral-200 px-5 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"

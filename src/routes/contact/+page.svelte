@@ -144,13 +144,13 @@
 
 	// Email contacts data
 	const emailContacts = [
-		{ label: 'Сотрудничество', email: 'info@leget.ru' },
+		{ label: 'Сайты и поддержка', email: 'info@leget.ru' },
 		{ label: 'Работа в компании', email: 'hr@leget.ru' }
 	];
 </script>
 
 <svelte:head>
-	<title>Контакты — Студия LEGET. Свяжитесь с нами</title>
+	<title>Контакты и поддержка — LEGET</title>
 	<meta
 		name="description"
 		content="Свяжитесь с командой LEGET для консультации по запуску вашего сайта. Оставьте заявку на сайте или напишите нам на почту info@leget.ru."
@@ -163,7 +163,8 @@
 		<FadeIn>
 			<h2 class="font-display text-base font-semibold text-neutral-950">Наши контакты</h2>
 			<p class="mt-2.5 text-base text-neutral-600">
-				Предпочитаете делать дела лично? Свяжитесь с нами.
+				Поможем разобраться с шаблоном, подключением сайта и оплатой. Укажите домен, если вопрос
+				касается уже созданного сайта.
 			</p>
 
 			<div class="mt-13 grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -217,12 +218,14 @@
 		<!-- Contact Form -->
 		<FadeIn>
 			<form onsubmit={handleSubmit}>
-				<h2 class="font-display text-base font-semibold text-neutral-950">Заявка на интеграцию</h2>
+				<h2 class="font-display text-base font-semibold text-neutral-950">Вопрос команде LEGET</h2>
 
 				{#if submitSuccess}
 					<div class="mt-6 rounded-2xl bg-green-50 p-6 text-green-800">
-						<p class="font-semibold">Спасибо!</p>
-						<p class="mt-2">Мы свяжемся с вами в ближайшее время.</p>
+						<p class="font-semibold">Обращение принято</p>
+						<p class="mt-2">
+							Ответим по указанным контактам. Повторно отправлять обращение не нужно.
+						</p>
 					</div>
 				{:else}
 					<div class="isolate mt-6 -space-y-px rounded-2xl bg-white/50">
@@ -349,11 +352,17 @@
 						</div>
 					{/if}
 
-					<Button type="submit" class="mt-10" disabled={isSubmitting}>
+					<Button
+						type="submit"
+						data-metrika-goal="platform_contact_submit"
+						data-goal-action="submit"
+						class="mt-10"
+						disabled={isSubmitting}
+					>
 						{#if isSubmitting}
 							Отправка...
 						{:else}
-							Работаем!
+							Отправить обращение
 						{/if}
 					</Button>
 				{/if}

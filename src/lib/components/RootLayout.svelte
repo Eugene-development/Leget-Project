@@ -15,7 +15,7 @@
 	 */
 
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import Header from './Header.svelte';
 	import Navigation from './Navigation.svelte';
 	import Footer from './Footer.svelte';
@@ -25,8 +25,13 @@
 	import MenuIcon from './icons/MenuIcon.svelte';
 	import XIcon from './icons/XIcon.svelte';
 	import { slide } from 'svelte/transition';
+	import ContentLoading from './ContentLoading.svelte';
+	import { contentLoadingContext, createContentLoadingTracker } from '$lib/utils/content-loading.js';
 
-	let { children } = $props();
+	let { children, routeLoading = false } = $props();
+	let contentLoaders = $state(0);
+	const loading = $derived(routeLoading || contentLoaders > 0);
+	setContext(contentLoadingContext, createContentLoadingTracker((count) => (contentLoaders = count)));
 
 	// State for navigation panel
 	let expanded = $state(false);
@@ -119,6 +124,12 @@
 	<XIcon {...props} />
 {/snippet}
 
+{#if loading}
+	<div class="content-progress" role="progressbar" aria-label="Загрузка содержимого" aria-valuemin="0" aria-valuemax="100">
+		<div class="content-progress-line"></div>
+	</div>
+{/if}
+
 <div class="flex min-h-screen w-full flex-col bg-neutral-950">
 	<header>
 		{#if !expanded}
@@ -191,8 +202,17 @@
 			/>
 
 			<!-- Main content slot -->
-			<main class="w-full flex-auto">
-				{@render children?.()}
+			<main class="relative w-full flex-auto" aria-busy={loading}>
+				{#if routeLoading}
+					<div class="route-shell">
+						<div class="route-shell-content">
+							<ContentLoading fullPage track={false} />
+						</div>
+					</div>
+				{/if}
+				<div class="route-content" class:route-pending={routeLoading} inert={routeLoading} aria-hidden={routeLoading ? 'true' : undefined}>
+					{@render children?.()}
+				</div>
 			</main>
 
 			<!-- Footer -->
@@ -203,3 +223,57 @@
 
 <BotFilterModal />
 <ToastContainer />
+
+<style>
+	.route-content {
+		display: contents;
+	}
+
+	.route-pending {
+		visibility: hidden;
+	}
+
+	.route-shell {
+		position: absolute;
+		inset: 0;
+		z-index: 30;
+		overflow: clip;
+		pointer-events: none;
+		background: var(--color-white);
+	}
+
+	.route-shell-content {
+		position: sticky;
+		top: 0;
+		display: flow-root;
+	}
+
+	.content-progress {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 100;
+		height: 3px;
+		overflow: hidden;
+		background: var(--color-neutral-200);
+		pointer-events: none;
+	}
+
+	.content-progress-line {
+		height: 100%;
+		width: 35%;
+		background: var(--color-neutral-950);
+		animation: content-progress 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+	}
+
+	@keyframes content-progress {
+		from { transform: translateX(-100%); }
+		to { transform: translateX(390%); }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.content-progress-line {
+			animation: none;
+			width: 70%;
+		}
+	}
+</style>

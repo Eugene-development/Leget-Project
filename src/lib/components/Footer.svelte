@@ -67,7 +67,7 @@
 			links: [
 				{ title: 'О нас', href: '/about' },
 				{ title: 'Настройка', href: '/process' },
-				{ title: 'Новости', href: '/news' },
+				{ title: 'Материалы', href: '/news' },
 				{ title: 'Контакты', href: '/contact' }
 			]
 		},
@@ -139,10 +139,10 @@
 			<div class="flex lg:justify-end">
 				<form class="max-w-sm" onsubmit={subscribe} aria-busy={sending}>
 					<h2 class="font-display text-sm font-semibold tracking-wider text-neutral-950">
-						Будь в курсе событий
+						Обновления LEGET
 					</h2>
 					<p class="mt-4 text-sm text-neutral-700">
-						Подпишитесь, чтобы получать последние новости о новинках, статьи, ресурсы и вдохновение.
+						Оставьте почту, если хотите получать сообщения об обновлениях платформы и шаблонов.
 					</p>
 					<div class="relative mt-6">
 						<input
@@ -151,14 +151,16 @@
 							bind:value={email}
 							placeholder="Ваша почта"
 							autocomplete="email"
-							aria-label="Email address"
+							aria-label="Электронная почта"
 							class="block w-full rounded-2xl border border-neutral-300 bg-transparent py-4 pr-20 pl-6 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:ring-neutral-950/60 focus:outline-none"
 						/>
 						<div class="absolute inset-y-1 right-1 flex justify-end">
 							<button
 								type="submit"
 								disabled={sending}
-								aria-label="Submit"
+								aria-label="Отправить заявку на подписку"
+								data-metrika-goal="platform_footer_subscription_submit"
+								data-goal-action="submit"
 								class="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800"
 							>
 								<svg viewBox="0 0 16 6" aria-hidden="true" class="w-4">
@@ -182,7 +184,7 @@
 		<div
 			class="mt-24 mb-20 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-t border-neutral-950/10 pt-12"
 		>
-			<a href="/" aria-label="Home">
+			<a href="/" aria-label="Главная">
 				<Logo class="h-12" fillOnHover />
 			</a>
 			<p class="text-sm text-neutral-700">

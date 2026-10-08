@@ -1,17 +1,13 @@
 <script>
-	import Blockquote from '$lib/components/Blockquote.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
 	import GrayscaleTransitionImage from '$lib/components/GrayscaleTransitionImage.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
-	import StatList from '$lib/components/StatList.svelte';
-	import StatListItem from '$lib/components/StatListItem.svelte';
 	import TagList from '$lib/components/TagList.svelte';
 	import TagListItem from '$lib/components/TagListItem.svelte';
 	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
-	import { formatDate } from '$lib/formatDate.js';
 
 	// templateId=1 corresponds to Promo-1
 	const TEMPLATE_ID = 1;
@@ -31,35 +27,22 @@
 
 	const caseStudy = {
 		client: 'Promo-1',
-		title: 'Промо-1',
+		title: 'Promo-1 — сайт для мебели на заказ',
 		description:
-			'Многостраничный сайт с множеством настраиваемых функций и разделов. Отличная юзабельность и адаптивность под любые устройства вкупе с современным дизайном.',
-		heroImage: '/images/projects/promo-1/hero.png',
-		date: '2023-01',
-		service: 'Web development, SvelteKit',
-		testimonial: {
-			author: { name: 'Евгений Че', role: 'Директор по маркетингу' },
-			image: '/images/projects/promo-1/debra-fiscal.jpg',
-			content:
-				'Данный сайт позволяет перейти компании на новый уровень в информационной сети интернет.'
-		}
+			'Сайт для мебельной компании: каталог, проекты, услуги, контакты и формы обращений. Стартовую структуру можно наполнить своими материалами.',
+		heroImage: '/images/projects/promo-1/hero.png'
 	};
 </script>
 
 <svelte:head>
-	<title>Проект Promo-1 — Универсальный многостраничный сайт | LEGET</title>
-	<meta
-		name="description"
-		content="Описание шаблона Promo-1: современный многостраничный сайт с настраиваемыми функциями, созданный на стеке SvelteKit."
-	/>
+	<title>Promo-1 — сайт для мебели на заказ | LEGET</title>
+	<meta name="description" content={caseStudy.description} />
 </svelte:head>
 
-<!-- Page Introduction with Project Header -->
 <PageIntro eyebrow="Шаблон" title={caseStudy.title}>
 	<p>{caseStudy.description}</p>
 </PageIntro>
 
-<!-- Project Meta Information -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
 		<div class="flex items-center gap-x-8 border-t border-neutral-200 pt-12">
@@ -74,7 +57,6 @@
 	</FadeIn>
 </Container>
 
-<!-- Hero Image -->
 <Container class="mt-16">
 	<FadeIn>
 		<div class="mb-8 flex flex-wrap justify-center gap-4">
@@ -82,9 +64,9 @@
 				href="https://novostroy.org"
 				target="_blank"
 				class="px-8 py-3 text-lg"
-				aria-label="View demo: {caseStudy.client}"
+				aria-label="Посмотреть демоверсию {caseStudy.client}"
 			>
-				Посмотреть демо версию сайта
+				Посмотреть демоверсию сайта
 			</Button>
 			<Button
 				invert
@@ -99,7 +81,7 @@
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
 			<GrayscaleTransitionImage
 				src={caseStudy.heroImage}
-				alt="Promo-1 project hero"
+				alt="Предпросмотр шаблона Promo-1"
 				class="w-full object-cover"
 				loading="lazy"
 			/>
@@ -107,67 +89,42 @@
 	</FadeIn>
 </Container>
 
-<!-- Overview Section -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Описание проекта</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Что входит в шаблон</h2>
 		<div class="mt-6 space-y-6 text-base text-neutral-600">
 			<p>
-				Шаблон Promo-1 — это современное решение для многостраничного корпоративного сайта или
-				интернет-витрины. Разработанный на базе SvelteKit, он обеспечивает молниеносную скорость
-				работы и отличные показатели SEO.
+				Promo-1 предназначен для компаний, которые изготавливают и продают мебель на заказ. В
+				шаблоне есть каталог мебели, примеры проектов, страницы услуг и информация о компании.
 			</p>
 			<p>
-				Структура шаблона позволяет легко адаптировать его под различные виды бизнеса, будь то
-				производство мебели, строительные услуги или любое другое направление, требующее детального
-				представления товаров и услуг.
+				После создания сайта настройте домен, название, логотип, город и разделы каталога в личном
+				кабинете. На самом сайте замените стартовые тексты, изображения и контакты на свои.
 			</p>
 			<p>
-				В шаблоне реализованы все необходимые разделы: от функционального каталога до страниц с
-				описанием процесса работы и контактной информации. Внимание к деталям в дизайне и коде
-				гарантирует высокий уровень конверсии и доверие пользователей.
+				В режиме редактирования можно выбирать доступные версии блоков. Версия меняет композицию
+				блока; содержание вашей компании хранится отдельно от стартовых данных шаблона.
 			</p>
 			<p>
-				Полная адаптивность обеспечивает корректное отображение на всех типах устройств, что
-				позволяет клиентам с комфортом взаимодействовать с сайтом в любое время и из любого места.
+				Формы принимают обращения посетителей. Для аналитики подключите свой счётчик Яндекс Метрики
+				и создайте цели по карте кнопок шаблона. Рекламную кампанию и обработку обращений организует
+				ваша компания.
 			</p>
 		</div>
 	</FadeIn>
 </Container>
 
-<!-- What We Did Section -->
 <Container class="mt-24 sm:mt-32 lg:mt-40">
 	<FadeIn>
 		<h2 class="font-display text-2xl font-semibold text-neutral-950">
 			Подходит для видов деятельности
 		</h2>
 		<TagList class="mt-6">
-			<TagListItem>Мебельная компания</TagListItem>
+			<TagListItem>Мебель на заказ</TagListItem>
 		</TagList>
 	</FadeIn>
 </Container>
 
-<!-- Testimonial Section -->
-<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
-	<Blockquote author={caseStudy.testimonial.author} image={caseStudy.testimonial.image}>
-		<p>{caseStudy.testimonial.content}</p>
-	</Blockquote>
-</Container> -->
-
-<!-- Statistics Section -->
-<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
-	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Results</h2>
-	</FadeIn>
-	<StatList class="mt-10">
-		<StatListItem value="25%" label="Less traffic" />
-		<StatListItem value="10x" label="Page load times" />
-		<StatListItem value="15%" label="Higher infra costs" />
-		<StatListItem value="$1.2M" label="Legal fees" />
-	</StatList>
-</Container> -->
-
-<!-- Contact Section -->
 <ContactSection />
 
 <SubscribeLicenseModal

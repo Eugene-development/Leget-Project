@@ -4,7 +4,6 @@
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
-	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Testimonial from '$lib/components/Testimonial.svelte';
 	import Logo from '$lib/components/Logo.svelte';
@@ -13,95 +12,59 @@
 
 	const caseStudies = [
 		{
-			client: 'Для мебельных компаний',
-			title: 'Промо-1',
-			description:
-				'Проект для мебельной компании. Позволяет создать профессиональное присутствие в интернете за считанные часы.',
+			client: 'Для мебели на заказ',
+			title: 'Promo-1',
 			summary: [
-				'Проект для мебельной компании. Позволяет создать профессиональное присутствие в интернете за считанные часы. Ознакомьтесь с проектом и оцените возможности готовых решений от LEGET.'
+				'Каталог мебели, примеры проектов, услуги и формы обращений. После создания сайта замените стартовые материалы на свои и настройте данные компании.'
 			],
-			logo: '/images/clients/promo-1/logo-dark.svg',
 			href: '/catalog/promo-1',
 			price: 150,
-			service: 'Подписка',
-			testimonial: {
-				author: { name: 'Debra Fiscal', role: 'CEO of Promo-1' },
-				content: ''
-			}
+			service: 'Посуточная подписка'
 		},
 		{
-			client: 'Для медицинских центров',
-			title: 'Промо-2',
-			description:
-				'Минималистичный дизайн с акцентом на контент и высокую скорость загрузки. Профессиональное решение для быстрого запуска вашего бизнеса.',
+			client: 'Для мебельных фабрик',
+			title: 'Promo-2',
 			summary: [
-				'Промо-2 — это проект с акцентом на чистоту линий и удобство восприятия информации. Идеально подходит для медицинских центров и сервисных компаний.'
+				'Шаблон для мебельной фабрики: информация о производстве, продукции и сотрудничестве. Находится в разработке; для подключения сейчас доступен Promo-1.'
 			],
-			logo: '/images/clients/promo-2/logo-dark.svg',
 			href: '/catalog/promo-2',
-			inDevelopment: true,
 			price: 150,
-			service: 'Подписка',
-			testimonial: {
-				author: { name: 'Emily Selman', role: 'Head of Engineering at Promo-2' },
-				content:
-					'Этот проект позволил нам запустить сайт за считанные дни. Мы очень довольны результатом и скоростью работы.'
-			}
+			service: 'Шаблон в разработке',
+			inDevelopment: true
 		},
 		{
-			client: 'Для IT стартапов',
-			title: 'Промо-3',
-			description:
-				'Мощный инструмент для эффективных онлайн-продаж. Интерактивный интерфейс с продуманной структурой для вовлечения пользователей.',
+			client: 'Для плитки и коллекций',
+			title: 'Promo-3',
 			summary: [
-				'Промо-3 предлагает расширенные возможности для демонстрации продуктов и взаимодействия с аудиторией. Современный стек технологий обеспечивает максимальную производительность.'
+				'Шаблон для салона плитки с каталогом коллекций и информацией для покупателей. Находится в разработке; описание относится к отраслевой структуре сайта.'
 			],
-			logo: '/images/clients/promo-3/logo-dark.svg',
 			href: '/catalog/promo-3',
-			inDevelopment: true,
 			price: 150,
-			service: 'Подписка',
-			testimonial: {
-				author: { name: 'Jenny Wilson', role: 'CPO of Promo-3' },
-				content:
-					'Чистый и профессиональный дизайн, который идеально подходит для нашей компании. Очень удобно настраивать.'
-			}
+			service: 'Шаблон в разработке',
+			inDevelopment: true
 		}
-	];
-
-	// Client logos for the "You're in good company" section
-	const clients = [
-		{ name: 'Promo-3', logo: '/images/clients/promo-3/logo-dark.svg' },
-		{ name: 'Promo-1', logo: '/images/clients/promo-1/logo-dark.svg' },
-		{ name: 'Promo-2', logo: '/images/clients/promo-2/logo-dark.svg' },
-		{ name: 'Mail Smirk', logo: '/images/clients/mail-smirk/logo-dark.svg' },
-		{ name: 'Home Work', logo: '/images/clients/home-work/logo-dark.svg' },
-		{ name: 'Green Life', logo: '/images/clients/green-life/logo-dark.svg' },
-		{ name: 'Bright Path', logo: '/images/clients/bright-path/logo-dark.svg' },
-		{ name: 'North Adventures', logo: '/images/clients/north-adventures/logo-dark.svg' }
 	];
 </script>
 
 <svelte:head>
-	<title>Готовые проекты сайтов для бизнеса — Студия LEGET</title>
+	<title>Каталог шаблонов сайтов — LEGET</title>
 	<meta
 		name="description"
-		content="Каталог готовых проектов сайтов по подписке. Выберите подходящий дизайн и структуру для вашего бизнеса. Запуск за 72 часа от 150 ₽/день."
+		content="Отраслевые шаблоны LEGET: Promo-1 для мебели на заказ, Promo-2 для мебельных фабрик и Promo-3 для плитки. Посуточная подписка и тестовый период 72 часа."
 	/>
 </svelte:head>
 
-<!-- Page Introduction -->
-<PageIntro eyebrow="Наши продукты" title="Готовые проекты сайтов">
+<PageIntro eyebrow="Наши продукты" title="Шаблоны для вашего бизнеса">
 	<p>
-		Эффективные решения для вашего бизнеса от компании LEGET. Выберите готовый проект и запустите
-		сайт за 72 часа.
+		Выберите шаблон по направлению бизнеса и составу страниц. Для подключения доступен Promo-1;
+		Promo-2 и Promo-3 находятся в разработке. После создания сайта начинается тестовый период 72
+		часа.
 	</p>
 </PageIntro>
 
-<!-- Case Studies Section -->
 <Container class="mt-40">
 	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Варианты проектов</h2>
+		<h2 class="font-display text-2xl font-semibold text-neutral-950">Отраслевые шаблоны</h2>
 	</FadeIn>
 	<div class="mt-10 space-y-20 sm:space-y-24 lg:space-y-32">
 		{#each caseStudies as caseStudy (caseStudy.client)}
@@ -111,12 +74,6 @@
 						<div
 							class="col-span-full sm:flex sm:items-center sm:justify-between sm:gap-x-8 lg:col-span-1 lg:block"
 						>
-							<!-- <div class="sm:flex sm:items-center sm:gap-x-6 lg:block">
-								<img src={caseStudy.logo} alt="" class="h-16 w-16 flex-none" loading="lazy" />
-								<h3 class="mt-6 text-sm font-semibold text-neutral-950 sm:mt-0 lg:mt-8">
-									{caseStudy.client}
-								</h3>
-							</div> -->
 							<div class="mt-1 flex gap-x-4 sm:mt-0 lg:block">
 								<p
 									class="text-sm tracking-tight text-neutral-950 after:ml-4 after:font-semibold after:text-neutral-300 after:content-['/'] lg:mt-2 lg:after:hidden"
@@ -124,7 +81,9 @@
 									{caseStudy.service}
 								</p>
 								<p class="text-sm font-semibold text-neutral-950 lg:mt-2">
-									{caseStudy.price} ₽/день
+									{caseStudy.inDevelopment
+										? 'Пока недоступен для подключения'
+										: `${caseStudy.price} ₽/день`}
 								</p>
 							</div>
 						</div>
@@ -147,7 +106,10 @@
 										В разработке
 									</Button>
 								{:else}
-									<Button href={caseStudy.href} aria-label="Read case study: {caseStudy.client}">
+									<Button
+										href={caseStudy.href}
+										aria-label="Подробнее о шаблоне: {caseStudy.client}"
+									>
 										Подробнее
 									</Button>
 								{/if}
@@ -160,43 +122,17 @@
 	</div>
 </Container>
 
-<!-- Testimonial Section -->
 <Testimonial class="mt-24 sm:mt-32 lg:mt-40" client={{ name: 'LEGET', LogoSnippet: LogoSnippet }}>
 	{#snippet LogoSnippet()}
 		<div class="flex items-center gap-x-4">
 			<Logo class="h-12" />
 			<span class="text-sm font-semibold tracking-wider text-neutral-950 uppercase"
-				>Команда проекта Leget</span
+				>Команда LEGET</span
 			>
 		</div>
 	{/snippet}
-	Какой вариант вам больше нравится? Напишите нам и мы настроим его для вас за 72 часа.</Testimonial
+	Нужна помощь с выбором? Расскажите команде LEGET о своей компании: подскажем, какие страницы и разделы
+	подходят для вашей задачи.</Testimonial
 >
 
-<!-- Clients Section -->
-<!-- <Container class="mt-24 sm:mt-32 lg:mt-40">
-	<FadeIn>
-		<h2 class="font-display text-2xl font-semibold text-neutral-950">Интеграции</h2>
-	</FadeIn>
-	<FadeInStagger class="mt-10" faster>
-		<Border />
-		<ul role="list" class="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-4">
-			{#each clients as client, index (client.name)}
-				<li class="group">
-					<FadeIn class="overflow-hidden">
-						<Border
-							class="pt-12 {index < 2 ? '-mt-px' : ''} {index === 2 ? 'sm:-mt-px' : ''} {index === 3
-								? 'lg:-mt-px'
-								: ''}"
-						>
-							<img src={client.logo} alt={client.name} loading="lazy" />
-						</Border>
-					</FadeIn>
-				</li>
-			{/each}
-		</ul>
-	</FadeInStagger>
-</Container> -->
-
-<!-- Contact Section -->
 <ContactSection />
