@@ -1,3 +1,6 @@
 # allow crawling everything by default
 User-agent: *
 Disallow:
+
+# Ignore tracking only; preserve content parameters and visit attribution.
+Clean-param: utm_source&utm_medium&utm_campaign&utm_campaign_id&utm_term&utm_content&utm_id&utm_referrer&yclid&ysclid&ybaip&etext&gclid&fbclid /

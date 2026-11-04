@@ -1,6 +1,7 @@
 <script>
+	import { canonicalUrl } from '$lib/seo.js';
 	import { afterNavigate, onNavigate } from '$app/navigation';
-	import { navigating } from '$app/state';
+	import { navigating, page } from '$app/state';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.ico';
 	import RootLayout from '$lib/components/RootLayout.svelte';
@@ -46,9 +47,19 @@
 		}
 		body.classList.add('page-entering');
 	});
+
+	const seoCanonical = $derived(canonicalUrl(page.url));
+
+	const seoPrivate = $derived(/^\/(?:admin|login|register|forgot-password|reset-password|email-verify|cors-test)(?:\/|$)/.test(page.url.pathname) || page.route.id?.startsWith('/(protected)'));
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+	{#if seoPrivate}
+		<meta name="robots" content="noindex, nofollow" />
+	{:else if page.status >= 200 && page.status < 300}
+		<link rel="canonical" href={seoCanonical} />
+	{/if}
+<link rel="icon" href={favicon} /></svelte:head>
 <RootLayout {routeLoading}>
 	{@render children()}
 </RootLayout>
