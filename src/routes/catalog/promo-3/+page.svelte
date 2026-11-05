@@ -7,14 +7,16 @@
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import TagList from '$lib/components/TagList.svelte';
 	import TagListItem from '$lib/components/TagListItem.svelte';
+	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 
-	// templateId=3 corresponds to Promo-3
+	const TEMPLATE_ID = 3;
+	let modalOpen = $state(false);
 
 	const caseStudy = {
 		client: 'Promo-3',
 		title: 'Promo-3 — шаблон для плитки и коллекций',
 		description:
-			'Отраслевая структура для салона плитки: каталог коллекций и информация для покупателей. Шаблон находится в разработке.',
+			'Отраслевая структура для салона плитки: каталог коллекций и информация для покупателей.',
 		heroImage: '/images/projects/promo-3/hero.jpg'
 	};
 </script>
@@ -45,8 +47,13 @@
 <Container class="mt-16">
 	<FadeIn>
 		<div class="mb-8 flex flex-wrap justify-center gap-4">
-			<Button disabled class="cursor-not-allowed opacity-50">Шаблон в разработке</Button>
-			<Button href="/catalog/promo-1" invert>Посмотреть доступный Promo-1</Button>
+			<Button
+				onclick={() => (modalOpen = true)}
+				class="px-8 py-3 text-lg focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2"
+				aria-label="Подписаться на лицензию {caseStudy.client}"
+			>
+				Подписаться на лицензию
+			</Button>
 		</div>
 
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
@@ -73,8 +80,8 @@
 				покупка в один клик в этом шаблоне не заявлены как доступные возможности.
 			</p>
 			<p>
-				Шаблон находится в разработке и пока не предлагается для подключения в каталоге. Для
-				обсуждения подходящей структуры сайта свяжитесь с командой LEGET.
+				После создания сайта замените стартовые материалы на свои и настройте данные компании в
+				личном кабинете. Для обсуждения подходящей структуры сайта свяжитесь с командой LEGET.
 			</p>
 		</div>
 	</FadeIn>
@@ -92,3 +99,13 @@
 </Container>
 
 <ContactSection />
+
+<SubscribeLicenseModal
+	open={modalOpen}
+	templateId={TEMPLATE_ID}
+	templateName="Promo-3"
+	price="150"
+	period="день"
+	onClose={() => (modalOpen = false)}
+	onSuccess={() => (modalOpen = false)}
+/>

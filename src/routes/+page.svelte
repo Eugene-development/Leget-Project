@@ -65,21 +65,19 @@
 			client: 'Promo-2',
 			name: 'Промо-2',
 			title: 'Фабрика мебели',
-			description:
-				'Шаблон для мебельной фабрики: продукция, производство и сотрудничество. В разработке.',
+			description: 'Шаблон для мебельной фабрики: продукция, производство и сотрудничество.',
 			href: '/catalog/promo-2',
 			date: '05.04.26',
-			status: 'draft'
+			status: 'active'
 		},
 		{
 			client: 'Promo-3',
 			name: 'Промо-3',
 			title: 'Плитка и коллекции',
-			description:
-				'Шаблон для салона плитки: каталог коллекций и информация для покупателей. В разработке.',
+			description: 'Шаблон для салона плитки: каталог коллекций и информация для покупателей.',
 			href: '/catalog/promo-3',
 			date: '11.04.26',
-			status: 'draft'
+			status: 'active'
 		}
 	];
 </script>
@@ -161,9 +159,8 @@
 	maxWidth="max-w-3xl"
 >
 	<p>
-		Для подключения доступен Promo-1 — сайт для мебели на заказ. Promo-2 для мебельных фабрик и
-		Promo-3 для плитки и коллекций находятся в разработке. У каждого шаблона своя структура страниц
-		и разделов.
+		Выберите Promo-1 для мебели на заказ, Promo-2 для мебельных фабрик или Promo-3 для плитки и
+		коллекций. У каждого шаблона своя структура страниц и разделов.
 	</p>
 </SectionIntro>
 
@@ -178,23 +175,15 @@
 						<span class="font-semibold">Шаблон: {caseStudy.name}</span>
 					</p>
 					<p class="font-display mt-6 text-2xl font-semibold text-neutral-950">
-						{#if caseStudy.status === 'active'}
-							<a href={caseStudy.href}>
-								{caseStudy.title}
-							</a>
-						{:else}
+						<a href={caseStudy.href}>
 							{caseStudy.title}
-						{/if}
+						</a>
 					</p>
 					<p class="mt-4 flex-auto text-base text-neutral-600">
 						{caseStudy.description}
 					</p>
 					<div class="mt-8 flex">
-						{#if caseStudy.status === 'active'}
-							<Button href={caseStudy.href}>Подробнее</Button>
-						{:else}
-							<Button disabled class="cursor-not-allowed opacity-50">В разработке</Button>
-						{/if}
+						<Button href={caseStudy.href}>Подробнее</Button>
 					</div>
 				</article>
 			</FadeIn>

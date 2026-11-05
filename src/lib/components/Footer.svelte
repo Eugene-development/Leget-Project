@@ -57,8 +57,8 @@
 			title: 'Шаблоны',
 			links: [
 				{ title: 'Promo 1', href: '/catalog/promo-1' },
-				{ title: 'Promo 2', disabled: true },
-				{ title: 'Promo 3', disabled: true },
+				{ title: 'Promo 2', href: '/catalog/promo-2' },
+				{ title: 'Promo 3', href: '/catalog/promo-3' },
 				{ title: 'Смотреть все', href: '/catalog', hasArrow: true }
 			]
 		},
@@ -115,18 +115,12 @@
 							<ul role="list" class="mt-4 text-sm text-neutral-700">
 								{#each section.links as link, linkIndex}
 									<li class="mt-4">
-										{#if link.disabled}
-											<span class="cursor-not-allowed text-neutral-400" title="В разработке"
-												>{link.title}</span
-											>
-										{:else}
-											<a href={link.href} class="transition hover:text-neutral-950">
-												{link.title}
-												{#if link.hasArrow}
-													<span aria-hidden="true">→</span>
-												{/if}
-											</a>
-										{/if}
+										<a href={link.href} class="transition hover:text-neutral-950">
+											{link.title}
+											{#if link.hasArrow}
+												<span aria-hidden="true">→</span>
+											{/if}
+										</a>
 									</li>
 								{/each}
 							</ul>

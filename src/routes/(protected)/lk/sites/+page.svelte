@@ -5,6 +5,7 @@
 	import FadeIn from '$lib/components/FadeIn.svelte';
 	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 	import { browser } from '$app/environment';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
 
@@ -25,17 +26,15 @@
 	`;
 
 	let licenses = $state([]);
-	let showCancelled = $state(false);
-	let cancelledCount = $derived(licenses.filter((license) => license.status === 'cancelled').length);
-	let visibleLicenses = $derived(licenses.filter((license) => showCancelled || license.status !== 'cancelled'));
 	let isLoading = $state(true);
 	let error = $state(null);
-
+	let licenseModalOpen = $state(false);
 
 	/** Map templateId to a human-readable template name */
 	const TEMPLATE_NAMES = {
 		1: 'Promo-1',
-		2: 'Promo-2'
+		2: 'Promo-2',
+		3: 'Promo-3'
 	};
 
 	function getTemplateName(templateId) {
@@ -60,7 +59,6 @@
 				const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
 				return timeB - timeA;
 			});
-
 		} catch (err) {
 			console.error('Failed to fetch licenses:', err);
 			error = err.message || 'Не удалось загрузить список сайтов';
@@ -68,7 +66,6 @@
 			isLoading = false;
 		}
 	}
-
 </script>
 
 <svelte:head>
@@ -85,12 +82,17 @@
 
 <Container class="mt-12 mb-24 sm:mt-20 lg:mt-24">
 	<FadeInStagger class="flex flex-col gap-y-12">
-		{#if !isLoading && !error && cancelledCount > 0}
-			<label class="flex items-center gap-3 text-sm font-medium text-neutral-700">
-				<input type="checkbox" bind:checked={showCancelled} class="rounded border-neutral-300 text-neutral-950 focus:ring-neutral-950" />
-				Показать отменённые ({cancelledCount})
-			</label>
-		{/if}
+		<FadeIn>
+			<div class="flex justify-end lg:max-w-5xl">
+				<Button
+					type="button"
+					onclick={() => (licenseModalOpen = true)}
+					class="w-full justify-center py-3 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 sm:w-auto"
+				>
+					Добавить лицензию
+				</Button>
+			</div>
+		</FadeIn>
 		{#if isLoading}
 			<ContentLoading />
 		{:else if error}
@@ -105,7 +107,7 @@
 					</button>
 				</div>
 			</FadeIn>
-		{:else if visibleLicenses.length === 0}
+		{:else if licenses.length === 0}
 			<FadeIn>
 				<div class="rounded-3xl border border-neutral-100 bg-neutral-50 p-12 text-center">
 					<div
@@ -125,26 +127,28 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="font-display text-xl font-semibold text-neutral-950">{cancelledCount ? 'Нет активных сайтов' : 'У вас пока нет сайтов'}</h3>
-					<p class="mt-2 text-sm text-neutral-600">{cancelledCount ? 'Включите «Показать отменённые», чтобы восстановить лицензию, или создайте новый сайт.' : 'Выберите шаблон и создайте свой первый сайт.'}</p>
+					<h3 class="font-display text-xl font-semibold text-neutral-950">У вас пока нет сайтов</h3>
+					<p class="mt-2 text-sm text-neutral-600">Выберите шаблон и создайте свой первый сайт.</p>
 					<div class="mt-6">
-						<Button href="/catalog">Выбрать шаблон</Button>
+						<Button
+							type="button"
+							onclick={() => (licenseModalOpen = true)}
+							class="focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2">Выбрать шаблон</Button
+						>
 					</div>
 				</div>
 			</FadeIn>
 		{:else}
 			<FadeIn>
 				<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:max-w-5xl">
-					{#each visibleLicenses as license (license.id)}
+					{#each licenses as license (license.id)}
 						<div
 							class="group rounded-3xl border border-neutral-100 bg-neutral-50 p-6 shadow-sm ring-1 ring-neutral-950/5 transition hover:bg-white hover:shadow-md"
 						>
 							<div class="flex flex-col gap-6">
 								<div class="flex items-start justify-between gap-4">
 									<div class="min-w-0 flex-1">
-										<h3
-											class="font-display text-lg font-semibold text-neutral-950 break-words"
-										>
+										<h3 class="font-display text-lg font-semibold break-words text-neutral-950">
 											{license.name || 'Новый сайт'}
 										</h3>
 										{#if getTemplateName(license.templateId)}
@@ -189,7 +193,7 @@
 												class="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600"
 											>
 												<span class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>
-												Отменён
+												Заморожена
 											</span>
 										{:else}
 											<span
@@ -202,11 +206,18 @@
 									</div>
 								</div>
 
-								<div class="flex flex-col gap-4 border-t border-neutral-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
-									<p class="min-w-0 break-words text-sm text-neutral-600">
-										{license.domain && !license.domain.includes('pending-') ? license.domain : 'Домен не назначен'}
+								<div
+									class="flex flex-col gap-4 border-t border-neutral-100 pt-4 sm:flex-row sm:items-center sm:justify-between"
+								>
+									<p class="min-w-0 text-sm break-words text-neutral-600">
+										{license.domain && !license.domain.includes('pending-')
+											? license.domain
+											: 'Домен не назначен'}
 									</p>
-									<Button href="/lk/sites/{license.id}" class="w-full sm:w-auto px-5 py-2 text-sm font-semibold shrink-0 justify-center">
+									<Button
+										href="/lk/sites/{license.id}"
+										class="w-full shrink-0 justify-center px-5 py-2 text-sm font-semibold sm:w-auto"
+									>
 										Настройки
 									</Button>
 								</div>
@@ -218,3 +229,13 @@
 		{/if}
 	</FadeInStagger>
 </Container>
+
+<SubscribeLicenseModal
+	open={licenseModalOpen}
+	selectTemplate
+	onClose={() => (licenseModalOpen = false)}
+	onSuccess={() => {
+		licenseModalOpen = false;
+		fetchLicenses();
+	}}
+/>

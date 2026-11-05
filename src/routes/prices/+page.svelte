@@ -16,7 +16,7 @@
 		name: 'Фирменный сайт',
 		price: '150',
 		period: 'день',
-		description: 'Сайт на отраслевом шаблоне. Сейчас для подключения доступен Promo-1.',
+		description: 'Сайт на отраслевом шаблоне. Для подключения доступны Promo-1, Promo-2 и Promo-3.',
 		status: 'active',
 		href: '/catalog'
 	};

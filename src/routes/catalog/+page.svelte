@@ -25,23 +25,19 @@
 			client: 'Для мебельных фабрик',
 			title: 'Promo-2',
 			summary: [
-				'Шаблон для мебельной фабрики: информация о производстве, продукции и сотрудничестве. Находится в разработке; для подключения сейчас доступен Promo-1.'
+				'Шаблон для мебельной фабрики: информация о производстве, продукции и сотрудничестве.'
 			],
 			href: '/catalog/promo-2',
 			price: 150,
-			service: 'Шаблон в разработке',
-			inDevelopment: true
+			service: 'Посуточная подписка'
 		},
 		{
 			client: 'Для плитки и коллекций',
 			title: 'Promo-3',
-			summary: [
-				'Шаблон для салона плитки с каталогом коллекций и информацией для покупателей. Находится в разработке; описание относится к отраслевой структуре сайта.'
-			],
+			summary: ['Шаблон для салона плитки с каталогом коллекций и информацией для покупателей.'],
 			href: '/catalog/promo-3',
 			price: 150,
-			service: 'Шаблон в разработке',
-			inDevelopment: true
+			service: 'Посуточная подписка'
 		}
 	];
 </script>
@@ -56,9 +52,8 @@
 
 <PageIntro eyebrow="Наши продукты" title="Шаблоны для вашего бизнеса">
 	<p>
-		Выберите шаблон по направлению бизнеса и составу страниц. Для подключения доступен Promo-1;
-		Promo-2 и Promo-3 находятся в разработке. После создания сайта начинается тестовый период 72
-		часа.
+		Выберите шаблон по направлению бизнеса и составу страниц. Для подключения доступны Promo-1,
+		Promo-2 и Promo-3. После создания сайта начинается тестовый период 72 часа.
 	</p>
 </PageIntro>
 
@@ -81,9 +76,7 @@
 									{caseStudy.service}
 								</p>
 								<p class="text-sm font-semibold text-neutral-950 lg:mt-2">
-									{caseStudy.inDevelopment
-										? 'Пока недоступен для подключения'
-										: `${caseStudy.price} ₽/день`}
+									{caseStudy.price} ₽/день
 								</p>
 							</div>
 						</div>
@@ -97,22 +90,9 @@
 								{/each}
 							</div>
 							<div class="mt-8 flex gap-x-4">
-								{#if caseStudy.inDevelopment}
-									<Button
-										disabled
-										class="cursor-not-allowed opacity-50 disabled:pointer-events-none disabled:hover:bg-neutral-950"
-										aria-label="Шаблон в разработке: {caseStudy.client}"
-									>
-										В разработке
-									</Button>
-								{:else}
-									<Button
-										href={caseStudy.href}
-										aria-label="Подробнее о шаблоне: {caseStudy.client}"
-									>
-										Подробнее
-									</Button>
-								{/if}
+								<Button href={caseStudy.href} aria-label="Подробнее о шаблоне: {caseStudy.client}">
+									Подробнее
+								</Button>
 							</div>
 						</div>
 					</Border>

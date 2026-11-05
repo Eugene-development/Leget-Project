@@ -12,6 +12,7 @@
 	 *   open         - whether the modal is visible
 	 *   templateId   - numeric template ID (1 = Promo-1, 2 = Promo-2)
 	 *   templateName - human-readable template name shown in the modal
+	 *   selectTemplate - allow choosing a template before creating a license
 	 *   onClose      - callback when modal is closed
 	 *   onSuccess    - callback(licenseId) after successful subscription
 	 */
@@ -23,13 +24,27 @@
 
 	let {
 		open = false,
-		templateId,
+		templateId = null,
 		templateName = 'шаблон',
 		price = '150',
 		period = 'день',
+		selectTemplate = false,
 		onClose = () => {},
 		onSuccess = () => {}
 	} = $props();
+
+	const templates = [
+		{ id: 1, name: 'Promo-1', description: 'Для мебели на заказ', price: '150' },
+		{ id: 2, name: 'Promo-2', description: 'Для мебельных фабрик', price: '150' },
+		{ id: 3, name: 'Promo-3', description: 'Для плитки и коллекций', price: '150' }
+	];
+	let selectedTemplateId = $state(1);
+	const selectedTemplate = $derived(
+		templates.find((template) => template.id === selectedTemplateId)
+	);
+	const subscriptionTemplateId = $derived(selectTemplate ? selectedTemplateId : templateId);
+	const subscriptionTemplateName = $derived(selectTemplate ? selectedTemplate.name : templateName);
+	const subscriptionPrice = $derived(selectTemplate ? selectedTemplate.price : price);
 
 	const MY_LICENSES_QUERY = `
 		query MyLicenses {
@@ -105,14 +120,17 @@
 
 	/** Create a brand-new license with this template and go to LK */
 	async function createAndSubscribe() {
-		if (isSaving) return;
+		if (isSaving || (selectTemplate && !selectedTemplate)) return;
 		isSaving = true;
 		error = null;
 		try {
-			const storageKey = `license-create:${templateId}`;
+			const storageKey = `license-create:${subscriptionTemplateId}`;
 			const creationKey = sessionStorage.getItem(storageKey) || crypto.randomUUID();
 			sessionStorage.setItem(storageKey, creationKey);
-			const data = await graphqlRequest(CREATE_LICENSE_MUTATION, { templateId, creationKey });
+			const data = await graphqlRequest(CREATE_LICENSE_MUTATION, {
+				templateId: subscriptionTemplateId,
+				creationKey
+			});
 			sessionStorage.removeItem(storageKey);
 			const licenseId = data.createLicense.id;
 			successLicenseId = licenseId;
@@ -149,6 +167,41 @@
 	function handleKeydown(e) {
 		if (e.key === 'Escape') onClose();
 	}
+
+	function mountDialog(node) {
+		const previousFocus = document.activeElement;
+		const previousOverflow = document.body.style.overflow;
+		// Keep the dialog above the layout's isolated content and header.
+		document.body.appendChild(node);
+		document.body.style.overflow = 'hidden';
+		node.focus();
+		function trapFocus(event) {
+			if (event.key !== 'Tab') return;
+			const controls = node.querySelectorAll('button:not([disabled]), select:not([disabled])');
+			const first = controls[0];
+			const last = controls[controls.length - 1];
+			if (event.shiftKey && (document.activeElement === first || document.activeElement === node)) {
+				event.preventDefault();
+				last?.focus();
+			} else if (
+				!event.shiftKey &&
+				(document.activeElement === last || document.activeElement === node)
+			) {
+				event.preventDefault();
+				first?.focus();
+			}
+		}
+		node.addEventListener('keydown', trapFocus);
+		return {
+			destroy() {
+				node.removeEventListener('keydown', trapFocus);
+				node.remove();
+				document.body.style.overflow = previousOverflow;
+				if (previousFocus instanceof HTMLElement && previousFocus.isConnected)
+					previousFocus.focus();
+			}
+		};
+	}
 </script>
 
 {#if open}
@@ -156,8 +209,9 @@
 	<div
 		role="dialog"
 		aria-modal="true"
-		aria-label="Подписка на шаблон {templateName}"
+		aria-label={selectTemplate ? 'Добавить лицензию' : `Подписка на шаблон ${templateName}`}
 		tabindex="-1"
+		use:mountDialog
 		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/75 px-4 backdrop-blur-sm"
 		onclick={handleBackdropClick}
 		onkeydown={handleKeydown}
@@ -167,7 +221,11 @@
 			<div class="mb-6 flex shrink-0 items-start justify-between gap-4">
 				<div>
 					<h2 class="font-display text-xl font-semibold text-neutral-950">
-						Шаблон «{templateName}» — {price} ₽/{period}
+						{#if selectTemplate}
+							Добавить лицензию
+						{:else}
+							Шаблон «{templateName}» — {price} ₽/{period}
+						{/if}
 					</h2>
 					<p class="mt-1 text-sm text-neutral-500">
 						При создании нового сайта начинаются 72 часа без списаний. Первое списание запланировано
@@ -193,6 +251,34 @@
 
 			<!-- Content Area (Scrollable) -->
 			<div class="min-h-0 flex-1 overflow-y-auto pr-1">
+				{#if selectTemplate}
+					<div class="mb-6">
+						<label for="subscription-template" class="block text-sm font-medium text-neutral-950">
+							Выберите шаблон
+						</label>
+						<select
+							id="subscription-template"
+							bind:value={selectedTemplateId}
+							disabled={isSaving}
+							aria-describedby="subscription-template-price"
+							class="mt-2 w-full rounded-lg border border-neutral-300 bg-white py-2.5 pr-10 pl-3 text-sm text-neutral-950 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 disabled:opacity-50"
+						>
+							{#each templates as template (template.id)}
+								<option value={template.id}>
+									{template.name} — {template.description}
+								</option>
+							{/each}
+						</select>
+						<p
+							id="subscription-template-price"
+							class="mt-3 text-sm text-neutral-600"
+							aria-live="polite"
+						>
+							Шаблон «{subscriptionTemplateName}» —
+							<span class="font-semibold text-neutral-950">{subscriptionPrice} ₽/{period}</span>
+						</p>
+					</div>
+				{/if}
 				{#if isLoading}
 					<div class="flex items-center justify-center py-10">
 						<svg class="h-7 w-7 animate-spin text-neutral-400" fill="none" viewBox="0 0 24 24">
@@ -213,8 +299,18 @@
 						<span class="ml-3 text-sm text-neutral-500">Загрузка...</span>
 					</div>
 				{:else if error}
-					<div class="rounded-2xl border border-red-100 bg-red-50 p-4 text-sm text-red-600">
+					<div
+						role="alert"
+						class="rounded-2xl border border-red-100 bg-red-50 p-4 text-sm text-red-600"
+					>
 						{error}
+						<button
+							type="button"
+							onclick={loadLicenses}
+							class="mt-3 block rounded-sm font-semibold underline focus:ring-2 focus:ring-red-700 focus:ring-offset-2"
+						>
+							Попробовать снова
+						</button>
 					</div>
 				{:else}
 					<!-- Option to create a new license -->
@@ -229,7 +325,7 @@
 					</div>
 
 					{@const filteredLicenses = licenses.filter(
-						(l) => l.templateId === templateId && l.isActive && l.status === 'active'
+						(l) => l.templateId === subscriptionTemplateId && l.isActive && l.status === 'active'
 					)}
 					{#if filteredLicenses.length > 0}
 						<p class="mb-4 text-sm text-neutral-500">

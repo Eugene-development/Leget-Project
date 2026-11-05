@@ -7,14 +7,16 @@
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import TagList from '$lib/components/TagList.svelte';
 	import TagListItem from '$lib/components/TagListItem.svelte';
+	import SubscribeLicenseModal from '$lib/components/SubscribeLicenseModal.svelte';
 
-	// templateId=2 corresponds to Promo-2
+	const TEMPLATE_ID = 2;
+	let modalOpen = $state(false);
 
 	const caseStudy = {
 		client: 'Promo-2',
 		title: 'Promo-2 — шаблон для мебельной фабрики',
 		description:
-			'Отраслевая структура для мебельной фабрики: производство, продукция и сотрудничество. Шаблон находится в разработке.',
+			'Отраслевая структура для мебельной фабрики: производство, продукция и сотрудничество.',
 		heroImage: '/images/projects/promo-2/hero.jpg'
 	};
 </script>
@@ -45,8 +47,13 @@
 <Container class="mt-16">
 	<FadeIn>
 		<div class="mb-8 flex flex-wrap justify-center gap-4">
-			<Button disabled class="cursor-not-allowed opacity-50">Шаблон в разработке</Button>
-			<Button href="/catalog/promo-1" invert>Посмотреть доступный Promo-1</Button>
+			<Button
+				onclick={() => (modalOpen = true)}
+				class="px-8 py-3 text-lg focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2"
+				aria-label="Подписаться на лицензию {caseStudy.client}"
+			>
+				Подписаться на лицензию
+			</Button>
 		</div>
 
 		<div class="overflow-hidden rounded-3xl bg-neutral-100">
@@ -69,12 +76,12 @@
 				производства и продукции, а также условий сотрудничества.
 			</p>
 			<p>
-				Шаблон находится в разработке и пока не предлагается для подключения в каталоге. Готовность
-				конкретных разделов и вариантов оформления будет отражена на странице шаблона.
+				После создания сайта замените стартовые материалы на свои и настройте данные компании в
+				личном кабинете.
 			</p>
 			<p>
-				Если сайт нужен сейчас, посмотрите доступный Promo-1 и сравните его структуру с задачами
-				своей компании. Команда LEGET поможет разобраться в составе страниц.
+				Сравните структуру шаблона с задачами своей компании. Команда LEGET поможет разобраться в
+				составе страниц.
 			</p>
 		</div>
 	</FadeIn>
@@ -92,3 +99,13 @@
 </Container>
 
 <ContactSection />
+
+<SubscribeLicenseModal
+	open={modalOpen}
+	templateId={TEMPLATE_ID}
+	templateName="Promo-2"
+	price="150"
+	period="день"
+	onClose={() => (modalOpen = false)}
+	onSuccess={() => (modalOpen = false)}
+/>

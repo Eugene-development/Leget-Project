@@ -17,6 +17,7 @@
 	import { page } from '$app/stores';
 	import { onMount, setContext } from 'svelte';
 	import Header from './Header.svelte';
+	import Container from './Container.svelte';
 	import Navigation from './Navigation.svelte';
 	import Footer from './Footer.svelte';
 	import GridPattern from './GridPattern.svelte';
@@ -26,12 +27,18 @@
 	import XIcon from './icons/XIcon.svelte';
 	import { slide } from 'svelte/transition';
 	import ContentLoading from './ContentLoading.svelte';
-	import { contentLoadingContext, createContentLoadingTracker } from '$lib/utils/content-loading.js';
+	import {
+		contentLoadingContext,
+		createContentLoadingTracker
+	} from '$lib/utils/content-loading.js';
 
 	let { children, routeLoading = false } = $props();
 	let contentLoaders = $state(0);
 	const loading = $derived(routeLoading || contentLoaders > 0);
-	setContext(contentLoadingContext, createContentLoadingTracker((count) => (contentLoaders = count)));
+	setContext(
+		contentLoadingContext,
+		createContentLoadingTracker((count) => (contentLoaders = count))
+	);
 
 	// State for navigation panel
 	let expanded = $state(false);
@@ -125,65 +132,81 @@
 {/snippet}
 
 {#if loading}
-	<div class="content-progress" role="progressbar" aria-label="Загрузка содержимого" aria-valuemin="0" aria-valuemax="100">
+	<div
+		class="content-progress"
+		role="progressbar"
+		aria-label="Загрузка содержимого"
+		aria-valuemin="0"
+		aria-valuemax="100"
+	>
 		<div class="content-progress-line"></div>
 	</div>
 {/if}
 
 <div class="flex min-h-screen w-full flex-col bg-neutral-950">
 	<header>
-		{#if !expanded}
-			<div
-				class="absolute top-2 right-0 left-0 z-40 pt-10"
-				aria-hidden={expanded ? 'true' : undefined}
-				inert={expanded ? true : undefined}
-			>
-				<Header
-					{panelId}
-					icon={MenuIconSnippet}
-					{expanded}
-					onToggle={toggleNavigation}
-					{logoHovered}
-					onLogoHover={handleLogoHover}
-					bind:buttonRef={openRef}
-				/>
-			</div>
-		{/if}
-
-		<!-- Navigation panel (expandable) -->
-		<div
-			bind:this={navPanelRef}
-			id={panelId}
-			class="relative z-50 bg-neutral-950"
-			aria-hidden={expanded ? undefined : 'true'}
-			inert={expanded ? undefined : true}
-		>
-			<div class="h-2 bg-neutral-950"></div>
-			{#if expanded}
+		<div class="border-b border-neutral-800 bg-neutral-950 py-3 text-sm text-white">
+			<Container>
+				<p class="text-center text-balance">
+					<strong class="font-semibold">Проект находится в стадии разработки.</strong>
+					На сайте представлен демонстрационный функционал.
+				</p>
+			</Container>
+		</div>
+		<div class="relative">
+			{#if !expanded}
 				<div
-					transition:slide={{ duration: transitionDuration }}
-					class="overflow-hidden bg-neutral-950"
+					class="absolute top-2 right-0 left-0 z-40 pt-10"
+					aria-hidden={expanded ? 'true' : undefined}
+					inert={expanded ? true : undefined}
 				>
-					<div class="bg-neutral-800">
-						<!-- Header inside navigation panel -->
-						<div class="bg-neutral-950 pt-10 pb-14">
-							<Header
-								invert
-								{panelId}
-								icon={XIconSnippet}
-								{expanded}
-								onToggle={toggleNavigation}
-								{logoHovered}
-								onLogoHover={handleLogoHover}
-								bind:buttonRef={closeRef}
-							/>
-						</div>
-
-						<!-- Navigation links -->
-						<Navigation />
-					</div>
+					<Header
+						{panelId}
+						icon={MenuIconSnippet}
+						{expanded}
+						onToggle={toggleNavigation}
+						{logoHovered}
+						onLogoHover={handleLogoHover}
+						bind:buttonRef={openRef}
+					/>
 				</div>
 			{/if}
+
+			<!-- Navigation panel (expandable) -->
+			<div
+				bind:this={navPanelRef}
+				id={panelId}
+				class="relative z-50 bg-neutral-950"
+				aria-hidden={expanded ? undefined : 'true'}
+				inert={expanded ? undefined : true}
+			>
+				<div class="h-2 bg-neutral-950"></div>
+				{#if expanded}
+					<div
+						transition:slide={{ duration: transitionDuration }}
+						class="overflow-hidden bg-neutral-950"
+					>
+						<div class="bg-neutral-800">
+							<!-- Header inside navigation panel -->
+							<div class="bg-neutral-950 pt-10 pb-14">
+								<Header
+									invert
+									{panelId}
+									icon={XIconSnippet}
+									{expanded}
+									onToggle={toggleNavigation}
+									{logoHovered}
+									onLogoHover={handleLogoHover}
+									bind:buttonRef={closeRef}
+								/>
+							</div>
+
+							<!-- Navigation links -->
+							<Navigation />
+						</div>
+					</div>
+				{/if}
+			</div>
 		</div>
 	</header>
 
@@ -210,7 +233,12 @@
 						</div>
 					</div>
 				{/if}
-				<div class="route-content" class:route-pending={routeLoading} inert={routeLoading} aria-hidden={routeLoading ? 'true' : undefined}>
+				<div
+					class="route-content"
+					class:route-pending={routeLoading}
+					inert={routeLoading}
+					aria-hidden={routeLoading ? 'true' : undefined}
+				>
 					{@render children?.()}
 				</div>
 			</main>
@@ -266,8 +294,12 @@
 	}
 
 	@keyframes content-progress {
-		from { transform: translateX(-100%); }
-		to { transform: translateX(390%); }
+		from {
+			transform: translateX(-100%);
+		}
+		to {
+			transform: translateX(390%);
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

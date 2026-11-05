@@ -684,80 +684,75 @@
 		}
 	}
 
-	// ── Cancel license ────────────────────────────────────────────
-	const CANCEL_LICENSE_MUTATION = `
-		mutation CancelLicense($id: ID!) {
-			cancelLicense(id: $id) {
-				id
-				isActive
-				status
-			}
+	const LICENSE_ACTIONS = {
+		freeze: {
+			title: 'Заморозка лицензии', confirm: 'Заморозить лицензию',
+			field: 'cancelLicense', status: 'cancelled',
+			query: `mutation FreezeLicense($id: ID!) { cancelLicense(id: $id) { id isActive status } }`
+		},
+		unfreeze: {
+			title: 'Разморозка лицензии', confirm: 'Разморозить лицензию',
+			field: 'restoreLicense', status: 'active',
+			query: `mutation UnfreezeLicense($id: ID!) { restoreLicense(id: $id) { id isActive status } }`
+		},
+		delete: {
+			title: 'Удаление лицензии', confirm: 'Удалить лицензию',
+			field: 'deleteLicense',
+			query: `mutation DeleteLicense($id: ID!) { deleteLicense(id: $id) { id deleted } }`
 		}
-	`;
-
-	const RESTORE_LICENSE_MUTATION = `
-		mutation RestoreLicense($id: ID!) {
-			restoreLicense(id: $id) { id isActive status }
-		}
-	`;
-
-	let showRestoreConfirm = $state(false);
-	let showCancelConfirm = $state(false);
-	let isCancelling = $state(false);
-	let cancelError = $state('');
+	};
+	let licenseAction = $state(null);
+	let isChangingLicense = $state(false);
+	let licenseActionError = $state('');
 	let showDeleteLogoConfirm = $state(false);
 
-	function openCancelDialog(node) {
+	function selectLicenseAction(action) {
+		licenseActionError = '';
+		licenseAction = action;
+	}
+
+	function openLicenseDialog(node) {
 		node.showModal();
-		node.querySelector('[data-cancel-license]').focus();
+		node.querySelector('[data-cancel-license]')?.focus();
 	}
 
-	function closeCancelDialog() {
-		if (isCancelling) return;
-		showCancelConfirm = false;
-		showRestoreConfirm = false;
-		cancelError = '';
+	function closeLicenseDialog() {
+		if (isChangingLicense) return;
+		licenseAction = null;
+		licenseActionError = '';
 	}
 
-	async function handleRestoreLicense() {
-		if (isCancelling) return;
-		isCancelling = true;
-		cancelError = '';
+	async function handleLicenseAction() {
+		if (isChangingLicense || !licenseAction) return;
+		const action = licenseAction;
+		const operation = LICENSE_ACTIONS[action];
+		isChangingLicense = true;
+		licenseActionError = '';
 		try {
-			const data = await graphqlRequest(RESTORE_LICENSE_MUTATION, { id: licenseId });
-			if (data.restoreLicense?.id !== licenseId || data.restoreLicense.status !== 'active' || data.restoreLicense.isActive !== true) {
-				throw new Error('Сервер не подтвердил восстановление лицензии. Попробуйте снова.');
+			const data = await graphqlRequest(operation.query, { id: licenseId });
+			const result = data[operation.field];
+			const confirmed = action === 'delete'
+				? result?.deleted === true
+				: result?.status === operation.status && result?.isActive === (action === 'unfreeze');
+			if (result?.id !== licenseId || !confirmed) {
+				throw new Error('Сервер не подтвердил действие. Попробуйте снова.');
 			}
-			license = { ...license, ...data.restoreLicense };
-			showRestoreConfirm = false;
-			successMessage = 'Лицензия восстановлена. Ежедневные списания возобновлены по расписанию.';
+			if (action === 'delete') {
+				await goto('/lk/sites');
+			} else {
+				license = { ...license, ...result };
+				successMessage = action === 'freeze'
+					? 'Лицензия заморожена. Сайт отключён, будущие списания остановлены.'
+					: 'Лицензия разморожена. Сайт включён, списания возобновлены по расписанию.';
+			}
+			licenseAction = null;
 		} catch (err) {
-			cancelError = err.message || 'Не удалось восстановить лицензию. Попробуйте снова.';
+			licenseActionError = err.message || 'Не удалось выполнить действие. Попробуйте снова.';
 		} finally {
-			isCancelling = false;
+			isChangingLicense = false;
 		}
 	}
 
-	async function handleCancelLicense() {
-		if (isCancelling) return;
-		isCancelling = true;
-		cancelError = '';
-
-		try {
-			const data = await graphqlRequest(CANCEL_LICENSE_MUTATION, { id: licenseId });
-			if (data.cancelLicense?.id !== licenseId || data.cancelLicense.status !== 'cancelled' || data.cancelLicense.isActive !== false) {
-				throw new Error('Сервер не подтвердил удаление лицензии. Попробуйте снова.');
-			}
-			license = { ...license, ...data.cancelLicense };
-			showCancelConfirm = false;
-			await goto('/lk/sites');
-		} catch (err) {
-			console.error('Failed to cancel license:', err);
-			cancelError = err.message || 'Не удалось удалить лицензию. Попробуйте снова.';
-		} finally {
-			isCancelling = false;
-		}
-	}
 </script>
 
 <svelte:head>
@@ -823,7 +818,7 @@
 								<span
 									class="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600"
 								>
-									<span class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>Отменён
+									<span class="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>Заморожена
 								</span>
 							{:else}
 								<span
@@ -1479,55 +1474,30 @@
 						</div>
 					</form>
 
-					<!-- ── Danger zone ── -->
-					{#if license.status !== 'cancelled'}
-						<div class="rounded-3xl border border-red-100 bg-red-50/50 p-6">
-							<h3 class="font-display text-lg font-semibold text-red-900">Опасная зона</h3>
-							<p class="mt-2 text-sm text-red-700">
-								Удаление лицензии отключит сайт и остановит будущие ежедневные списания. Лицензия останется в списке отменённых — её можно восстановить. История расчётов сохранится.
+					<section class="space-y-6 rounded-3xl border border-red-100 bg-red-50/50 p-6" aria-labelledby="danger-zone-title">
+						<h3 id="danger-zone-title" class="font-display text-lg font-semibold text-red-900">Опасная зона</h3>
+						<div>
+							<p class="mb-3 text-sm text-neutral-700">
+								{license.status === 'cancelled'
+									? 'Лицензия заморожена. Разморозка включит сайт и возобновит ежедневные списания.'
+									: 'Заморозка отключит сайт и остановит будущие списания. Лицензия останется в списке, её можно разморозить самостоятельно.'}
 							</p>
-							<div class="mt-4">
-								<button
-									type="button"
-									data-goal-ignore="Управление лицензией: открытие подтверждения удаления"
-									onclick={() => {
-										showCancelConfirm = true;
-										cancelError = '';
-									}}
-									class="inline-flex items-center gap-2 rounded-2xl border border-red-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:border-red-400 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="size-4"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-										/>
-									</svg>
-									Удаление лицензии
-								</button>
-							</div>
-						</div>
-					{:else}
-						<div class="rounded-3xl border border-red-100 bg-red-50/50 p-6">
-							<h3 class="font-display text-lg font-semibold text-red-900">Опасная зона</h3>
-							<p class="mt-2 text-sm text-red-700">
-								Лицензия отменена, списания остановлены. Восстановите её, чтобы снова включить сайт и ежедневную оплату.
-							</p>
-							<button type="button"
-								data-goal-ignore="Управление лицензией: подтверждение восстановления"
-								onclick={() => { showRestoreConfirm = true; cancelError = ''; }}
-								class="mt-4 rounded-2xl bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none">
-								Восстановить лицензию
+							<button type="button" data-goal-ignore="Управление лицензией: заморозка или разморозка"
+								disabled={license.status !== 'cancelled' && (!license.isActive || license.status !== 'active')}
+								onclick={() => selectLicenseAction(license.status === 'cancelled' ? 'unfreeze' : 'freeze')}
+								class="rounded-2xl border border-neutral-300 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-950 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:opacity-60">
+								{license.status === 'cancelled' ? 'Разморозка лицензии' : 'Заморозка лицензии'}
 							</button>
 						</div>
-					{/if}
+						<div class="border-t border-red-100 pt-6">
+							<p class="mb-3 text-sm text-red-700">Удаление отключит сайт, остановит списания и уберёт лицензию из списка. Данные сохранятся; восстановление возможно только через поддержку проекта.</p>
+							<button type="button" data-goal-ignore="Управление лицензией: подтверждение мягкого удаления"
+								onclick={() => selectLicenseAction('delete')}
+								class="rounded-2xl border border-red-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none">
+								Удаление лицензии
+							</button>
+						</div>
+					</section>
 				</div>
 			</FadeIn>
 		{/if}
@@ -1714,81 +1684,38 @@
 	</div>
 {/if}
 
-<!-- ── Cancel confirmation dialog ── -->
-{#if showCancelConfirm || showRestoreConfirm}
-	<dialog
-		use={openCancelDialog}
-		oncancel={(event) => {
-			event.preventDefault();
-			closeCancelDialog();
-		}}
-		class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-3xl border-0 bg-white p-0 backdrop:bg-neutral-950/50 backdrop:backdrop-blur-sm"
-		aria-describedby="cancel-dialog-description"
-		aria-busy={isCancelling}
-		aria-labelledby="cancel-dialog-title"
-	>
-		<div class="w-full max-w-md rounded-3xl bg-white p-6 sm:p-8">
-			<div class="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="size-6 text-red-600"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-					/>
-				</svg>
-			</div>
-
-			<h2 id="cancel-dialog-title" class="font-display text-xl font-semibold text-neutral-950">
-				{showRestoreConfirm ? 'Восстановить лицензию?' : 'Удалить лицензию?'}
-			</h2>
-			<p id="cancel-dialog-description" class="mt-3 text-sm text-neutral-600">
-				{#if showRestoreConfirm}
-					Сайт <span class="font-semibold text-neutral-950">{license?.name || 'Новый сайт'}</span> снова будет включён.
-					Ежедневная оплата — {license?.dailyPrice ?? 0} ₽. Списания возобновятся в ближайшие 06:30 по Москве после восстановления или окончания оставшегося пробного периода.
-					За время отключения списаний не будет. Новый пробный период не предоставляется.
-				{:else}
-					Сайт <span class="font-semibold text-neutral-950">{license?.name || 'Новый сайт'}</span> будет
-					отключён. Будущие ежедневные списания прекратятся. Уже наступившие дни аренды будут учтены, история расчётов сохранится.
-					Лицензию можно будет восстановить из списка отменённых сайтов.
-				{/if}
-			</p>
-
-			{#if cancelError}
-				<div role="alert"
-					class="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600"
-				>
-					{cancelError}
-				</div>
+<!-- Confirmation shared by freeze, unfreeze and soft deletion. -->
+{#if licenseAction}
+	<dialog use:openLicenseDialog
+		oncancel={(event) => { event.preventDefault(); closeLicenseDialog(); }}
+		aria-labelledby="license-dialog-title" aria-describedby="license-dialog-description" aria-busy={isChangingLicense}
+		class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-3xl border-0 bg-white p-6 sm:p-8 backdrop:bg-neutral-950/50">
+		<h2 id="license-dialog-title" class="font-display text-xl font-semibold text-neutral-950">{LICENSE_ACTIONS[licenseAction].title}</h2>
+		<p class="mt-3 break-words text-sm font-semibold text-neutral-950">{license?.name || 'Новый сайт'}</p>
+		<p id="license-dialog-description" class="mt-3 text-sm text-neutral-700">
+			{#if licenseAction === 'unfreeze'}
+				Сайт снова заработает. Ежедневная оплата — {license?.dailyPrice ?? 0} ₽.
+				Списания возобновятся в ближайшие 06:30 по Москве после разморозки или окончания оставшегося пробного периода.
+				За период заморозки начислений не будет. Новый пробный период не предоставляется.
+			{:else if licenseAction === 'freeze'}
+				Сайт будет отключён, будущие списания остановятся. Уже наступившие дни аренды будут учтены.
+				Лицензия останется в списке. Вы сможете разморозить её в любое время.
+			{:else}
+				Сайт будет отключён, списания остановятся, лицензия исчезнет из списка.
+				Уже наступившие дни аренды будут учтены. Данные и история расчётов сохранятся.
+				Восстановить лицензию сможет только поддержка проекта.
 			{/if}
-
-			<div class="mt-6 flex gap-3">
-				<button
-					type="button"
-					data-goal-ignore="Управление лицензией: изменение состояния подписки"
-					onclick={showRestoreConfirm ? handleRestoreLicense : handleCancelLicense}
-					disabled={isCancelling}
-					class="flex-1 rounded-2xl bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:opacity-60"
-				>
-					{isCancelling ? 'Выполняется...' : showRestoreConfirm ? 'Восстановить лицензию' : 'Удалить лицензию'}
-				</button>
-				<button
-					type="button"
-					data-cancel-license
-					data-goal-ignore="Управление лицензией: закрытие подтверждения"
-					onclick={closeCancelDialog}
-					disabled={isCancelling}
-					class="flex-1 rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none disabled:opacity-60"
-				>
-					Отмена
-				</button>
-			</div>
+		</p>
+		{#if licenseActionError}<p role="alert" class="mt-4 text-sm text-red-700">{licenseActionError}</p>{/if}
+		<div class="mt-6 flex flex-col gap-3 sm:flex-row">
+			<button type="button" onclick={handleLicenseAction} disabled={isChangingLicense}
+				data-goal-ignore="Управление лицензией: изменение состояния подписки"
+				class="flex-1 rounded-2xl bg-neutral-950 px-4 py-3 text-sm font-semibold text-white focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:opacity-60">
+				{isChangingLicense ? 'Выполняется...' : LICENSE_ACTIONS[licenseAction].confirm}
+			</button>
+			<button type="button" data-cancel-license onclick={closeLicenseDialog} disabled={isChangingLicense}
+				data-goal-ignore="Управление лицензией: закрытие подтверждения"
+				class="rounded-2xl border border-neutral-300 px-4 py-3 text-sm font-semibold text-neutral-700 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:opacity-60">Отмена</button>
 		</div>
 	</dialog>
 {/if}
