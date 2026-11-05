@@ -7,8 +7,6 @@
 	import Button from '$lib/components/Button.svelte';
 	import { browser } from '$app/environment';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
-	import { validateDomain } from '$lib/utils/domain-validator.js';
-	import { toastState } from '$lib/state/toast.svelte.js';
 
 	const MY_LICENSES_QUERY = `
 		query MyLicenses {
@@ -26,22 +24,13 @@
 		}
 	`;
 
-	const UPDATE_LICENSE_DOMAIN_MUTATION = `
-		mutation UpdateLicense($id: ID!, $domain: String!) {
-			updateLicense(id: $id, domain: $domain) {
-				id
-				domain
-			}
-		}
-	`;
-
 	let licenses = $state([]);
+	let showCancelled = $state(false);
+	let cancelledCount = $derived(licenses.filter((license) => license.status === 'cancelled').length);
+	let visibleLicenses = $derived(licenses.filter((license) => showCancelled || license.status !== 'cancelled'));
 	let isLoading = $state(true);
 	let error = $state(null);
 
-	let domainValues = $state({});
-	let domainErrors = $state({});
-	let isUpdating = $state({});
 
 	/** Map templateId to a human-readable template name */
 	const TEMPLATE_NAMES = {
@@ -71,10 +60,7 @@
 				const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
 				return timeB - timeA;
 			});
-			// Инициализируем значения доменов (исключая временные домены)
-			licenses.forEach((l) => {
-				domainValues[l.id] = (l.domain && !l.domain.includes('pending-')) ? l.domain : '';
-			});
+
 		} catch (err) {
 			console.error('Failed to fetch licenses:', err);
 			error = err.message || 'Не удалось загрузить список сайтов';
@@ -83,40 +69,6 @@
 		}
 	}
 
-	async function handleUpdateDomain(licenseId) {
-		const domain = domainValues[licenseId];
-
-		// Валидация
-		const validation = validateDomain(domain);
-		if (!validation.valid) {
-			toastState.error(validation.error);
-			return;
-		}
-
-		// Используем нормализованный домен
-		const normalizedDomain = validation.normalized;
-		domainValues[licenseId] = normalizedDomain; // Обновляем поле ввода нормализованным значением
-
-		isUpdating[licenseId] = true;
-		try {
-			const data = await graphqlRequest(UPDATE_LICENSE_DOMAIN_MUTATION, {
-				id: licenseId,
-				domain: normalizedDomain
-			});
-
-			// Обновляем локальное состояние
-			const index = licenses.findIndex((l) => l.id === licenseId);
-			if (index !== -1) {
-				licenses[index] = { ...licenses[index], domain: data.updateLicense.domain };
-			}
-			toastState.success('Доменное имя успешно обновлено');
-		} catch (err) {
-			console.error('Failed to update domain:', err);
-			toastState.error(err.message || 'Не удалось обновить домен');
-		} finally {
-			isUpdating[licenseId] = false;
-		}
-	}
 </script>
 
 <svelte:head>
@@ -133,6 +85,12 @@
 
 <Container class="mt-12 mb-24 sm:mt-20 lg:mt-24">
 	<FadeInStagger class="flex flex-col gap-y-12">
+		{#if !isLoading && !error && cancelledCount > 0}
+			<label class="flex items-center gap-3 text-sm font-medium text-neutral-700">
+				<input type="checkbox" bind:checked={showCancelled} class="rounded border-neutral-300 text-neutral-950 focus:ring-neutral-950" />
+				Показать отменённые ({cancelledCount})
+			</label>
+		{/if}
 		{#if isLoading}
 			<ContentLoading />
 		{:else if error}
@@ -147,7 +105,7 @@
 					</button>
 				</div>
 			</FadeIn>
-		{:else if licenses.length === 0}
+		{:else if visibleLicenses.length === 0}
 			<FadeIn>
 				<div class="rounded-3xl border border-neutral-100 bg-neutral-50 p-12 text-center">
 					<div
@@ -167,8 +125,8 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="font-display text-xl font-semibold text-neutral-950">У вас пока нет сайтов</h3>
-					<p class="mt-2 text-sm text-neutral-600">Выберите шаблон и создайте свой первый сайт.</p>
+					<h3 class="font-display text-xl font-semibold text-neutral-950">{cancelledCount ? 'Нет активных сайтов' : 'У вас пока нет сайтов'}</h3>
+					<p class="mt-2 text-sm text-neutral-600">{cancelledCount ? 'Включите «Показать отменённые», чтобы восстановить лицензию, или создайте новый сайт.' : 'Выберите шаблон и создайте свой первый сайт.'}</p>
 					<div class="mt-6">
 						<Button href="/catalog">Выбрать шаблон</Button>
 					</div>
@@ -177,7 +135,7 @@
 		{:else}
 			<FadeIn>
 				<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:max-w-5xl">
-					{#each licenses as license (license.id)}
+					{#each visibleLicenses as license (license.id)}
 						<div
 							class="group rounded-3xl border border-neutral-100 bg-neutral-50 p-6 shadow-sm ring-1 ring-neutral-950/5 transition hover:bg-white hover:shadow-md"
 						>
@@ -244,35 +202,10 @@
 									</div>
 								</div>
 
-								<!-- Поле назначения домена и Настройки -->
-								<div class="flex flex-col gap-4 border-t border-neutral-100 pt-4 sm:flex-row sm:items-end sm:justify-between">
-									<div class="flex flex-col gap-3 flex-1 min-w-0 w-full">
-										<label for="domain-{license.id}" class="text-sm font-semibold text-neutral-950">
-											Назначить домен
-										</label>
-										<div class="flex gap-3">
-											<input
-												id="domain-{license.id}"
-												type="text"
-												placeholder="example.com"
-												bind:value={domainValues[license.id]}
-												onblur={() => {
-													const validation = validateDomain(domainValues[license.id]);
-													if (validation.valid) domainValues[license.id] = validation.normalized;
-												}}
-												class="block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-2 text-sm text-neutral-950 transition focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
-											/>
-											<Button
-												class="px-4 py-2"
-												onclick={() => handleUpdateDomain(license.id)}
-												disabled={isUpdating[license.id] ||
-													!domainValues[license.id] ||
-													domainValues[license.id] === license.domain}
-											>
-												{isUpdating[license.id] ? '...' : 'Ок'}
-											</Button>
-										</div>
-									</div>
+								<div class="flex flex-col gap-4 border-t border-neutral-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
+									<p class="min-w-0 break-words text-sm text-neutral-600">
+										{license.domain && !license.domain.includes('pending-') ? license.domain : 'Домен не назначен'}
+									</p>
 									<Button href="/lk/sites/{license.id}" class="w-full sm:w-auto px-5 py-2 text-sm font-semibold shrink-0 justify-center">
 										Настройки
 									</Button>

@@ -6,8 +6,19 @@
 	import FadeInStagger from '$lib/components/FadeInStagger.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
+	import { validateDomain } from '$lib/utils/domain-validator.js';
+
+	const UPDATE_LICENSE_DOMAIN_MUTATION = `
+		mutation UpdateLicense($id: ID!, $domain: String!) {
+			updateLicense(id: $id, domain: $domain) {
+				id
+				domain
+			}
+		}
+	`;
 
 	const GET_LICENSE_QUERY = `
 		query GetLicense($id: ID!) {
@@ -18,6 +29,7 @@
 				templateId
 				isActive
 				status
+				dailyPrice
 				headerData
 				footerData
 				faviconUrl
@@ -94,6 +106,10 @@
 	let license = $state(null);
 
 	// ── Basic fields ──────────────────────────────────────────────
+	let formDomain = $state('');
+	let isUpdatingDomain = $state(false);
+	let domainError = $state('');
+	let domainSuccess = $state('');
 	let formName = $state('');
 	let formFaviconUrl = $state('');
 	let formLogoUrl = $state('');
@@ -183,6 +199,7 @@
 			const data = await graphqlRequest(GET_LICENSE_QUERY, { id: licenseId });
 			license = data.license;
 
+			formDomain = license.domain && !license.domain.includes('pending-') ? license.domain : '';
 			formName = license.name ?? '';
 			formFaviconUrl = license.faviconUrl ?? '';
 
@@ -197,6 +214,36 @@
 			error = err.message || 'Не удалось загрузить настройки сайта';
 		} finally {
 			isLoading = false;
+		}
+	}
+
+	async function handleUpdateDomain(event) {
+		event.preventDefault();
+		if (isUpdatingDomain) return;
+		domainError = '';
+		domainSuccess = '';
+		const validation = validateDomain(formDomain);
+		if (!validation.valid) {
+			domainError = validation.error;
+			return;
+		}
+		formDomain = validation.normalized;
+		isUpdatingDomain = true;
+		try {
+			const data = await graphqlRequest(UPDATE_LICENSE_DOMAIN_MUTATION, {
+				id: licenseId,
+				domain: validation.normalized
+			});
+			if (data.updateLicense?.id !== licenseId || !data.updateLicense.domain) {
+				throw new Error('Сервер не подтвердил сохранение домена. Попробуйте снова.');
+			}
+			license = { ...license, domain: data.updateLicense.domain };
+			formDomain = data.updateLicense.domain;
+			domainSuccess = 'Доменное имя сохранено';
+		} catch (err) {
+			domainError = err.message || 'Не удалось сохранить домен. Попробуйте снова.';
+		} finally {
+			isUpdatingDomain = false;
 		}
 	}
 
@@ -648,22 +695,65 @@
 		}
 	`;
 
+	const RESTORE_LICENSE_MUTATION = `
+		mutation RestoreLicense($id: ID!) {
+			restoreLicense(id: $id) { id isActive status }
+		}
+	`;
+
+	let showRestoreConfirm = $state(false);
 	let showCancelConfirm = $state(false);
 	let isCancelling = $state(false);
 	let cancelError = $state('');
 	let showDeleteLogoConfirm = $state(false);
 
+	function openCancelDialog(node) {
+		node.showModal();
+		node.querySelector('[data-cancel-license]').focus();
+	}
+
+	function closeCancelDialog() {
+		if (isCancelling) return;
+		showCancelConfirm = false;
+		showRestoreConfirm = false;
+		cancelError = '';
+	}
+
+	async function handleRestoreLicense() {
+		if (isCancelling) return;
+		isCancelling = true;
+		cancelError = '';
+		try {
+			const data = await graphqlRequest(RESTORE_LICENSE_MUTATION, { id: licenseId });
+			if (data.restoreLicense?.id !== licenseId || data.restoreLicense.status !== 'active' || data.restoreLicense.isActive !== true) {
+				throw new Error('Сервер не подтвердил восстановление лицензии. Попробуйте снова.');
+			}
+			license = { ...license, ...data.restoreLicense };
+			showRestoreConfirm = false;
+			successMessage = 'Лицензия восстановлена. Ежедневные списания возобновлены по расписанию.';
+		} catch (err) {
+			cancelError = err.message || 'Не удалось восстановить лицензию. Попробуйте снова.';
+		} finally {
+			isCancelling = false;
+		}
+	}
+
 	async function handleCancelLicense() {
+		if (isCancelling) return;
 		isCancelling = true;
 		cancelError = '';
 
 		try {
 			const data = await graphqlRequest(CANCEL_LICENSE_MUTATION, { id: licenseId });
+			if (data.cancelLicense?.id !== licenseId || data.cancelLicense.status !== 'cancelled' || data.cancelLicense.isActive !== false) {
+				throw new Error('Сервер не подтвердил удаление лицензии. Попробуйте снова.');
+			}
 			license = { ...license, ...data.cancelLicense };
 			showCancelConfirm = false;
+			await goto('/lk/sites');
 		} catch (err) {
 			console.error('Failed to cancel license:', err);
-			cancelError = err.message || 'Не удалось отменить лицензию';
+			cancelError = err.message || 'Не удалось удалить лицензию. Попробуйте снова.';
 		} finally {
 			isCancelling = false;
 		}
@@ -744,6 +834,25 @@
 							{/if}
 						</div>
 					</div>
+
+					<form onsubmit={handleUpdateDomain}
+						class="space-y-4 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8">
+						<label for="site-domain" class="block font-display text-lg font-semibold text-neutral-950">Назначить домен</label>
+						<div class="flex flex-col gap-3 sm:flex-row sm:items-start">
+							<input id="site-domain" type="text" placeholder="example.com"
+								bind:value={formDomain} disabled={isUpdatingDomain}
+								autocapitalize="none" spellcheck={false}
+								aria-invalid={!!domainError} aria-describedby={domainError ? 'site-domain-error' : undefined}
+								class="block min-w-0 flex-1 rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none disabled:opacity-60" />
+							<Button type="submit" data-goal-ignore="Настройки сайта: назначение домена"
+								disabled={isUpdatingDomain || !formDomain || formDomain === license.domain}
+								class="justify-center px-5 py-3 disabled:opacity-60">
+								{isUpdatingDomain ? 'Сохранение...' : 'Сохранить домен'}
+							</Button>
+						</div>
+						{#if domainError}<p id="site-domain-error" role="alert" class="text-sm text-red-700">{domainError}</p>{/if}
+						{#if domainSuccess}<p role="status" class="text-sm text-green-700">{domainSuccess}</p>{/if}
+					</form>
 
 					<!-- ── Settings form ── -->
 					<form onsubmit={handleSubmit} class="space-y-10">
@@ -1375,11 +1484,12 @@
 						<div class="rounded-3xl border border-red-100 bg-red-50/50 p-6">
 							<h3 class="font-display text-lg font-semibold text-red-900">Опасная зона</h3>
 							<p class="mt-2 text-sm text-red-700">
-								Отмена лицензии отключит сайт и остановит будущие ежедневные списания. Уже наступившие дни аренды будут учтены. Самостоятельное восстановление лицензии недоступно.
+								Удаление лицензии отключит сайт и остановит будущие ежедневные списания. Лицензия останется в списке отменённых — её можно восстановить. История расчётов сохранится.
 							</p>
 							<div class="mt-4">
 								<button
 									type="button"
+									data-goal-ignore="Управление лицензией: открытие подтверждения удаления"
 									onclick={() => {
 										showCancelConfirm = true;
 										cancelError = '';
@@ -1400,9 +1510,22 @@
 											d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
 										/>
 									</svg>
-									Отказаться от лицензии
+									Удаление лицензии
 								</button>
 							</div>
+						</div>
+					{:else}
+						<div class="rounded-3xl border border-red-100 bg-red-50/50 p-6">
+							<h3 class="font-display text-lg font-semibold text-red-900">Опасная зона</h3>
+							<p class="mt-2 text-sm text-red-700">
+								Лицензия отменена, списания остановлены. Восстановите её, чтобы снова включить сайт и ежедневную оплату.
+							</p>
+							<button type="button"
+								data-goal-ignore="Управление лицензией: подтверждение восстановления"
+								onclick={() => { showRestoreConfirm = true; cancelError = ''; }}
+								class="mt-4 rounded-2xl bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none">
+								Восстановить лицензию
+							</button>
 						</div>
 					{/if}
 				</div>
@@ -1592,15 +1715,19 @@
 {/if}
 
 <!-- ── Cancel confirmation dialog ── -->
-{#if showCancelConfirm}
-	<!-- svelte-ignore -->
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/50 p-4 backdrop-blur-sm"
-		role="dialog"
-		aria-modal="true"
+{#if showCancelConfirm || showRestoreConfirm}
+	<dialog
+		use={openCancelDialog}
+		oncancel={(event) => {
+			event.preventDefault();
+			closeCancelDialog();
+		}}
+		class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-3xl border-0 bg-white p-0 backdrop:bg-neutral-950/50 backdrop:backdrop-blur-sm"
+		aria-describedby="cancel-dialog-description"
+		aria-busy={isCancelling}
 		aria-labelledby="cancel-dialog-title"
 	>
-		<div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
+		<div class="w-full max-w-md rounded-3xl bg-white p-6 sm:p-8">
 			<div class="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -1619,15 +1746,22 @@
 			</div>
 
 			<h2 id="cancel-dialog-title" class="font-display text-xl font-semibold text-neutral-950">
-				Отказаться от лицензии?
+				{showRestoreConfirm ? 'Восстановить лицензию?' : 'Удалить лицензию?'}
 			</h2>
-			<p class="mt-3 text-sm text-neutral-600">
-				Сайт <span class="font-semibold text-neutral-950">{license?.name || 'Новый сайт'}</span> будет
-				отключён, а будущие ежедневные списания — остановлены. Уже наступившие дни аренды будут учтены. Восстановить лицензию самостоятельно будет невозможно.
+			<p id="cancel-dialog-description" class="mt-3 text-sm text-neutral-600">
+				{#if showRestoreConfirm}
+					Сайт <span class="font-semibold text-neutral-950">{license?.name || 'Новый сайт'}</span> снова будет включён.
+					Ежедневная оплата — {license?.dailyPrice ?? 0} ₽. Списания возобновятся в ближайшие 06:30 по Москве после восстановления или окончания оставшегося пробного периода.
+					За время отключения списаний не будет. Новый пробный период не предоставляется.
+				{:else}
+					Сайт <span class="font-semibold text-neutral-950">{license?.name || 'Новый сайт'}</span> будет
+					отключён. Будущие ежедневные списания прекратятся. Уже наступившие дни аренды будут учтены, история расчётов сохранится.
+					Лицензию можно будет восстановить из списка отменённых сайтов.
+				{/if}
 			</p>
 
 			{#if cancelError}
-				<div
+				<div role="alert"
 					class="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600"
 				>
 					{cancelError}
@@ -1637,18 +1771,18 @@
 			<div class="mt-6 flex gap-3">
 				<button
 					type="button"
-					onclick={handleCancelLicense}
+					data-goal-ignore="Управление лицензией: изменение состояния подписки"
+					onclick={showRestoreConfirm ? handleRestoreLicense : handleCancelLicense}
 					disabled={isCancelling}
 					class="flex-1 rounded-2xl bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:opacity-60"
 				>
-					{isCancelling ? 'Отмена лицензии...' : 'Да, отказаться'}
+					{isCancelling ? 'Выполняется...' : showRestoreConfirm ? 'Восстановить лицензию' : 'Удалить лицензию'}
 				</button>
 				<button
 					type="button"
-					onclick={() => {
-						showCancelConfirm = false;
-						cancelError = '';
-					}}
+					data-cancel-license
+					data-goal-ignore="Управление лицензией: закрытие подтверждения"
+					onclick={closeCancelDialog}
 					disabled={isCancelling}
 					class="flex-1 rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 focus:outline-none disabled:opacity-60"
 				>
@@ -1656,7 +1790,7 @@
 				</button>
 			</div>
 		</div>
-	</div>
+	</dialog>
 {/if}
 
 <!-- ── Logo preview modal ── -->
