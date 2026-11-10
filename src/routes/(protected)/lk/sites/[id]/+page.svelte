@@ -1,5 +1,6 @@
 <script>
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
+	import CollapsibleSection from '$lib/components/CollapsibleSection.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
@@ -123,6 +124,7 @@
 	let isSaving = $state(false);
 	let successMessage = $state('');
 	let fieldErrors = $state({});
+	let isBasicOpen = $state(false);
 
 	// ── Catalog categories management ─────────────────────────────
 	let rubrics = $state([]);
@@ -277,12 +279,14 @@
 		// Валидация названия проекта
 		if (formName) {
 			if (formName.length > 40) {
+				isBasicOpen = true;
 				fieldErrors.name = 'Название проекта не может превышать 40 символов';
 				isSaving = false;
 				return;
 			}
 			const hasLongWord = formName.split(/\s+/).some((word) => word.length > 20);
 			if (hasLongWord) {
+				isBasicOpen = true;
 				fieldErrors.name = 'Одно слово в названии не может превышать 20 символов';
 				isSaving = false;
 				return;
@@ -314,6 +318,7 @@
 					if (field) errors[field] = gqlErr.message;
 				}
 				fieldErrors = Object.keys(errors).length ? errors : { _general: err.message };
+				if (errors.name) isBasicOpen = true;
 			} else {
 				fieldErrors = { _general: err.message || 'Не удалось сохранить настройки' };
 			}
@@ -867,11 +872,7 @@
 						{/if}
 
 						<!-- ── Section: Основное ── -->
-						<section
-							class="space-y-6 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8"
-						>
-							<h3 class="font-display text-lg font-semibold text-neutral-950">Основное</h3>
-
+						<CollapsibleSection id="site-settings-basic" title="Основное" bind:open={isBasicOpen}>
 							<div class="group relative">
 								<label for="site-name" class="block text-sm font-semibold text-neutral-950"
 									>Название проекта</label
@@ -1311,13 +1312,10 @@
 									class="mt-2 block w-full rounded-2xl border border-neutral-200 bg-transparent px-4 py-3 text-base text-neutral-950 transition placeholder:text-neutral-400 focus:border-neutral-950 focus:ring-2 focus:ring-neutral-950/60 focus:outline-none"
 								/>
 							</div>
-						</section>
+						</CollapsibleSection>
 
 						<!-- ── Section: Аналитика ── -->
-						<section
-							class="space-y-6 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8"
-						>
-							<h3 class="font-display text-lg font-semibold text-neutral-950">Аналитика</h3>
+						<CollapsibleSection id="site-settings-analytics" title="Аналитика">
 							<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
 								<div class="group relative">
 									<label for="yandex-metrica" class="block text-sm font-semibold text-neutral-950"
@@ -1344,21 +1342,14 @@
 									/>
 								</div>
 							</div>
-						</section>
+						</CollapsibleSection>
 
 						<!-- ── Section: Каталог (Рубрики и категории) ── -->
-						<section
-							class="space-y-6 rounded-3xl border border-neutral-100 bg-neutral-50/50 p-6 shadow-sm ring-1 ring-neutral-950/5 sm:p-8"
-						>
-							<div>
-								<h3 class="font-display text-lg font-semibold text-neutral-950">
-									Рубрики и категории в каталоге
-								</h3>
-								<p class="mt-1 text-sm text-neutral-500">
-									Включайте и отключайте разделы каталога. Отключенные категории не будут
-									отображаться на публичном сайте, но все связанные данные сохранятся.
-								</p>
-							</div>
+						<CollapsibleSection id="site-settings-catalog" title="Рубрики и категории в каталоге">
+							<p class="text-sm text-neutral-500">
+								Включайте и отключайте разделы каталога. Отключенные категории не будут
+								отображаться на публичном сайте, но все связанные данные сохранятся.
+							</p>
 
 							{#if isCatalogLoading}
 								<div class="flex items-center gap-3 py-4">
@@ -1464,7 +1455,7 @@
 									{/each}
 								</div>
 							{/if}
-						</section>
+						</CollapsibleSection>
 
 						<!-- ── Submit ── -->
 						<div class="border-t border-neutral-100 pt-8">
