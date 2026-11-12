@@ -794,7 +794,7 @@
 			<FadeIn>
 				<div class="flex max-w-3xl flex-col gap-12">
 					<!-- ── Site header ── -->
-					<div class="flex items-center justify-between gap-4">
+					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div class="min-w-0 flex-1">
 							<h2 class="font-display text-3xl font-semibold break-words text-neutral-950">
 								{license.name || 'Новый сайт'}
@@ -812,7 +812,7 @@
 								</p>
 							{/if}
 						</div>
-						<div class="flex items-center gap-3">
+						<div class="flex shrink-0 flex-col items-start gap-3 sm:items-end">
 							{#if license.isActive && license.status === 'active'}
 								<span
 									class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700"
@@ -832,6 +832,11 @@
 									<span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>Приостановлен
 								</span>
 							{/if}
+							<Button type="submit" form="site-settings-form" disabled={isSaving}
+								data-goal-ignore="Настройки сайта: сохранение параметров"
+								class="justify-center focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 focus:outline-none disabled:opacity-60">
+								{isSaving ? 'Сохранение...' : 'Сохранить настройки'}
+							</Button>
 						</div>
 					</div>
 
@@ -855,7 +860,7 @@
 					</form>
 
 					<!-- ── Settings form ── -->
-					<form onsubmit={handleSubmit} class="space-y-10">
+					<form id="site-settings-form" onsubmit={handleSubmit} class="space-y-10">
 						{#if successMessage}
 							<div
 								class="rounded-2xl border border-green-200 bg-green-50 px-6 py-4 text-sm text-green-700"
@@ -1457,12 +1462,6 @@
 							{/if}
 						</CollapsibleSection>
 
-						<!-- ── Submit ── -->
-						<div class="border-t border-neutral-100 pt-8">
-							<Button disabled={isSaving}>
-								{isSaving ? 'Сохранение...' : 'Сохранить настройки'}
-							</Button>
-						</div>
 					</form>
 
 					<section class="space-y-6 rounded-3xl border border-red-100 bg-red-50/50 p-6" aria-labelledby="danger-zone-title">
