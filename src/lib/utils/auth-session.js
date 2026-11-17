@@ -2,6 +2,16 @@
 const TOKEN_KEY = 'auth_token';
 const VERIFIED_KEY = 'email_verified';
 
+/** Only an explicit authentication rejection invalidates a saved session. */
+export async function readAuthSessionResponse(response) {
+	if (response.status === 401 || response.status === 403) return null;
+	if (!response.ok) throw new Error('Сервис входа временно недоступен.');
+	const result = await response.json();
+	if (result.success === false) return null;
+	if (result.success !== true || !result.user) throw new Error('Не удалось проверить сессию.');
+	return result;
+}
+
 function claims(token) {
 	try {
 		const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');

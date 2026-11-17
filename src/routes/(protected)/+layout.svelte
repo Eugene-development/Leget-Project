@@ -1,6 +1,6 @@
 <script>
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
-	import { getAuthToken, getEmailVerified, clearAuthSession } from '$lib/utils/auth-session.js';
+	import { getAuthToken, clearAuthSession, readAuthSessionResponse } from '$lib/utils/auth-session.js';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -10,6 +10,7 @@
 	let { children } = $props();
 	let isChecking = $state(true);
 	let isAuthenticated = $state(false);
+	let authUnavailable = $state(false);
 	let isEmailVerified = $state(false);
 	let user = $state(null);
 	let balance = $state('0.00');
@@ -26,6 +27,8 @@
 
 	async function checkAuth() {
 		isChecking = true;
+		authUnavailable = false;
+		isAuthenticated = false;
 
 		const token = getAuthToken();
 
@@ -38,22 +41,16 @@
 			const authApiUrl = getAuthApiUrl();
 			const response = await fetch(`${authApiUrl}/auth/me`, {
 				method: 'GET',
+				signal: AbortSignal.timeout(5000),
 				headers: {
 					Accept: 'application/json',
 					Authorization: `Bearer ${token}`
 				}
 			});
 
-			if (!response.ok) {
-				// Token is invalid or expired
-				clearAuthSession();
-				goto('/login');
-				return;
-			}
+			const result = await readAuthSessionResponse(response);
 
-			const result = await response.json();
-
-			if (!result.success) {
+			if (!result) {
 				clearAuthSession();
 				goto('/login');
 				return;
@@ -63,11 +60,9 @@
 			balance = result.balance ?? '0.00';
 			isEmailVerified = result.email_verified ?? false;
 			isAuthenticated = true;
-		} catch (err) {
-			console.error('Auth check error:', err);
-			// Network error — allow access if token exists (offline-friendly)
-			isAuthenticated = !!token;
-			isEmailVerified = getEmailVerified();
+		} catch {
+			// Keep the session for a retry, and wait for server confirmation.
+			authUnavailable = true;
 		} finally {
 			isChecking = false;
 		}
@@ -76,6 +71,17 @@
 
 {#if isChecking}
 	<ContentLoading fullPage label="Проверяем доступ…" />
+
+{:else if authUnavailable}
+	<div class="flex min-h-[60vh] items-center justify-center px-4">
+		<div class="max-w-md text-center" role="status">
+			<h1 class="font-display text-2xl font-semibold text-neutral-950">Кабинет временно недоступен</h1>
+			<p class="mt-4 text-neutral-600">Не удалось проверить доступ. Ваша сессия сохранена. Попробуйте ещё раз позже.</p>
+			<button type="button" onclick={checkAuth} data-goal-ignore="Повтор проверки сессии"
+				class="mt-6 rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white">Повторить проверку</button>
+			<a href="/" class="mt-4 block text-sm text-neutral-600 underline">На главную</a>
+		</div>
+	</div>
 
 {:else if isAuthenticated && !isEmailVerified}
 	<!-- Email not verified — show verification reminder -->
