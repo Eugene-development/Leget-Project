@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
@@ -42,7 +43,7 @@
 			pages = data.pages ?? [];
 		} catch (err) {
 			console.error('Failed to fetch pages:', err);
-			error = err.message || 'Не удалось загрузить список страниц';
+			error = notifyError(err, 'Не удалось загрузить список страниц');
 		} finally {
 			isLoading = false;
 		}

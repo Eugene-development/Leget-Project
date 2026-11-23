@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('platform-footer-subscription');
 	let email = $state('');
@@ -20,7 +21,7 @@
 			sent = true;
 			email = '';
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Не удалось отправить заявку.';
+			error = notifyError(e, 'Не удалось отправить заявку.');
 		} finally {
 			sending = false;
 		}

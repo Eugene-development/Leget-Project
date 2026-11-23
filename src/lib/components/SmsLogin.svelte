@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { requestError, UserError } from '$lib/utils/user-error.js';
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import SmartCaptcha from '$lib/components/SmartCaptcha.svelte';
 	import { SITE_KEY } from '$lib/antibot/smartcaptcha.js';
 	let {
@@ -58,12 +60,14 @@
 				})
 			});
 			const result = await response.json();
-			if (!response.ok || !result.success)
-				throw new Error(
-					result.errors
-						? Object.values(result.errors).flat().join(' ')
-						: result.message || 'Не удалось войти.'
-				);
+			if (!response.ok || !result?.success) {
+				if (response.status === 422) {
+					throw new UserError(challenge
+						? 'Не удалось подтвердить код. Проверьте его или запросите новый.'
+						: 'Проверьте номер телефона и пройдите проверку безопасности.');
+				}
+				throw requestError(response.ok ? 502 : response.status);
+			}
 			if (challenge) {
 				reset();
 				await onlogin(result);
@@ -73,7 +77,7 @@
 				remaining = result.retry_after || 60;
 			}
 		} catch (error) {
-			problem = error instanceof Error ? error.message : 'Сеть недоступна. Повторите попытку.';
+			problem = notifyError(error, 'Не удалось войти по SMS.');
 		} finally {
 			busy = false;
 			captchaToken = null;

@@ -1,9 +1,15 @@
 <script>
 	import { toastState } from '$lib/state/toast.svelte.js';
 	import { fly } from 'svelte/transition';
+	import { notifyError } from '$lib/utils/notify-error.js';
 </script>
 
-<div class="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+<svelte:window
+	onerror={(event) => { if (event.target === window) notifyError(event.error); }}
+	onunhandledrejection={(event) => notifyError(event.reason)}
+/>
+
+<div class="pointer-events-none fixed inset-x-4 bottom-4 z-[10000] flex flex-col gap-3 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-96">
 	{#each toastState.toasts as toast (toast.id)}
 		<div
 			transition:fly={{ y: 20, duration: 300 }}

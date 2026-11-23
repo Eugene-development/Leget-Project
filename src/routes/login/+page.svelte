@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import SmsLogin from '$lib/components/SmsLogin.svelte';
 	import Border from '$lib/components/Border.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -118,7 +119,7 @@
 			captchaToken = null;
 			if (!errors.email && !submitError) {
 				submitError =
-					err.message || 'Не удалось войти в систему. Проверьте правильность введённых данных.';
+					notifyError(err, 'Не удалось войти в систему. Проверьте правильность введённых данных.');
 			}
 		} finally {
 			isSubmitting = false;

@@ -6,6 +6,14 @@
  * permission issues with writing to build/client/ at runtime.
  */
 
+import { requestError, userErrorMessage } from '$lib/utils/user-error.js';
+
+/** @type {import('@sveltejs/kit').HandleServerError} */
+export function handleError({ error, status, event }) {
+	console.error('Необработанная ошибка страницы', event.route.id, error);
+	return { message: userErrorMessage(requestError(status), 'Не удалось загрузить страницу.') };
+}
+
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
 	// Serve runtime config for the browser

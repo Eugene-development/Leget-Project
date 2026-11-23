@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
@@ -88,10 +89,10 @@
 				if (Object.keys(errors).length > 0) {
 					fieldErrors = errors;
 				} else {
-					fieldErrors = { _general: err.message || 'Не удалось создать страницу' };
+					fieldErrors = { _general: notifyError(err, 'Не удалось создать страницу') };
 				}
 			} else {
-				fieldErrors = { _general: err.message || 'Не удалось создать страницу' };
+				fieldErrors = { _general: notifyError(err, 'Не удалось создать страницу') };
 			}
 		} finally {
 			isSaving = false;

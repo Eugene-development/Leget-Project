@@ -1,4 +1,6 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
+	import { requestError, UserError } from '$lib/utils/user-error.js';
 	import { saveAuthSession } from '$lib/utils/auth-session.js';
 	import { goto } from '$app/navigation';
 	import SmartCaptcha from './SmartCaptcha.svelte';
@@ -25,13 +27,16 @@
 				body: JSON.stringify({ email, password, captcha_token: captchaToken })
 			});
 			const result = await response.json();
-			if (!response.ok) throw new Error(result.message || 'Не удалось войти.');
+			if (response.status === 401) {
+				throw new UserError('Пароль не подошёл. Проверьте его и попробуйте снова.');
+			}
+			if (!response.ok) throw requestError(response.status, result.code);
 			token = result.token;
 			profile = result.user;
 			password = '';
 			phase = 'confirm';
 		} catch (e) {
-			error = e.message || 'Сервис недоступен.';
+			error = notifyError(e, 'Не удалось войти.');
 		} finally {
 			busy = false;
 			captchaToken = null;
@@ -53,13 +58,13 @@
 				body: '{}'
 			});
 			const result = await response.json();
-			if (!response.ok) throw new Error(result.message || 'Не удалось подключить роль.');
+			if (!response.ok) throw requestError(response.status, result.code);
 			// This is the owner frontend's session, never the university cookie.
 			saveAuthSession(result);
 			token = '';
 			await goto('/lk');
 		} catch (e) {
-			error = e.message || 'Сервис недоступен. Повторите действие.';
+			error = notifyError(e, 'Не удалось подключить роль.');
 		} finally {
 			busy = false;
 		}

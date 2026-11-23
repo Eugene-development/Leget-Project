@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import { getAuthToken } from '$lib/utils/auth-session.js';
 	/**
 	 * Modal for subscribing to a license with a chosen template.
@@ -112,7 +113,7 @@
 				return timeB - timeA;
 			});
 		} catch (err) {
-			error = err.message || 'Не удалось загрузить список сайтов';
+			error = notifyError(err, 'Не удалось загрузить список сайтов');
 		} finally {
 			isLoading = false;
 		}
@@ -138,7 +139,7 @@
 			// Redirect to site list
 			goto('/lk/sites');
 		} catch (err) {
-			error = err.message || 'Не удалось создать лицензию';
+			error = notifyError(err, 'Не удалось создать лицензию');
 		} finally {
 			isSaving = false;
 		}
@@ -154,7 +155,7 @@
 			onSuccess(licenseId);
 			goto(`/lk/sites/${licenseId}`);
 		} catch (err) {
-			error = err.message || 'Не удалось применить шаблон';
+			error = notifyError(err, 'Не удалось применить шаблон');
 		} finally {
 			isSaving = false;
 		}

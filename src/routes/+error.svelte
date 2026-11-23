@@ -2,15 +2,17 @@
 	import { page } from '$app/stores';
 	import Container from '$lib/components/Container.svelte';
 	import FadeIn from '$lib/components/FadeIn.svelte';
+	import { notifyError } from '$lib/utils/notify-error.js';
+	import { requestError, userErrorMessage } from '$lib/utils/user-error.js';
 
-	/**
-	 * Error page (404 and other errors)
-	 * Requirements: 13.7
-	 */
+	const failure = $derived(userErrorMessage(requestError($page.status), 'Не удалось загрузить страницу.'));
+	$effect(() => {
+		if ($page.status >= 500) notifyError(requestError($page.status), 'Не удалось загрузить страницу.');
+	});
 </script>
 
 <svelte:head>
-	<title>{$page.status} - Studio</title>
+	<title>{$page.status} — LEGET</title>
 </svelte:head>
 
 <Container class="flex h-full items-center pt-24 sm:pt-32 lg:pt-40">
@@ -20,23 +22,23 @@
 		</p>
 		<h1 class="mt-4 font-display text-2xl font-semibold text-neutral-950">
 			{#if $page.status === 404}
-				Page not found
+				Страница не найдена
 			{:else}
-				Something went wrong
+				Не удалось открыть страницу
 			{/if}
 		</h1>
 		<p class="mt-2 text-sm text-neutral-600">
 			{#if $page.status === 404}
-				Sorry, we couldn't find the page you're looking for.
+				Проверьте адрес или перейдите на главную.
 			{:else}
-				{$page.error?.message || 'An unexpected error occurred.'}
+				{failure}
 			{/if}
 		</p>
 		<a
 			href="/"
 			class="mt-4 text-sm font-semibold text-neutral-950 transition hover:text-neutral-700"
 		>
-			Go to the home page
+			На главную
 		</a>
 	</FadeIn>
 </Container>

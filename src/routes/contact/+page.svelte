@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import { createFormSender } from '$lib/utils/form-submission';
 	const sendForm = createFormSender('platform-contact');
 	import Border from '$lib/components/Border.svelte';
@@ -134,8 +135,7 @@
 			captchaRef?.reset();
 			captchaToken = null;
 			if (!submitError) {
-				submitError =
-					'Не удалось отправить заявку. Пожалуйста, попробуйте позже или напишите нам напрямую.';
+				submitError = notifyError(err, 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам напрямую.');
 			}
 		} finally {
 			isSubmitting = false;

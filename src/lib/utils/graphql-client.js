@@ -1,6 +1,7 @@
 import { getAuthToken } from './auth-session.js';
-import { GraphQLClient } from 'graphql-request';
+import { ClientError, GraphQLClient } from 'graphql-request';
 import { getGraphQLUrl } from './config.js';
+import { graphQLError } from './user-error.js';
 
 /**
  * Creates a GraphQLClient instance configured with the leget-api
@@ -12,6 +13,7 @@ export function getGraphQLClient() {
 	const token = getAuthToken();
 
 	return new GraphQLClient(getGraphQLUrl(), {
+		signal: AbortSignal.timeout(30000),
 		headers: {
 			...(token ? { Authorization: `Bearer ${token}` } : {})
 		}
@@ -33,17 +35,7 @@ export async function graphqlRequest(query, variables) {
 		const data = await client.request(query, variables);
 		return data;
 	} catch (error) {
-		// graphql-request wraps GraphQL errors in a ClientError with a response property
-		if (error.response?.errors?.length) {
-			// Ошибки валидации (@rules) приходят в extensions.validation как { поле: [сообщения] }
-			const messages = error.response.errors.flatMap((e) => {
-				const validation = e.extensions?.validation;
-				return validation ? Object.values(validation).flat() : [e.message];
-			});
-			const gqlError = new Error(messages.join(', '));
-			gqlError.graphqlErrors = error.response.errors;
-			throw gqlError;
-		}
+		if (error instanceof ClientError) throw graphQLError(error.response.status, error.response.errors);
 		throw error;
 	}
 }

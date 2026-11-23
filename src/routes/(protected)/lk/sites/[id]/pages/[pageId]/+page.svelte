@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import { uploadFileToS3 } from '$lib/utils/s3-upload.js';
 
 	// ─── Queries & Mutations ────────────────────────────────────────────────────
@@ -120,7 +121,6 @@
 
 	// S3 upload
 	let isUploading = $state(false);
-	let uploadError = $state('');
 	let uploadedUrl = $state('');
 	/** @type {HTMLInputElement|null} */
 	let fileInput = $state(null);
@@ -159,7 +159,7 @@
 			}
 		} catch (err) {
 			console.error('Failed to load page:', err);
-			loadError = err.message || 'Не удалось загрузить данные страницы';
+			loadError = notifyError(err, 'Не удалось загрузить данные страницы');
 		} finally {
 			isLoading = false;
 		}
@@ -186,7 +186,7 @@
 			slugSuccess = 'Адрес страницы сохранён';
 			setTimeout(() => (slugSuccess = ''), 3000);
 		} catch (err) {
-			slugError = err.message || 'Не удалось сохранить адрес страницы';
+			slugError = notifyError(err, 'Не удалось сохранить адрес страницы');
 		} finally {
 			isSavingSlug = false;
 		}
@@ -201,7 +201,6 @@
 		editingJsonError = '';
 		componentSaveError = '';
 		uploadedUrl = '';
-		uploadError = '';
 	}
 
 	function closeEditor() {
@@ -241,7 +240,7 @@
 
 			closeEditor();
 		} catch (err) {
-			componentSaveError = err.message || 'Не удалось сохранить компонент';
+			componentSaveError = notifyError(err, 'Не удалось сохранить компонент');
 		} finally {
 			isSavingComponent = false;
 		}
@@ -284,7 +283,7 @@
 			await graphqlRequest(DELETE_PAGE_MUTATION, { id: pageId, licenseId });
 			await goto(`/lk/sites/${licenseId}/pages`);
 		} catch (err) {
-			deleteError = err.message || 'Не удалось удалить страницу';
+			deleteError = notifyError(err, 'Не удалось удалить страницу');
 			showDeleteConfirm = false;
 		} finally {
 			isDeleting = false;
@@ -302,7 +301,6 @@
 		if (!file) return;
 
 		isUploading = true;
-		uploadError = '';
 		uploadedUrl = '';
 
 		try {
@@ -317,7 +315,7 @@
 				editingJson = editingJson.trimEnd() + '\n// ' + url;
 			}
 		} catch (err) {
-			uploadError = err.message || 'Не удалось загрузить файл';
+			notifyError(err, 'Не удалось загрузить файл.');
 		} finally {
 			isUploading = false;
 			if (fileInput) fileInput.value = '';
@@ -515,9 +513,6 @@
 											{isUploading ? 'Загрузка...' : 'Выбрать изображение'}
 										</button>
 									</div>
-									{#if uploadError}
-										<p class="mt-1 text-sm text-red-600">{uploadError}</p>
-									{/if}
 									{#if uploadedUrl}
 										<p class="mt-1 break-all font-mono text-xs text-green-600">{uploadedUrl}</p>
 									{/if}

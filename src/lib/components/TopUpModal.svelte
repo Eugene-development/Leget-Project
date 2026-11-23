@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	/**
 	 * Modal for topping up the user's wallet balance.
 	 *
@@ -90,7 +91,7 @@
 				onlineError = 'Платёжный сервис не вернул ссылку на оплату';
 			}
 		} catch (err) {
-			onlineError = err.message || 'Ошибка при создании платежа';
+			onlineError = notifyError(err, 'Ошибка при создании платежа');
 		} finally {
 			isSubmittingOnline = false;
 		}
@@ -121,7 +122,7 @@
 				bankError = 'Не удалось сформировать счёт';
 			}
 		} catch (err) {
-			bankError = err.message || 'Ошибка при формировании счёта';
+			bankError = notifyError(err, 'Ошибка при формировании счёта');
 		} finally {
 			isSubmittingBank = false;
 		}
@@ -132,7 +133,7 @@
 		try {
 			await openInvoice(invoiceId);
 		} catch (err) {
-			bankError = err.message || 'Не удалось открыть счёт';
+			bankError = notifyError(err, 'Не удалось открыть счёт');
 		}
 	}
 

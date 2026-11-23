@@ -9,6 +9,9 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { notifyError } from '$lib/utils/notify-error.js';
+	import { uploadFileToS3 } from '$lib/utils/s3-upload.js';
+	import { UserError } from '$lib/utils/user-error.js';
 	import { graphqlRequest } from '$lib/utils/graphql-client.js';
 	import { validateDomain } from '$lib/utils/domain-validator.js';
 
@@ -58,16 +61,6 @@
 				headerData
 				footerData
 				faviconUrl
-			}
-		}
-	`;
-
-	const GENERATE_UPLOAD_URL_MUTATION = `
-		mutation GenerateUploadUrl($filename: String!, $mimeType: String!, $folder: String, $licenseId: ID) {
-			generateUploadUrl(filename: $filename, mimeType: $mimeType, folder: $folder, licenseId: $licenseId) {
-				uploadUrl
-				objectUrl
-				expiresIn
 			}
 		}
 	`;
@@ -147,7 +140,7 @@
 			rubrics = data.rubrics ?? [];
 		} catch (err) {
 			console.error('Failed to fetch catalog:', err);
-			catalogError = err.message || 'Не удалось загрузить каталог';
+			catalogError = notifyError(err, 'Не удалось загрузить каталог');
 		} finally {
 			isCatalogLoading = false;
 		}
@@ -185,7 +178,7 @@
 					cat.id === categoryId ? { ...cat, is_enabled: currentEnabled } : cat
 				)
 			}));
-			alert('Не удалось изменить статус категории: ' + (err.message || 'неизвестная ошибка'));
+			notifyError(err, 'Не удалось изменить статус категории.');
 		} finally {
 			const finalToggling = new Set(togglingCategoryIds);
 			finalToggling.delete(categoryId);
@@ -213,7 +206,7 @@
 			formLogoUrl = h.logoUrl ?? '';
 		} catch (err) {
 			console.error('Failed to fetch license:', err);
-			error = err.message || 'Не удалось загрузить настройки сайта';
+			error = notifyError(err, 'Не удалось загрузить настройки сайта');
 		} finally {
 			isLoading = false;
 		}
@@ -243,14 +236,14 @@
 			formDomain = data.updateLicense.domain;
 			domainSuccess = 'Доменное имя сохранено';
 		} catch (err) {
-			domainError = err.message || 'Не удалось сохранить домен. Попробуйте снова.';
+			domainError = notifyError(err, 'Не удалось сохранить домен. Попробуйте снова.');
 		} finally {
 			isUpdatingDomain = false;
 		}
 	}
 
 	/** Build header_data / footer_data from form fields */
-	function buildJsonData() {
+	function buildJsonData(logoUrl = formLogoUrl) {
 		const existing = license?.headerData ?? {};
 
 		const headerData = {
@@ -258,13 +251,13 @@
 			city: formCity || null,
 			yandexMetrica: formYandexMetrica || null,
 			googleAnalytics: formGoogleAnalytics || null,
-			logoUrl: formLogoUrl || null
+			logoUrl: logoUrl || null
 		};
 
 		const existingFooter = license?.footerData ?? {};
 		const footerData = {
 			...existingFooter,
-			logoUrl: formLogoUrl || null
+			logoUrl: logoUrl || null
 		};
 
 		return { headerData, footerData };
@@ -317,10 +310,10 @@
 					const field = gqlErr.extensions?.field;
 					if (field) errors[field] = gqlErr.message;
 				}
-				fieldErrors = Object.keys(errors).length ? errors : { _general: err.message };
+				fieldErrors = Object.keys(errors).length ? errors : { _general: notifyError(err, 'Не удалось сохранить настройки.') };
 				if (errors.name) isBasicOpen = true;
 			} else {
-				fieldErrors = { _general: err.message || 'Не удалось сохранить настройки' };
+				fieldErrors = { _general: notifyError(err, 'Не удалось сохранить настройки') };
 			}
 		} finally {
 			isSaving = false;
@@ -550,140 +543,85 @@
 		});
 	}
 
+	function checkImageFile(file) {
+		if (!file.size || !file.type.startsWith('image/')) {
+			throw new UserError('Выбранный файл не является изображением. Выберите файл с изображением.');
+		}
+	}
+
 	async function handleLogoUpload(e) {
-		const file = e.target.files?.[0];
-		if (!file) return;
+		const input = e.currentTarget;
+		const file = input.files?.[0];
+		input.value = '';
+		if (!file || isUploadingLogo || isUploadingFavicon) return;
 
 		isUploadingLogo = true;
-		error = null;
-
+		let action = 'Не удалось загрузить логотип.';
 		try {
-			// 0. Compress Logo Image (skip SVGs since they are vector)
-			let logoFile = file;
-			if (file.type !== 'image/svg+xml') {
+			checkImageFile(file);
+			const logoFile = file.type === 'image/svg+xml'
+				? file
+				: await compressLogoImage(file).catch(() => file);
+			const logoUrl = await uploadFileToS3(logoFile, licenseId, 'logos');
+			let faviconUrl = formFaviconUrl;
+			let faviconFailure;
+			if (!faviconUrl) {
 				try {
-					logoFile = await compressLogoImage(file);
-				} catch (compErr) {
-					console.warn('Failed to compress logo, using original:', compErr);
+					const blob = await generateFaviconFromLogo(logoFile);
+					const favicon = new File([blob], 'favicon.png', { type: 'image/png' });
+					faviconUrl = await uploadFileToS3(favicon, licenseId, 'favicons');
+				} catch (err) {
+					faviconFailure = err;
 				}
 			}
 
-			// 1. Generate Favicon (only if no existing favicon)
-			let faviconBlob;
-			if (!formFaviconUrl) {
-				try {
-					faviconBlob = await generateFaviconFromLogo(logoFile);
-				} catch (favErr) {
-					console.warn('Failed to generate favicon from logo, using fallback:', favErr);
-				}
-			}
-
-			// 2. Upload Logo to S3
-			const { generateUploadUrl: logoUploadData } = await graphqlRequest(
-				GENERATE_UPLOAD_URL_MUTATION,
-				{
-					filename: logoFile.name,
-					mimeType: logoFile.type,
-					folder: 'logos',
-					licenseId: licenseId
-				}
-			);
-
-			const logoResponse = await fetch(logoUploadData.uploadUrl, {
-				method: 'PUT',
-				body: logoFile,
-				headers: { 'Content-Type': logoFile.type }
-			});
-
-			if (!logoResponse.ok) throw new Error('Ошибка при загрузке логотипа в хранилище');
-			formLogoUrl = logoUploadData.objectUrl;
-
-			// 3. Upload Favicon to S3 if generated
-			if (faviconBlob) {
-				const { generateUploadUrl: faviconUploadData } = await graphqlRequest(
-					GENERATE_UPLOAD_URL_MUTATION,
-					{
-						filename: 'favicon.png',
-						mimeType: 'image/png',
-						folder: 'favicons',
-						licenseId: licenseId
-					}
-				);
-
-				const faviconResponse = await fetch(faviconUploadData.uploadUrl, {
-					method: 'PUT',
-					body: faviconBlob,
-					headers: { 'Content-Type': 'image/png' }
-				});
-
-				if (faviconResponse.ok) {
-					formFaviconUrl = faviconUploadData.objectUrl;
-				} else {
-					console.error('Failed to upload automatically generated favicon');
-				}
-			}
-
-			// 4. Auto-save URLs to the backend so they persist on page refresh
-			const { headerData, footerData } = buildJsonData();
+			action = 'Не удалось сохранить логотип.';
+			const { headerData, footerData } = buildJsonData(logoUrl);
 			const saveData = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
 				id: licenseId,
 				name: formName,
 				headerData,
 				footerData,
-				faviconUrl: formFaviconUrl
+				faviconUrl
 			});
+			formLogoUrl = logoUrl;
+			formFaviconUrl = faviconUrl;
 			license = { ...license, ...saveData.updateLicense };
+			if (faviconFailure) notifyError(faviconFailure, 'Логотип сохранён. Фавиконку можно загрузить отдельно.');
 		} catch (err) {
-			console.error('Logo upload failed:', err);
-			error = 'Не удалось загрузить логотип: ' + (err.message || 'неизвестная ошибка');
+			notifyError(err, action);
 		} finally {
 			isUploadingLogo = false;
 		}
 	}
-	// ── Favicon Upload ───────────────────────────────────────────
+
 	let isUploadingFavicon = $state(false);
 
 	async function handleFaviconUpload(e) {
-		const file = e.target.files?.[0];
-		if (!file) return;
+		const input = e.currentTarget;
+		const file = input.files?.[0];
+		input.value = '';
+		if (!file || isUploadingLogo || isUploadingFavicon) return;
 
 		isUploadingFavicon = true;
-		error = null;
-
+		let action = 'Не удалось загрузить фавиконку.';
 		try {
-			// 1. Get pre-signed URL
-			const { generateUploadUrl: uploadData } = await graphqlRequest(GENERATE_UPLOAD_URL_MUTATION, {
-				filename: file.name,
-				mimeType: file.type,
-				folder: 'favicons',
-				licenseId: licenseId
-			});
+			checkImageFile(file);
+			const faviconUrl = await uploadFileToS3(file, licenseId, 'favicons');
 
-			// 2. Upload to S3
-			const uploadResponse = await fetch(uploadData.uploadUrl, {
-				method: 'PUT',
-				body: file,
-				headers: { 'Content-Type': file.type }
-			});
-
-			if (!uploadResponse.ok) throw new Error('Ошибка при загрузке файла в хранилище');
-
-			// 3. Set URL in form
-			formFaviconUrl = uploadData.objectUrl;
-
-			// 4. Auto-save URL to the backend so it persists on page refresh
+			action = 'Не удалось сохранить фавиконку.';
 			const { headerData, footerData } = buildJsonData();
 			const saveData = await graphqlRequest(UPDATE_LICENSE_MUTATION, {
 				id: licenseId,
 				name: formName,
 				headerData,
 				footerData,
-				faviconUrl: formFaviconUrl
+				faviconUrl
 			});
+			formFaviconUrl = faviconUrl;
 			license = { ...license, ...saveData.updateLicense };
 		} catch (err) {
-			console.error('Favicon upload failed:', err);
-			error = 'Не удалось загрузить фавиконку: ' + (err.message || 'неизвестная ошибка');
+			notifyError(err, action);
 		} finally {
 			isUploadingFavicon = false;
 		}
@@ -752,7 +690,7 @@
 			}
 			licenseAction = null;
 		} catch (err) {
-			licenseActionError = err.message || 'Не удалось выполнить действие. Попробуйте снова.';
+			licenseActionError = notifyError(err, 'Не удалось выполнить действие. Попробуйте снова.');
 		} finally {
 			isChangingLicense = false;
 		}

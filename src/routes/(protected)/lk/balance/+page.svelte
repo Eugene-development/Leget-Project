@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
 	import Container from '$lib/components/Container.svelte';
@@ -205,7 +206,7 @@
 			currentPage = result.myWallet.transactions.paginatorInfo.currentPage;
 			hasMorePages = result.myWallet.transactions.paginatorInfo.hasMorePages;
 		} catch (err) {
-			if (request === walletRequest) error = err.message || 'Не удалось загрузить историю';
+			if (request === walletRequest) error = notifyError(err, 'Не удалось загрузить историю');
 		} finally {
 			if (request === walletRequest) {
 				isLoading = false;
@@ -270,7 +271,7 @@
 				if (!stopped)
 					paymentNotice = {
 						type: 'error',
-						text: err.message || 'Не удалось проверить платёж. Повторяем проверку…'
+						text: notifyError(err, 'Не удалось проверить платёж. Повторяем проверку…')
 					};
 			} finally {
 				if (!stopped) {
@@ -335,7 +336,7 @@
 			await openInvoice(invoiceId);
 		} catch (err) {
 			console.error('Invoice download error:', err);
-			alert(err.message || 'Не удалось открыть счёт. Попробуйте позже.');
+			notifyError(err, 'Не удалось открыть счёт. Попробуйте позже.');
 		} finally {
 			downloadingId = null;
 		}

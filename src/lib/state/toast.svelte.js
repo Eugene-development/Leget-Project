@@ -16,6 +16,7 @@ export class ToastState {
 	}
 
 	error(message, duration) {
+		if (this.toasts.some((toast) => toast.type === 'error' && toast.message === message)) return;
 		this.add(message, 'error', duration);
 	}
 

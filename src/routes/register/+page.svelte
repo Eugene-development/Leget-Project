@@ -1,4 +1,5 @@
 <script>
+	import { notifyError } from '$lib/utils/notify-error.js';
 	import { saveAuthSession } from '$lib/utils/auth-session.js';
 	import ExistingOwnerAccount from '$lib/components/ExistingOwnerAccount.svelte';
 	import Border from '$lib/components/Border.svelte';
@@ -234,7 +235,7 @@
 			captchaRef?.reset();
 			captchaToken = null;
 			if (!submitError) {
-				submitError = err.message || 'Не удалось зарегистрироваться. Попробуйте позже.';
+				submitError = notifyError(err, 'Не удалось зарегистрироваться. Попробуйте позже.');
 			}
 		} finally {
 			isSubmitting = false;
