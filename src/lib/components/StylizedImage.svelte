@@ -1,4 +1,5 @@
 <script>
+	import { publicMediaUrl } from '$lib/utils/public-media.js';
 	import { onMount } from 'svelte';
 
 	/**
@@ -53,7 +54,7 @@
 				>
 					<foreignObject width={selectedShape.width} height={selectedShape.height}>
 						<img
-							{src}
+							src={publicMediaUrl(src)}
 							{alt}
 							class="w-full bg-neutral-100 object-cover"
 							style="aspect-ratio: {selectedShape.width} / {selectedShape.height};"

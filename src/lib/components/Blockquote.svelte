@@ -1,4 +1,5 @@
 <script>
+	import { publicMediaUrl } from '$lib/utils/public-media.js';
 	import Border from './Border.svelte';
 
 	/**
@@ -30,7 +31,7 @@
 		>
 			<img
 				alt=""
-				src={image}
+				src={publicMediaUrl(image)}
 				loading="lazy"
 				sizes="(min-width: 1024px) 17.625rem, (min-width: 768px) 16rem, (min-width: 640px) 40vw, 3rem"
 				class="h-12 w-12 object-cover grayscale sm:aspect-7/9 sm:h-auto sm:w-full"

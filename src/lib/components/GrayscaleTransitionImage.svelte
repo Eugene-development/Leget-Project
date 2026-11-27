@@ -1,4 +1,5 @@
 <script>
+	import { publicMediaUrl } from '$lib/utils/public-media.js';
   /**
    * GrayscaleTransitionImage component - displays an image that transitions from grayscale to color
    * 
@@ -35,7 +36,7 @@
 >
   <!-- Main image with grayscale filter that transitions on hover -->
   <img
-    {src}
+    src={publicMediaUrl(src)}
     {alt}
     class="{className}"
     style:filter={isHovered ? 'grayscale(0)' : 'grayscale(1)'}

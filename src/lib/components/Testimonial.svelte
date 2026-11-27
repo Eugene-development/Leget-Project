@@ -1,4 +1,5 @@
 <script>
+	import { publicMediaUrl } from '$lib/utils/public-media.js';
 	import Container from './Container.svelte';
 	import FadeIn from './FadeIn.svelte';
 	import GridPattern from './GridPattern.svelte';
@@ -35,7 +36,7 @@
 					{#if client.LogoSnippet}
 						{@render client.LogoSnippet()}
 					{:else}
-						<img src={client.logo} alt={client.name} loading="lazy" />
+						<img src={publicMediaUrl(client.logo)} alt={client.name} loading="lazy" />
 					{/if}
 				</figcaption>
 			</figure>

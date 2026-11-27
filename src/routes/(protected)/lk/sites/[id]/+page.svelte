@@ -1,4 +1,5 @@
 <script>
+	import { publicMediaUrl } from '$lib/utils/public-media.js';
 	import ContentLoading from '$lib/components/ContentLoading.svelte';
 	import CollapsibleSection from '$lib/components/CollapsibleSection.svelte';
 	import PageIntro from '$lib/components/PageIntro.svelte';
@@ -339,7 +340,7 @@
 		if (!formLogoUrl) return;
 
 		try {
-			const response = await fetch(formLogoUrl, { method: 'HEAD' });
+			const response = await fetch(publicMediaUrl(formLogoUrl), { method: 'HEAD' });
 			const contentType = response.headers.get('content-type') || 'Неизвестно';
 			const contentLength = response.headers.get('content-length');
 			const lastModified = response.headers.get('last-modified');
@@ -386,7 +387,7 @@
 		if (!formFaviconUrl) return;
 
 		try {
-			const response = await fetch(formFaviconUrl, { method: 'HEAD' });
+			const response = await fetch(publicMediaUrl(formFaviconUrl), { method: 'HEAD' });
 			const contentType = response.headers.get('content-type') || 'Неизвестно';
 			const contentLength = response.headers.get('content-length');
 			const lastModified = response.headers.get('last-modified');
@@ -868,7 +869,7 @@
 										class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50"
 									>
 										{#if formLogoUrl}
-											<img src={formLogoUrl} alt="Logo" class="h-12 w-12 object-contain" />
+											<img src={publicMediaUrl(formLogoUrl)} alt="Logo" class="h-12 w-12 object-contain" />
 										{:else}
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -1061,7 +1062,7 @@
 										class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50"
 									>
 										{#if formFaviconUrl}
-											<img src={formFaviconUrl} alt="Favicon" class="h-8 w-8 object-contain" />
+											<img src={publicMediaUrl(formFaviconUrl)} alt="Favicon" class="h-8 w-8 object-contain" />
 										{:else}
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -1468,7 +1469,7 @@
 					class="flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border border-neutral-100 bg-neutral-50"
 				>
 					<img
-						src={formFaviconUrl}
+						src={publicMediaUrl(formFaviconUrl)}
 						alt="Favicon preview"
 						class="max-h-full max-w-full object-contain"
 					/>
@@ -1683,7 +1684,7 @@
 				<div
 					class="flex h-48 w-48 items-center justify-center overflow-hidden rounded-2xl border border-neutral-100 bg-neutral-50"
 				>
-					<img src={formLogoUrl} alt="Logo preview" class="max-h-full max-w-full object-contain" />
+					<img src={publicMediaUrl(formLogoUrl)} alt="Logo preview" class="max-h-full max-w-full object-contain" />
 				</div>
 
 				<div class="w-full space-y-3 rounded-2xl bg-neutral-50 p-4">
